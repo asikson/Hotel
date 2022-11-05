@@ -1,78 +1,41 @@
-import * as React from 'react';
-import {Routes, Route, NavLink, Navigate, useNavigate, useLocation, BrowserRouter} from 'react-router-dom';
+import React from 'react';
+import Login from './components/Login';
+import AuthProvider from './components/AuthProvider';
+import {useAuth} from './utils/useAuth';
 
-const fakeAuth = () =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve('2342f2f1d131rf12'), 250);
-  });
+import {Routes, Route, NavLink, Navigate, useLocation, BrowserRouter} from 'react-router-dom';
 
-const AuthContext = React.createContext(null);
-
-const AuthProvider = ({ children }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const [token, setToken] = React.useState(null);
-
-  const handleLogin = async () => {
-    const token = await fakeAuth();
-
-    setToken(token);
-
-    const origin = location.state?.from?.pathname || '/dashboard';
-    navigate(origin);
-  };
-
-  const handleLogout = () => {
-    setToken(null);
-  };
-
-  const value = {
-    token,
-    onLogin: handleLogin,
-    onLogout: handleLogout,
-  };
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-const useAuth = () => {
-  return React.useContext(AuthContext);
-};
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
   const location = useLocation();
 
   if (!token) {
-    return <Navigate to="/home" replace state={{ from: location }} />;
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
   return children;
 };
 
 const App = () => {
+
   return (
     <BrowserRouter>
-    <AuthProvider>
+      <AuthProvider>
+        <Navigation />
 
-      <Navigation />
-
-      <Routes>
-        <Route index element={<Home />} />
-        <Route path="home" element={<Home />} />
-        <Route
-          path="dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Routes>
+          <Route index element={<Login />} />
+          <Route path="login" element={<Login />} />
+          <Route path="home" element={<Home />} />
+          <Route
+            path="dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
         <Route
           path="admin"
           element={
@@ -87,7 +50,8 @@ const App = () => {
     </AuthProvider>
     </BrowserRouter>
   );
-};
+  
+}
 
 const Navigation = () => {
   const { token, onLogout } = useAuth();
@@ -101,6 +65,7 @@ const Navigation = () => {
       <br />
       <NavLink to="/admin">Admin</NavLink>
       <br />
+
 
       {token && (
         <button type="button" onClick={onLogout}>
