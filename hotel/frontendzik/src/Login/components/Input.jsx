@@ -1,5 +1,5 @@
 import styles from '../styles/inputStyles';
-import commonStyles from '../styles/commonStyles';
+import commonStyles from '../../styles/commonStyles';
 import {TextField} from '@mui/material';
 
 const Input = ({label, value, setValue, ifPassword=false}) => {

@@ -1,117 +1,34 @@
 import React from 'react';
-import Login from './components/Login';
-import AuthProvider from './components/AuthProvider';
-import {useAuth} from './utils/useAuth';
-
-import {Routes, Route, NavLink, Navigate, useLocation, BrowserRouter} from 'react-router-dom';
-
-
-const ProtectedRoute = ({ children }) => {
-  const { token } = useAuth();
-  const location = useLocation();
-
-  if (!token) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
-  }
-
-  return children;
-};
+import AuthProvider from './authorization/AuthProvider';
+import ProtectedRoute from './authorization/ProtectedRoute';
+import Login from './Login/components/Login';
+import Home from './Home/components/Home';
+import {Routes, Route, BrowserRouter} from 'react-router-dom';
+import ErrorPage from './Login/components/ErrorPage';
 
 const App = () => {
 
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Navigation />
-
         <Routes>
+
           <Route index element={<Login />} />
-          <Route path="login" element={<Login />} />
-          <Route path="home" element={<Home />} />
+          <Route path='login' element={<Login />} />
           <Route
-            path="dashboard"
+            path='Home'
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Home />
               </ProtectedRoute>
             }
           />
-        <Route
-          path="admin"
-          element={
-            <ProtectedRoute>
-              <Admin />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route path="*" element={<NoMatch />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </AuthProvider>
     </BrowserRouter>
   );
   
 }
-
-const Navigation = () => {
-  const { token, onLogout } = useAuth();
-
-  return (
-    <nav>
-      <br />
-      <NavLink to="/home">Home</NavLink>
-      <br />
-      <NavLink to="/dashboard">Dashboard</NavLink>
-      <br />
-      <NavLink to="/admin">Admin</NavLink>
-      <br />
-
-
-      {token && (
-        <button type="button" onClick={onLogout}>
-          Wyloguj się
-        </button>
-      )}
-    </nav>
-  );
-};
-
-const Home = () => {
-  const { onLogin } = useAuth();
-
-  return (
-    <>
-      <h2>Home (Public)</h2>
-
-      <button type="button" onClick={onLogin}>
-        Zaloguj się
-      </button>
-    </>
-  );
-};
-
-const Dashboard = () => {
-  const { token } = useAuth();
-
-  return (
-    <>
-      <h2>Dashboard (Protected)</h2>
-
-      <div>Witaj as {token}</div>
-    </>
-  );
-};
-
-const Admin = () => {
-  return (
-    <>
-      <h2>Admin (Protected)</h2>
-    </>
-  );
-};
-
-const NoMatch = () => {
-  return <p>Błąd: 404!</p>;
-};
 
 export default App;

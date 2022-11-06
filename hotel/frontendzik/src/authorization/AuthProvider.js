@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { fakeAuth } from '../utils/loginUtils';
-import { AuthContext} from '../utils/useAuth';
+import { fakeAuth } from '../Login/utils/loginUtils';
+import { AuthContext} from './useAuth';
 
 const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
       const token = await fakeAuth();
       setToken(token);
 
-      navigate('dashboard');
+      navigate('home');
     };
   
     const handleLogout = () => {

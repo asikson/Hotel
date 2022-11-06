@@ -1,4 +1,4 @@
-import background from '../images/background.jpg';
+import background from './background.jpg';
 
 const commonStyles = {
     page: {
@@ -20,9 +20,10 @@ const commonStyles = {
     spaceEvenlycolumn: {
         display: 'flex',
         flexDirection: 'column',
-        height: '90%',
+        height: '95%',
         justifyContent: 'space-evenly',
         alignItems: 'center',
+        width: '80%'
     },
 
     centerColumn: {
@@ -31,6 +32,27 @@ const commonStyles = {
         height: 'auto',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+
+    OkButton: {
+        borderRadius: '25px',
+        width: '150px',
+        height: '50px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#000000',
+    },
+
+    button: {
+        borderRadius: '25px',
+        width: '170px',
+        height: '70%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#000000',
+        marginRight: '15px'
     }
 };
 

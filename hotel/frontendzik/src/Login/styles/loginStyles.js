@@ -12,16 +12,6 @@ const loginStyles = {
 
     header: {
         fontSize: '45px'
-    },
-
-    OkButton: {
-        borderRadius: '25px',
-        width: '50%',
-        height: '15%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: '#000000',
     }
 }
 

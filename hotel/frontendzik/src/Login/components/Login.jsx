@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import styles from '../styles/loginStyles.js';
-import commonStyles from '../styles/commonStyles.js';
+import commonStyles from '../../styles/commonStyles.js';
 import Input from './Input';
-import { useAuth } from '../utils/useAuth';
+import { useAuth } from '../../authorization/useAuth';
 
 const Login = () => {
     const { onLogin } = useAuth();
@@ -16,7 +16,7 @@ const Login = () => {
                     <label style={styles.header}>Zaloguj się</label>
                     <Input label='Login' value={login} setValue={setLogin}/>
                     <Input label='Hasło' value={password} setValue={setPassword} ifPassword={true}/>
-                    <button style={styles.OkButton} onClick={onLogin}>OK</button>
+                    <button style={commonStyles.OkButton} onClick={onLogin}>OK</button>
                 </div>
             </div>
         </div>
