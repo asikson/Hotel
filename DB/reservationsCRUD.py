@@ -10,13 +10,13 @@ def reservationsCRUD():
 
         # obtain a DB Cursor
         cursor = conn.cursor()
-        tableName = "reservations"
-        argument = "ID_RESERVATIONS, RESERVATION_DATE, NO_PEOPLE"
-        value = "1, '2022-04-14', 4"
+        tableName = "conference_reservation"
+        argument = "ID_CONFERENCE, RESERVATION_DATE, FROM_DATE, TO_DATE, NUMBER_OF_PEOPLE, ID_CLIENT, ID_WORKER"
+        value = "1, '2022-04-14', '2022-04-15', '2022-04-16', 4, 1, 1"
         conValue = 1
-        condition = "ID_RESERVATIONS"
+        condition = "ID_CONFERENCE"
         change = 6
-        column = "NO_PEOPLE"
+        column = "NUMBER_OF_PEOPLE"
         CRUD.insertQuery(cursor, conn, tableName, argument, value)
         CRUD.viewTable(cursor, tableName)
         CRUD.updateQuery(cursor, conn, tableName, column, change, condition, conValue)

@@ -10,15 +10,15 @@ conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
 # obtain a DB Cursor
 cursor = conn.cursor()
-nameDB = ["Users", "Reservations", "Rooms"]
+nameDB = ["users", "reservations", "rooms"]
 
 # create tables statement
 for i in nameDB:
     sqlCreateDB = "create database "+i+""
     # create a table in PostgreSQL database
     cursor.execute(sqlCreateDB)
-
+    
 usersDB.users()
-reservationsDB.reservations()
 roomsDB.rooms()
+reservationsDB.reservations()
 

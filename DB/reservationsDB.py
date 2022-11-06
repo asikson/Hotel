@@ -15,29 +15,49 @@ def reservations():
 
         # obtain a DB Cursor
         cursor = conn.cursor()
-
-        reservationQuery = '''CREATE TABLE reservations
-                  (ID_RESERVATIONS INT PRIMARY KEY NOT NULL,
-                  RESERVATION_DATE DATE NOT NULL,
-                  NO_PEOPLE INT NOT NULL); '''
-        executeDB(cursor, conn, reservationQuery)
-
-        cursor.execute("DROP table IF EXISTS conference")
-        conferenceQuery = '''CREATE TABLE conference
-                          (ID_CONFERENCE INT PRIMARY KEY NOT NULL,
-                          RENTAL_TIME TIME,
-                          CONSTRAINT FK_ID_CONFERENCE FOREIGN KEY (ID_CONFERENCE) REFERENCES reservations (ID_RESERVATIONS)); '''
+        
+        conferenceQuery = '''CREATE TABLE Conference_Reservation
+                          (Id_Conference INT PRIMARY KEY NOT NULL,
+                          Reservation_Date DATE NOT NULL,
+                          From_Date DATE NOT NULL,
+                          To_Date DATE NOT NULL,
+                          Number_Of_People INT NOT NULL,
+                          Id_Client INT NOT NULL,
+                          Id_Worker INT NOT NULL); '''
         executeDB(cursor, conn, conferenceQuery)
 
-        cursor.execute("DROP table IF EXISTS rooms")
-        roomsQuery = '''CREATE TABLE rooms
-                          (ID_ROOMS INT PRIMARY KEY NOT NULL,
-                          FROM_DATE DATE NOT NULL,
-                          TO_DATE DATE NOT NULL,
-                          CHECK_IN DATE NOT NULL,
-                          CHECK_OUT DATE NOT NULL,
-                          CONSTRAINT FK_ID_ROOMS FOREIGN KEY (ID_ROOMS) REFERENCES reservations (ID_RESERVATIONS)); '''
-        executeDB(cursor, conn, roomsQuery)
+        conferenceRoomQuery = '''CREATE TABLE Conference_Room_Reservation
+                                (Id_Conference INT NOT NULL,
+                                Id_Conference_Room INT NOT NULL,
+                                CONSTRAINT FK_1_CONFERENCER
+                                    FOREIGN KEY (Id_Conference) 
+                                    REFERENCES Conference_Reservation (Id_Conference),
+                                CONSTRAINT PK_CONFERENCE_ROOM_RESERVATION
+                                    PRIMARY KEY (Id_Conference, Id_Conference_Room)); '''
+        executeDB(cursor, conn, conferenceRoomQuery)
+
+        stayQuery = '''CREATE TABLE Stay_Reservation
+                          (Id_Stay INT PRIMARY KEY NOT NULL,
+                          Reservation_Date DATE NOT NULL,
+                          From_Date DATE NOT NULL,
+                          To_Date DATE NOT NULL,
+                          Number_Of_People INT NOT NULL,
+                          Check_In DATE,
+                          Check_OUT DATE,
+                          Id_Client INT NOT NULL,
+                          Id_Worker INT NOT NULL); '''
+        executeDB(cursor, conn, stayQuery)
+
+        stayRoomQuery = '''CREATE TABLE Stay_Room_Reservation
+                                (Id_Stay INT NOT NULL,
+                                Id_Room INT NOT NULL,
+                                CONSTRAINT FK_1_CONFERENCER
+                                    FOREIGN KEY (Id_Stay) 
+                                    REFERENCES Stay_Reservation (Id_Stay),
+                                CONSTRAINT PK_STAY_ROOM_RESERVATION
+                                    PRIMARY KEY (Id_Stay, Id_Room)); '''
+        executeDB(cursor, conn, stayRoomQuery)
+
 
 
     except (Exception, Error) as error:

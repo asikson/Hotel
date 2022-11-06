@@ -11,30 +11,22 @@ def executeDB(cursor, conn, tableQuery):
 def rooms():
     try:
         # connect to PostgreSQL DBMS
-        conn = psycopg2.connect("dbname=users user=postgres password='betoniarka'")
+        conn = psycopg2.connect("dbname=rooms user=postgres password='betoniarka'")
 
         # obtain a DB Cursor
         cursor = conn.cursor()
 
-        roomsQuery = '''CREATE TABLE rooms
-                  (ID_ROOMS INT PRIMARY KEY NOT NULL,
-                  NAME VARCHAR(25) NOT NULL,
-                  NO_PEOPLE INT NOT NULL); '''
+        roomsQuery = '''CREATE TABLE Rooms
+                          (Id_Room INT PRIMARY KEY NOT NULL,
+                          Number_Of_People INT NOT NULL,
+                          Name VARCHAR(25) NOT NULL); '''
         executeDB(cursor, conn, roomsQuery)
 
-        cursor.execute("DROP table IF EXISTS room")
-        roomQuery = '''CREATE TABLE room
-                          (ID_ROOM INT PRIMARY KEY NOT NULL,
-                          STANDARD VARCHAR(25) NOT NULL,
-                          CONSTRAINT FK_ID_ROOM FOREIGN KEY (ID_ROOM) REFERENCES rooms (ID_ROOMS)); '''
-        executeDB(cursor, conn, roomQuery)
-
-        cursor.execute("DROP table IF EXISTS conference")
-        conferenceQuery = '''CREATE TABLE conference
-                          (ID_CONFERENCE INT PRIMARY KEY NOT NULL,
-                          SIZE BOOLEAN DEFAULT TRUE,
-                          CONSTRAINT FK_ID_CONFERENCE FOREIGN KEY (ID_CONFERENCE) REFERENCES rooms (ID_ROOMS)); '''
-        executeDB(cursor, conn, conferenceQuery)
+        conferencesQuery = '''CREATE TABLE Conference_Rooms
+                          (Id_Conference_Room INT PRIMARY KEY NOT NULL,
+                          Number_Of_People INT NOT NULL,
+                          Name VARCHAR(25) NOT NULL); '''
+        executeDB(cursor, conn, conferencesQuery)
 
 
     except (Exception, Error) as error:
