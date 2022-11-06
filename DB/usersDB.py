@@ -42,7 +42,7 @@ def users():
 
 
     except (Exception, Error) as error:
-        print("Error podczas próby połączenia z PostgreSQL", error)
+        print("Error podczas próby połączenia z PostgreSQL ", error)
     finally:
         if conn:
             cursor.close()
