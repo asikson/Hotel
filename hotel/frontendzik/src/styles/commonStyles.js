@@ -53,6 +53,22 @@ const commonStyles = {
         alignItems: 'center',
         color: '#000000',
         marginRight: '15px'
+    },
+
+    coloredButton: {
+        borderRadius: '25px',
+        width: '170px',
+        height: '70%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#000000',
+        backgroundColor: '#FFA07A',
+        marginRight: '15px'
+    },
+
+    label: {
+        fontSize: '25px'
     }
 };
 

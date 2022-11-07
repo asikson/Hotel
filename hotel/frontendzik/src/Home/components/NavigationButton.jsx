@@ -1,9 +1,9 @@
 import commonStyles from "../../styles/commonStyles"
 
-const NavigationButton = ({label, onClick}) => {
+const NavigationButton = ({label, onClick, buttonKey, pageKey}) => {
     return (
         <button
-            style={commonStyles.button}
+            style={pageKey === buttonKey ? commonStyles.coloredButton : commonStyles.button}
             onClick={onClick}
         >
             {label}

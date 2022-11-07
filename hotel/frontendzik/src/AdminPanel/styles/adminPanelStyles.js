@@ -9,11 +9,8 @@ const styles = {
         color: '#000000',
         marginRight: '15px',
         marginTop: '30px',
-        marginBottom: '30px'
-    },
-
-    text: {
-        fontSize: '35px'
+        marginBottom: '30px',
+        fontSize: '30px'
     }
 }
 

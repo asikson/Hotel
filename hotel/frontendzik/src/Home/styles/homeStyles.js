@@ -6,7 +6,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        opacity: 0.5,
+        opacity: 0.75,
         backgroundColor: '#f1f1f1',
     },
 
@@ -26,7 +26,7 @@ const styles = {
         paddingLeft: '15px',
         paddingRight: '15px',
         alignItems: 'center',
-        opacity: 0.5,
+        opacity: 0.75,
         backgroundColor: '#f1f1f1',
     },
 }

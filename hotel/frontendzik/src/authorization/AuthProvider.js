@@ -6,11 +6,12 @@ import { AuthContext} from './useAuth';
 const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [token, setToken] = useState(null);
+    const [login, setLogin] = useState('');
   
-    const handleLogin = async () => {
-      const token = await fakeAuth();
+    const handleLogin = async (login, password) => {
+      const token = await fakeAuth(login, password);
       setToken(token);
-
+      setLogin(login);
       navigate('home');
     };
   
@@ -22,6 +23,7 @@ const AuthProvider = ({ children }) => {
       token,
       onLogin: handleLogin,
       onLogout: handleLogout,
+      login
     };
   
     return (
