@@ -5,6 +5,7 @@ import { useState } from 'react';
 import AdminPanel from '../../AdminPanel/components/AdminPanel';
 import { useAuth } from '../../authorization/useAuth';
 import GenericList from '../../generic/components/List';
+import Add from '../../generic/components/Add';
 
 const Home = () => {
     const { login } = useAuth();
@@ -16,6 +17,8 @@ const Home = () => {
                 return <AdminPanel/>
             case 'rooms':
                 return <GenericList />
+            case 'conference_rooms':
+                return <Add type={'room'} />
             default: 
                 return null;
         }
