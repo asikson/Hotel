@@ -6,8 +6,8 @@ const loginStyles = {
         display: 'flex',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        opacity: 0.5,
-        backgroundColor: '#f1f1f1',
+        opacity: 0.75,
+        backgroundColor: '#f1f1f1'
     },
 
     header: {

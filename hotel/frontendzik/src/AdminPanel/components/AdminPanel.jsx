@@ -5,13 +5,13 @@ const AdminPanel = () => {
     return (
         <div style={commonStyles.spaceEvenlycolumn}>
             <button style={styles.adminButton}>
-                <label style={styles.text}>Zarządzaj pokojami</label>
+                Zarządzaj pokojami
             </button>
             <button style={styles.adminButton}>
-            <label style={styles.text}>Zarządzaj salami</label>
+                Zarządzaj salami
             </button>
             <button style={styles.adminButton}>
-            <label style={styles.text}>Zarządzaj kontami</label>
+                Zarządzaj kontami
             </button>
         </div>
     )
