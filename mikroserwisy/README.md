@@ -15,7 +15,7 @@ Szablony:
 tabele userMS:  
 /users/clients  
 /users/workers  
-/user/credentials  
+/users/credentials  
 
 tabele roomMS:  
 /rooms/rooms/  
