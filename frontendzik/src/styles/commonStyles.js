@@ -46,7 +46,7 @@ const commonStyles = {
 
     button: {
         borderRadius: '25px',
-        width: '170px',
+        width: '15%',
         height: '70%',
         display: 'flex',
         justifyContent: 'center',
@@ -57,7 +57,7 @@ const commonStyles = {
 
     coloredButton: {
         borderRadius: '25px',
-        width: '170px',
+        width: '15%',
         height: '70%',
         display: 'flex',
         justifyContent: 'center',

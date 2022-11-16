@@ -1,22 +1,19 @@
 const styles = {
-    listWrapper: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'start',
+    input: {
+        backgroundColor: '#f1f1f1',
         width: '100%',
-        height: '100%',
-        marginTop: '3%'
+        height: '40px',
+        marginBottom: '50px'
     },
-
-    listButton: {
+    button: {
         borderRadius: '25px',
         width: '70px',
-        height: '70%',
+        height: '40px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         color: '#000000',
-        marginRight: '15px'
+        margin: '15px'
     }
 }
 
