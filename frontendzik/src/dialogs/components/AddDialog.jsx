@@ -7,11 +7,11 @@ import { Input, TextField } from '@mui/material';
 const AddDialog = ({open, setOpen, type, handleAdd}) =>{
     const renderContent = () => {
         switch (type) {
-            case 'rooms':
+            case 'rooms/rooms':
                 return <div style={styles.container}>
-                    <Input label={'Nazwa pokoju'} />
-                    <TextField style={styles.input} type={'number'} label={'Liczba osób'} />
-                </div>
+                        <TextField label='Nazwa pokoju' type='text' style={styles.input} color='warning' />
+                        <TextField style={styles.input} type={'number'} label={'Liczba osób'} color='warning' />
+                    </div>
             default:
                 null;
         }
@@ -19,7 +19,7 @@ const AddDialog = ({open, setOpen, type, handleAdd}) =>{
 
     return (
         <Dialog fullScreen open={open} style={commonDialogStyles.dialog} title='Dodaj' >
-            <div style={commonDialogStyles.basicColumn}>
+            <div style={commonStyles.basicColumn}>
                 <div style={commonDialogStyles.topBar}>
                     <div style={commonDialogStyles.topLeft}>
                         <label style={commonDialogStyles.label}>
@@ -35,12 +35,11 @@ const AddDialog = ({open, setOpen, type, handleAdd}) =>{
                         </button>
                     </div>
                 </div>
-                <div style={commonStyles.centerColumn} >
+                <div style={styles.container}>
                     {renderContent()}
                     <button style={styles.button}> Dodaj </button>
                 </div>
             </div>
-            
         </Dialog>
     );
 }

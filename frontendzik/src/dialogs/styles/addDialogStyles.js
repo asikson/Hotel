@@ -1,9 +1,9 @@
 const styles = {
     input: {
-        backgroundColor: '#f1f1f1',
-        width: '100%',
-        height: '40px',
-        marginBottom: '50px'
+        backgroundColor: '#ffffff',
+        width: '200px',
+        height: '50px',
+        marginBottom: '10px',
     },
     button: {
         borderRadius: '25px',
@@ -14,6 +14,15 @@ const styles = {
         alignItems: 'center',
         color: '#000000',
         margin: '15px'
+    },
+    container: {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        padding: '20px'
     }
 }
 

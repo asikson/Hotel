@@ -13,7 +13,7 @@ const GenericList = ({pageKey, admin=true}) => {
 
   const [items, setItems] = useState([]);
   const [labels, setLabels] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [openDetailsDialog, setDetailsDialogOpen] = useState(false);
   const [openAddDialog, setAddDialogOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState({});
