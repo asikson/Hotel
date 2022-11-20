@@ -2,37 +2,37 @@ from django.db import models
 
 
 class Clients(models.Model):
-    id_client = models.IntegerField(primary_key=True)
+    id_client = models.AutoField(primary_key=True)
     name = models.CharField(max_length=25)
     surname = models.CharField(max_length=25)
 
     class Meta:
         app_label =  'users'
-        managed = False
+        managed = True
         db_table = 'clients'
 
 
 class Credentials(models.Model):
-    id_credential = models.IntegerField(primary_key=True)
+    id_credential = models.AutoField(primary_key=True)
     login = models.CharField(max_length=25)
     password = models.CharField(max_length=25)
     id_worker = models.ForeignKey('Workers', models.DO_NOTHING, db_column='id_worker')
 
     class Meta:
         app_label =  'users'
-        managed = False
+        managed = True
         db_table = 'credentials'
 
 
 class Workers(models.Model):
-    id_worker = models.IntegerField(primary_key=True)
+    id_worker = models.AutoField(primary_key=True)
     name = models.CharField(max_length=25)
     surname = models.CharField(max_length=25)
     priviliges = models.IntegerField()
 
     class Meta:
         app_label =  'users'
-        managed = False
+        managed = True
         db_table = 'workers'
 
 

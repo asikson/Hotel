@@ -41,7 +41,14 @@ INSTALLED_APPS = [
     'users',
     'rooms',
     'reservations',
+    'django_filters',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS':(
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,7 +89,7 @@ DATABASE_ROUTERS = ['users.models.usersRouter', 'reservations.models.reservation
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'users',
+        'NAME': 'reservations',
         'USER': 'postgres',
         'PASSWORD': 'betoniarka',
         'HOST': 'localhost',
