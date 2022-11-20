@@ -24,7 +24,7 @@ python manage.py runserver
 Linki:  
 Szablony:  
 /nazwa_mikroserwisu/nazwa_tabeli/ - wyświetlanie wszystkich  
-/nazwa_mikroserwisu/nazwa_tabeli/?(nazwa atrybutu)=(wartość)&(nazwa atrybutu)=(wartość)
+/nazwa_mikroserwisu/nazwa_tabeli/?(nazwa atrybutu)=(wartość)&(nazwa atrybutu)=(wartość)  
 /nazwa_mikroserwisu/nazwa_tabeli/create - tworzenie nowego rekordu do bazy  
 /nazwa_mikroserwisu/nazwa_tabeli/delete/<int: pk> - usuwanie konkretnego po kluczu głównym  
 /nazwa_mikroserwisu/nazwa_tabeli/update/<int: pk> - modyfikowanie konkretnego po kluczu głównym  

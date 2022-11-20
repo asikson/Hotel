@@ -37,7 +37,7 @@ class ConferenceRoomsList(generics.ListAPIView):
     # API endpoint that allows ConferenceRooms to be viewed.
     queryset = ConferenceRooms.objects.all()
     serializer_class = ConferenceRoomsSerializer
-    filterset_fields = ['id_conferece_room','number_of_people','name']
+    filterset_fields = ['id_conference_room','number_of_people','name']
 
 class ConferenceRoomsUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a ConferenceRooms record to be updated.
