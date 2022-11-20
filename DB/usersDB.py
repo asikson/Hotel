@@ -18,20 +18,20 @@ def users():
         cursor = conn.cursor()
 
         clientsQuery = '''CREATE TABLE Clients
-                          (Id_Client INT PRIMARY KEY NOT NULL,
+                          (Id_Client SERIAL PRIMARY KEY NOT NULL,
                           Name VARCHAR(25) NOT NULL,
                           Surname VARCHAR(25) NOT NULL); '''
         executeDB(cursor, conn, clientsQuery)
 
         workersQuery = '''CREATE TABLE Workers
-                          (Id_Worker INT PRIMARY KEY NOT NULL,
+                          (Id_Worker SERIAL PRIMARY KEY NOT NULL,
                           Name VARCHAR(25) NOT NULL,
                           Surname VARCHAR(25) NOT NULL,
                           Priviliges INT NOT NULL); '''
         executeDB(cursor, conn, workersQuery)
 
         credentialsQuery = '''CREATE TABLE Credentials
-                            (Id_Credential INT PRIMARY KEY NOT NULL, 
+                            (Id_Credential SERIAL PRIMARY KEY NOT NULL, 
                             Login VARCHAR(25) NOT NULL, 
                             Password VARCHAR(25) NOT NULL,
                             Id_Worker INT NOT NULL, 

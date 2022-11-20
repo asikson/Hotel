@@ -7,18 +7,14 @@ from .serializers import RoomsSerializer, ConferenceRoomsSerializer
 #VIEWS for Rooms tab
 class RoomsCreate(generics.CreateAPIView):
     # API endpoint that allows creation of a new Rooms
-    queryset = Rooms.objects.all(),
+    queryset = Rooms.objects.all()
     serializer_class = RoomsSerializer
 
 class RoomsList(generics.ListAPIView):
     # API endpoint that allows Rooms to be viewed.
     queryset = Rooms.objects.all()
     serializer_class = RoomsSerializer
-
-class RoomsDetail(generics.RetrieveAPIView):
-    # API endpoint that returns a single Rooms by pk.
-    queryset = Rooms.objects.all()
-    serializer_class = RoomsSerializer
+    filterset_fields = ['id_room','number_of_people','name']
 
 class RoomsUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a Rooms record to be updated.
@@ -34,18 +30,14 @@ class RoomsDelete(generics.RetrieveDestroyAPIView):
 #VIEWS for ConferenceRooms tab
 class ConferenceRoomsCreate(generics.CreateAPIView):
     # API endpoint that allows creation of a new ConferenceRooms
-    queryset = ConferenceRooms.objects.all(),
+    queryset = ConferenceRooms.objects.all()
     serializer_class = ConferenceRoomsSerializer
 
 class ConferenceRoomsList(generics.ListAPIView):
     # API endpoint that allows ConferenceRooms to be viewed.
     queryset = ConferenceRooms.objects.all()
     serializer_class = ConferenceRoomsSerializer
-
-class ConferenceRoomsDetail(generics.RetrieveAPIView):
-    # API endpoint that returns a single ConferenceRooms by pk.
-    queryset = ConferenceRooms.objects.all()
-    serializer_class = ConferenceRoomsSerializer
+    filterset_fields = ['id_conferece_room','number_of_people','name']
 
 class ConferenceRoomsUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a ConferenceRooms record to be updated.
