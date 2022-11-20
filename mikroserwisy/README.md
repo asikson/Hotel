@@ -17,6 +17,10 @@ psycopg2
 Aktualizacja bazy:
 Odpalić DB/createDB.py
 
+Odpalianie servera:
+Znajdować się w folderze mikroserwisy komenda:
+python manage.py runserver
+
 Linki:  
 Szablony:  
 /nazwa_mikroserwisu/nazwa_tabeli/ - wyświetlanie wszystkich  
