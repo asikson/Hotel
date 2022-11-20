@@ -1,17 +1,17 @@
+import React from 'react';
 import { Dialog  } from '@mui/material';
 import styles from '../styles/addDialogStyles';
 import commonStyles from '../../styles/commonStyles';
 import commonDialogStyles from '../styles/commonDialogStyles';
-import { Input, TextField } from '@mui/material';
+import RoomsInput from './RoomsInput';
 
-const AddDialog = ({open, setOpen, type, handleAdd}) =>{
+const AddDialog = ({open, setOpen, type, refresh, update, item }) => {
+
     const renderContent = () => {
         switch (type) {
             case 'rooms/rooms':
-                return <div style={styles.container}>
-                        <TextField label='Nazwa pokoju' type='text' style={styles.input} color='warning' />
-                        <TextField style={styles.input} type={'number'} label={'Liczba osób'} color='warning' />
-                    </div>
+            case 'rooms/conferencerooms':
+                return <RoomsInput update={update} setOpen={setOpen} refresh={refresh} type={type} item={item} />
             default:
                 null;
         }
@@ -23,7 +23,7 @@ const AddDialog = ({open, setOpen, type, handleAdd}) =>{
                 <div style={commonDialogStyles.topBar}>
                     <div style={commonDialogStyles.topLeft}>
                         <label style={commonDialogStyles.label}>
-                            Dodaj
+                            {update ? 'Edytuj' : 'Dodaj'}
                         </label>
                     </div>
                     <div style={commonDialogStyles.topRight}>
@@ -37,7 +37,6 @@ const AddDialog = ({open, setOpen, type, handleAdd}) =>{
                 </div>
                 <div style={styles.container}>
                     {renderContent()}
-                    <button style={styles.button}> Dodaj </button>
                 </div>
             </div>
         </Dialog>

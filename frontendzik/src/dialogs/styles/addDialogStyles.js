@@ -1,14 +1,14 @@
 const styles = {
     input: {
         backgroundColor: '#ffffff',
-        width: '200px',
-        height: '50px',
-        marginBottom: '10px',
+        width: '220px',
+        height: '60px',
+        marginBottom: '20px',
     },
     button: {
         borderRadius: '25px',
-        width: '70px',
-        height: '40px',
+        width: '100px',
+        height: '50px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -22,7 +22,7 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        padding: '20px'
+        padding: '30px'
     }
 }
 

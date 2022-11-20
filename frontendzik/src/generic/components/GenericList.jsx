@@ -16,6 +16,7 @@ const GenericList = ({pageKey, admin=true}) => {
   const [loading, setLoading] = useState(true);
   const [openDetailsDialog, setDetailsDialogOpen] = useState(false);
   const [openAddDialog, setAddDialogOpen] = useState(false);
+  const [openUpdateDialog, setUpdateDialogOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState({});
 
   const updateLabels = () => {
@@ -26,13 +27,18 @@ const GenericList = ({pageKey, admin=true}) => {
   const onDetailsButtonClick = (item) => {
     setCurrentItem(item);
     setDetailsDialogOpen(true);
-  }
+  };
 
   const onAddButtonClick = () => {
     setAddDialogOpen(true);
+  };
+
+  const onUpdateButtonClick = (item) => {
+    setCurrentItem(item);
+    setUpdateDialogOpen(true);
   }
 
-  useEffect(() => {
+  const refresh = () => {
     setLoading(true);
     setItems([]);
     updateLabels();
@@ -40,6 +46,10 @@ const GenericList = ({pageKey, admin=true}) => {
       setItems(response);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    refresh();
   }, [pageKey]);
 
   const columns = items.length === 0 ? items : Object.keys(items[0]);
@@ -82,7 +92,7 @@ const GenericList = ({pageKey, admin=true}) => {
                         <ListButton onClick={onDetailsButtonClick} item={item} label='Szczegóły'/>
                       </TableCell>
                       <TableCell>
-                        <ListButton onClick={() => {}} item={item} label='Edytuj'/>
+                        <ListButton onClick={onUpdateButtonClick} item={item} label='Edytuj'/>
                       </TableCell>
                       <TableCell>
                         <ListButton onClick={() => {}} item={item} label='Usuń'/>
@@ -98,7 +108,8 @@ const GenericList = ({pageKey, admin=true}) => {
         
     }
     <DetailsDialog open={openDetailsDialog} setOpen={setDetailsDialogOpen} item={currentItem}/>
-    <AddDialog open={openAddDialog} setOpen={setAddDialogOpen} type={pageKey}/>
+    <AddDialog open={openAddDialog} setOpen={setAddDialogOpen} type={pageKey} refresh={refresh} update={false} />
+    <AddDialog open={openUpdateDialog} setOpen={setUpdateDialogOpen} type={pageKey} refresh={refresh} update={true} item={currentItem} />
     </div>
   );
 };
