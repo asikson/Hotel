@@ -8,8 +8,9 @@ import LoadingOverlay from './LoadingOverlay';
 import DetailsDialog from '../../dialogs/components/DetailsDialog';
 import ListButton from './ListButton';
 import AddDialog from '../../dialogs/components/AddDialog';
+import DeleteDialog from '../../dialogs/components/DeleteDialog';
 
-const GenericList = ({pageKey, admin=true}) => {
+const GenericList = ({pageKey, admin}) => {
 
   const [items, setItems] = useState([]);
   const [labels, setLabels] = useState({});
@@ -17,6 +18,7 @@ const GenericList = ({pageKey, admin=true}) => {
   const [openDetailsDialog, setDetailsDialogOpen] = useState(false);
   const [openAddDialog, setAddDialogOpen] = useState(false);
   const [openUpdateDialog, setUpdateDialogOpen] = useState(false);
+  const [openDeleteDialog, setDeleteDialogOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState({});
 
   const updateLabels = () => {
@@ -36,6 +38,11 @@ const GenericList = ({pageKey, admin=true}) => {
   const onUpdateButtonClick = (item) => {
     setCurrentItem(item);
     setUpdateDialogOpen(true);
+  };
+
+  const onDeleteButtonClick = (item) => {
+    setCurrentItem(item);
+    setDeleteDialogOpen(true);
   }
 
   const refresh = () => {
@@ -91,12 +98,17 @@ const GenericList = ({pageKey, admin=true}) => {
                       <TableCell>
                         <ListButton onClick={onDetailsButtonClick} item={item} label='Szczegóły'/>
                       </TableCell>
-                      <TableCell>
-                        <ListButton onClick={onUpdateButtonClick} item={item} label='Edytuj'/>
-                      </TableCell>
-                      <TableCell>
-                        <ListButton onClick={() => {}} item={item} label='Usuń'/>
-                      </TableCell>
+                      {admin &&
+                        <>
+                          <TableCell>
+                            <ListButton onClick={onUpdateButtonClick} item={item} label='Edytuj'/>
+                          </TableCell>
+                          <TableCell>
+                            <ListButton onClick={onDeleteButtonClick} item={item} label='Usuń'/>
+                          </TableCell>
+                        </>
+                      }
+                      
                     </StyledTableRow>
                   ))}
                 </TableBody>
@@ -110,6 +122,7 @@ const GenericList = ({pageKey, admin=true}) => {
     <DetailsDialog open={openDetailsDialog} setOpen={setDetailsDialogOpen} item={currentItem}/>
     <AddDialog open={openAddDialog} setOpen={setAddDialogOpen} type={pageKey} refresh={refresh} update={false} />
     <AddDialog open={openUpdateDialog} setOpen={setUpdateDialogOpen} type={pageKey} refresh={refresh} update={true} item={currentItem} />
+    <DeleteDialog open={openDeleteDialog} setOpen={setDeleteDialogOpen} type={pageKey} refresh={refresh} item={currentItem} />
     </div>
   );
 };

@@ -5,13 +5,11 @@ import { addItem, updateItem, idNames } from '../../utils/api';
 
 const RoomsInput = ({ update, setOpen, item, type, refresh }) => {
 
-    const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [numOfPeople, setNumOfPeople] = useState('');
 
     useEffect (() => {
         if (item) {
-            setId(item[idNames[type]]);
             setName(item.name);
             setNumOfPeople(item.number_of_people);
         }
@@ -19,30 +17,21 @@ const RoomsInput = ({ update, setOpen, item, type, refresh }) => {
 
     const cleanUp = () => {
         setOpen(false);
-            setId('');
-            setName('');
-            setNumOfPeople('');
-            refresh();
+        setName('');
+        setNumOfPeople('');
+        refresh();
     }
 
     const handleAdd = () => { 
-        addItem(type, id, name, numOfPeople).then(_ => cleanUp())
+        addItem(type, name, numOfPeople).then(_ => cleanUp())
     };
 
     const handleUpdate = () => {
-        updateItem(type, id, name, numOfPeople).then(_ => cleanUp())
+        updateItem(type, item[idNames[type]], name, numOfPeople).then(_ => cleanUp())
     }
 
     return (
         <div style={styles.container}>
-            <TextField
-                style={styles.input} 
-                type={'number'} 
-                label={'Id'} 
-                color='warning' 
-                value={id}
-                onChange={e => setId(e.target.value)}
-            />
             <TextField
                 label='Nazwa' 
                 type='text' 

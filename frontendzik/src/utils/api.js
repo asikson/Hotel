@@ -16,13 +16,18 @@ export const getItems = async (endpoint) => {
         .then(response => response.data);
 };
 
-export const addItem = async (endpoint, id, name, numOfPeople) => {
+export const addItem = async (endpoint, name, numOfPeople) => {
     return axios.post(`${reachEndpoint(endpoint)}/create/`,
-        {[idNames[endpoint]]: id, name: name, number_of_people: numOfPeople}
+        { name: name, number_of_people: numOfPeople}
     );
 };
+
 export const updateItem = async (endpoint, id, name, numOfPeople) => {
     return axios.put(`${reachEndpoint(endpoint)}/update/${id}/`,
         {[idNames[endpoint]]: id, name: name, number_of_people: numOfPeople}
     );
+};
+
+export const deleteItem = async (endpoint, id) => {
+    return axios.delete(`${reachEndpoint(endpoint)}/delete/${id}/`);
 }

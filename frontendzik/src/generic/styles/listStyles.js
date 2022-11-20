@@ -5,7 +5,8 @@ const styles = {
         alignItems: 'start',
         width: '100%',
         height: '90%',
-        overflowY: 'scroll'
+        overflowY: 'scroll',
+        marginTop: '15px'
     },
 
     listButton: {
