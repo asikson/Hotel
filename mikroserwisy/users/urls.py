@@ -1,7 +1,7 @@
 from django.urls import include, path
-from .views import ClientsCreate, ClientsList, ClientsDetail, ClientsUpdate, ClientsDelete
-from .views import WorkersCreate, WorkersList, WorkersDetail, WorkersUpdate, WorkersDelete
-from .views import CredentialsCreate, CredentialsList, CredentialsDetail, CredentialsUpdate, CredentialsDelete
+from .views import ClientsCreate, ClientsList, ClientsUpdate, ClientsDelete
+from .views import WorkersCreate, WorkersList, WorkersUpdate, WorkersDelete
+from .views import CredentialsCreate, CredentialsList, CredentialsUpdate, CredentialsDelete
 
 
 urlpatterns = [
