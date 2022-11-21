@@ -5,6 +5,7 @@ import { useState } from 'react';
 import AdminPanel from '../../AdminPanel/components/AdminPanel';
 import { useAuth } from '../../authorization/useAuth';
 import GenericList from '../../generic/components/GenericList';
+import Calendar from '../../Calendar/components/Calendar';
 
 const Home = () => {
     const { login } = useAuth();
@@ -14,6 +15,8 @@ const Home = () => {
         switch (key) {
             case 'adminPanel':
                 return <AdminPanel/>
+            case 'calendar':
+                return <Calendar/>    
             case 'rooms':
                 return <GenericList pageKey='rooms/rooms'/>
             case 'conference_rooms':
