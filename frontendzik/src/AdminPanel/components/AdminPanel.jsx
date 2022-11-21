@@ -29,9 +29,9 @@ const AdminPanel = () => {
     const renderContent = () => {
         switch (pageKey) {
             case 'rooms/rooms':
-                return <GenericList pageKey={pageKey} admin={true}/>
+                return <GenericList pageKey={pageKey} admin={true} goBack={setPageKey}/>
             case 'rooms/conferencerooms':
-                return <GenericList pageKey={pageKey} admin={true}/>
+                return <GenericList pageKey={pageKey} admin={true} goBack={setPageKey}/>
             default:
                 return <AdminMenu setPageKey={setPageKey}/>
         }

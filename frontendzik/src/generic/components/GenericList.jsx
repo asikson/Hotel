@@ -10,7 +10,7 @@ import ListButton from './ListButton';
 import AddDialog from '../../dialogs/components/AddDialog';
 import DeleteDialog from '../../dialogs/components/DeleteDialog';
 
-const GenericList = ({pageKey, admin}) => {
+const GenericList = ({pageKey, admin, goBack}) => {
 
   const [items, setItems] = useState([]);
   const [labels, setLabels] = useState({});
@@ -45,6 +45,10 @@ const GenericList = ({pageKey, admin}) => {
   const onDeleteButtonClick = (item) => {
     setCurrentItem(item);
     setDeleteDialogOpen(true);
+  };
+
+  const onGoBackButtonClick = () => {
+    goBack('adminPanel');
   }
 
   const refresh = () => {
@@ -72,8 +76,13 @@ const GenericList = ({pageKey, admin}) => {
       {loading
         ? <LoadingOverlay laoding={loading} />
         : <>
-          {admin && <div style={styles.topRight}>
-            <button style={styles.addButton} onClick={onAddButtonClick}>Dodaj</button>
+          {admin && <div style={styles.topBar}>
+            <div style={styles.topLeft}>
+              <button style={styles.addButton} onClick={onGoBackButtonClick}>Wróć</button>
+            </div>
+            <div style={styles.topRight}>
+              <button style={styles.addButton} onClick={onAddButtonClick}>Dodaj</button>
+            </div>
           </div>
           }
           <div style={styles.listWrapper}>
@@ -121,8 +130,6 @@ const GenericList = ({pageKey, admin}) => {
             </TableContainer>
           </div>
         </>
-        
-        
     }
     <DetailsDialog open={openDetailsDialog} setOpen={setDetailsDialogOpen} item={currentItem}/>
 
