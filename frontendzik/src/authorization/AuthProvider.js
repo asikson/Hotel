@@ -9,7 +9,8 @@ const AuthProvider = ({ children }) => {
     const [login, setLogin] = useState('');
   
     const handleLogin = async (login, password) => {
-      const token = await fakeAuth(login, password);
+      const token = ['test'];
+      //await fakeAuth(login, password);
       setToken(token);
       setLogin(login);
       navigate('home');
