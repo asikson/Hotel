@@ -1,9 +1,13 @@
 const styles = {
-    input: {
-        backgroundColor: '#ffffff',
-        width: '220px',
-        height: '60px',
-        marginBottom: '20px',
+    dialog: {
+        position: 'fixed',
+        top: '25%',
+        left: '35%',
+        overflowY: 'auto',
+        height: '170px', 
+        width: '25%', 
+        background: '#ffffff', 
+        borderRadius: '25px',
     },
     button: {
         borderRadius: '25px',
@@ -13,7 +17,7 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         color: '#000000',
-        margin: '15px'
+        margin: '20px'
     },
     container: {
         width: '100%',
@@ -22,7 +26,9 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        padding: '30px'
+    },
+    label: {
+        fontSize: '20px'
     }
 }
 

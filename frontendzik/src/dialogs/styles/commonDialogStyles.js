@@ -7,6 +7,7 @@ const commonDialogStyles = {
         height: '40%', 
         width: '30%', 
         background: '#ffffff', 
+        borderRadius: '25px',
     },
     topBar: {
         width: '100%',
@@ -19,14 +20,14 @@ const commonDialogStyles = {
         flexDirection: 'row',
         display: 'flex',
         justifyContent: 'flex-start',
-        padding: '10px'
+        padding: '20px'
     },
     topRight: {
         width: '50%',
         flexDirection: 'row',
         display: 'flex',
         justifyContent: 'flex-end',
-        padding: '10px'
+        padding: '20px'
     },
     basicColumn: {
         display: 'flex',
@@ -36,15 +37,15 @@ const commonDialogStyles = {
         width: '100%'
     },
     xButton: {
-        width: '35px',
-        height: '35px',
+        width: '40px',
+        height: '40px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: '30px'
     },
     label: {
-        fontSize: '25px'
+        fontSize: '30px'
     }
 }
 

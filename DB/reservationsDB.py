@@ -17,7 +17,7 @@ def reservations():
         cursor = conn.cursor()
         
         conferenceQuery = '''CREATE TABLE Conference_Reservation
-                          (Id_Conference INT PRIMARY KEY NOT NULL,
+                          (Id_Conference SERIAL PRIMARY KEY NOT NULL,
                           Reservation_Date DATE NOT NULL,
                           From_Date DATE NOT NULL,
                           To_Date DATE NOT NULL,
@@ -27,17 +27,16 @@ def reservations():
         executeDB(cursor, conn, conferenceQuery)
 
         conferenceRoomQuery = '''CREATE TABLE Conference_Room_Reservation
-                                (Id_Conference INT NOT NULL,
+                                (Id_Conference_Rooms SERIAL PRIMARY KEY NOT NULL,
+                                Id_Conference INT NOT NULL,
                                 Id_Conference_Room INT NOT NULL,
                                 CONSTRAINT FK_1_CONFERENCER
                                     FOREIGN KEY (Id_Conference) 
-                                    REFERENCES Conference_Reservation (Id_Conference),
-                                CONSTRAINT PK_CONFERENCE_ROOM_RESERVATION
-                                    PRIMARY KEY (Id_Conference, Id_Conference_Room)); '''
+                                    REFERENCES Conference_Reservation (Id_Conference)); '''
         executeDB(cursor, conn, conferenceRoomQuery)
 
         stayQuery = '''CREATE TABLE Stay_Reservation
-                          (Id_Stay INT PRIMARY KEY NOT NULL,
+                          (Id_Stay SERIAL PRIMARY KEY NOT NULL,
                           Reservation_Date DATE NOT NULL,
                           From_Date DATE NOT NULL,
                           To_Date DATE NOT NULL,
@@ -49,13 +48,12 @@ def reservations():
         executeDB(cursor, conn, stayQuery)
 
         stayRoomQuery = '''CREATE TABLE Stay_Room_Reservation
-                                (Id_Stay INT NOT NULL,
+                                (Id_Stay_Rooms SERIAL PRIMARY KEY NOT NULL,
+                                Id_Stay INT NOT NULL,
                                 Id_Room INT NOT NULL,
                                 CONSTRAINT FK_1_CONFERENCER
                                     FOREIGN KEY (Id_Stay) 
-                                    REFERENCES Stay_Reservation (Id_Stay),
-                                CONSTRAINT PK_STAY_ROOM_RESERVATION
-                                    PRIMARY KEY (Id_Stay, Id_Room)); '''
+                                    REFERENCES Stay_Reservation (Id_Stay)); '''
         executeDB(cursor, conn, stayRoomQuery)
 
 

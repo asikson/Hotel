@@ -1,17 +1,19 @@
+import React from 'react';
 import { Dialog  } from '@mui/material';
 import styles from '../styles/addDialogStyles';
 import commonStyles from '../../styles/commonStyles';
 import commonDialogStyles from '../styles/commonDialogStyles';
 import { Input, TextField } from '@mui/material';
+import RoomsInput from './RoomsInput';
 
-const AddDialog = ({open, setOpen, type, handleAdd}) =>{
+const AddDialog = ({open, setOpen, type, refresh, update, item }) => {
+
     const renderContent = () => {
         switch (type) {
-            case 'rooms':
-                return <div style={styles.container}>
-                    <Input label={'Nazwa pokoju'} />
-                    <TextField style={styles.input} type={'number'} label={'Liczba osób'} />
-                </div>
+            case 'rooms/rooms':
+            case 'rooms/conferencerooms':
+                return <RoomsInput update={update} setOpen={setOpen} refresh={refresh} type={type} item={item} />
+
             default:
                 null;
         }
@@ -19,11 +21,13 @@ const AddDialog = ({open, setOpen, type, handleAdd}) =>{
 
     return (
         <Dialog fullScreen open={open} style={commonDialogStyles.dialog} title='Dodaj' >
-            <div style={commonDialogStyles.basicColumn}>
+
+            <div style={commonStyles.basicColumn}>
                 <div style={commonDialogStyles.topBar}>
                     <div style={commonDialogStyles.topLeft}>
                         <label style={commonDialogStyles.label}>
-                            Dodaj
+                            {update ? 'Edytuj' : 'Dodaj'}
+
                         </label>
                     </div>
                     <div style={commonDialogStyles.topRight}>
@@ -35,12 +39,10 @@ const AddDialog = ({open, setOpen, type, handleAdd}) =>{
                         </button>
                     </div>
                 </div>
-                <div style={commonStyles.centerColumn} >
+                <div style={styles.container}>
                     {renderContent()}
-                    <button style={styles.button}> Dodaj </button>
                 </div>
             </div>
-            
         </Dialog>
     );
 }
