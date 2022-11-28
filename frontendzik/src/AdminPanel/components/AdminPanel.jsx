@@ -1,5 +1,6 @@
 import commonStyles from "../../styles/commonStyles";
 import styles from '../styles/adminPanelStyles';
+
 import React, { useState } from 'react';
 import GenericList from "../../generic/components/GenericList";
 
@@ -10,6 +11,7 @@ const AdminMenu = ({setPageKey}) => {
                 Zarządzaj pokojami
             </button>
             <button style={styles.adminButton} onClick={() => setPageKey('rooms/conferencerooms')}>
+
                 Zarządzaj salami
             </button>
             <button style={styles.adminButton}>
@@ -18,6 +20,7 @@ const AdminMenu = ({setPageKey}) => {
         </div>
     )
 }
+
 
 const AdminPanel = () => {
 
@@ -40,5 +43,6 @@ const AdminPanel = () => {
         </>
     );
 }
+
 
 export default AdminPanel;

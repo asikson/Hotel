@@ -19,6 +19,7 @@ const GenericList = ({pageKey, admin}) => {
   const [openAddDialog, setAddDialogOpen] = useState(false);
   const [openUpdateDialog, setUpdateDialogOpen] = useState(false);
   const [openDeleteDialog, setDeleteDialogOpen] = useState(false);
+
   const [currentItem, setCurrentItem] = useState({});
 
   const updateLabels = () => {
@@ -29,6 +30,7 @@ const GenericList = ({pageKey, admin}) => {
   const onDetailsButtonClick = (item) => {
     setCurrentItem(item);
     setDetailsDialogOpen(true);
+
   };
 
   const onAddButtonClick = () => {
@@ -46,6 +48,7 @@ const GenericList = ({pageKey, admin}) => {
   }
 
   const refresh = () => {
+
     setLoading(true);
     setItems([]);
     updateLabels();
@@ -57,6 +60,7 @@ const GenericList = ({pageKey, admin}) => {
 
   useEffect(() => {
     refresh();
+
   }, [pageKey]);
 
   const columns = items.length === 0 ? items : Object.keys(items[0]);
@@ -98,6 +102,7 @@ const GenericList = ({pageKey, admin}) => {
                       <TableCell>
                         <ListButton onClick={onDetailsButtonClick} item={item} label='Szczegóły'/>
                       </TableCell>
+
                       {admin &&
                         <>
                           <TableCell>
@@ -108,7 +113,7 @@ const GenericList = ({pageKey, admin}) => {
                           </TableCell>
                         </>
                       }
-                      
+
                     </StyledTableRow>
                   ))}
                 </TableBody>
@@ -120,9 +125,11 @@ const GenericList = ({pageKey, admin}) => {
         
     }
     <DetailsDialog open={openDetailsDialog} setOpen={setDetailsDialogOpen} item={currentItem}/>
+
     <AddDialog open={openAddDialog} setOpen={setAddDialogOpen} type={pageKey} refresh={refresh} update={false} />
     <AddDialog open={openUpdateDialog} setOpen={setUpdateDialogOpen} type={pageKey} refresh={refresh} update={true} item={currentItem} />
     <DeleteDialog open={openDeleteDialog} setOpen={setDeleteDialogOpen} type={pageKey} refresh={refresh} item={currentItem} />
+
     </div>
   );
 };

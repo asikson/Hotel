@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const localhost = 'http://127.0.0.1:8000/';
 
+
 export const idNames = {
     'rooms/rooms': 'id_room',
     'rooms/conferencerooms': 'id_conference_room'
@@ -9,6 +10,7 @@ export const idNames = {
 
 const reachEndpoint = (endpoint) => {
     return `${localhost}${endpoint}`;
+
 };
 
 export const getItems = async (endpoint) => {
@@ -31,3 +33,4 @@ export const updateItem = async (endpoint, id, name, numOfPeople) => {
 export const deleteItem = async (endpoint, id) => {
     return axios.delete(`${reachEndpoint(endpoint)}/delete/${id}/`);
 }
+

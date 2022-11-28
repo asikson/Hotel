@@ -3,6 +3,7 @@ import { Dialog  } from '@mui/material';
 import styles from '../styles/addDialogStyles';
 import commonStyles from '../../styles/commonStyles';
 import commonDialogStyles from '../styles/commonDialogStyles';
+import { Input, TextField } from '@mui/material';
 import RoomsInput from './RoomsInput';
 
 const AddDialog = ({open, setOpen, type, refresh, update, item }) => {
@@ -12,6 +13,7 @@ const AddDialog = ({open, setOpen, type, refresh, update, item }) => {
             case 'rooms/rooms':
             case 'rooms/conferencerooms':
                 return <RoomsInput update={update} setOpen={setOpen} refresh={refresh} type={type} item={item} />
+
             default:
                 null;
         }
@@ -19,11 +21,13 @@ const AddDialog = ({open, setOpen, type, refresh, update, item }) => {
 
     return (
         <Dialog fullScreen open={open} style={commonDialogStyles.dialog} title='Dodaj' >
+
             <div style={commonStyles.basicColumn}>
                 <div style={commonDialogStyles.topBar}>
                     <div style={commonDialogStyles.topLeft}>
                         <label style={commonDialogStyles.label}>
                             {update ? 'Edytuj' : 'Dodaj'}
+
                         </label>
                     </div>
                     <div style={commonDialogStyles.topRight}>
