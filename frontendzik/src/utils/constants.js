@@ -7,6 +7,11 @@ const labels = {
         name: 'Nazwa',
         number_of_people: 'Liczba miejsc',
     },
+    ['users/workers']: {
+        name: 'Imię',
+        surname: 'Nazwisko',
+        priviliges: 'Uprawnienia'
+    }
 };
 
 export const getLabels = (pageKey) => labels[pageKey];

@@ -4,7 +4,7 @@ const commonDialogStyles = {
         top: '25%',
         left: '35%',
         overflowY: 'auto',
-        height: '50%', 
+        height: '55%', 
         width: '30%', 
         background: '#ffffff', 
         borderRadius: '25px',
