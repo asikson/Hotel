@@ -5,7 +5,7 @@ import commonStyles from '../../styles/commonStyles';
 import commonDialogStyles from '../styles/commonDialogStyles';
 import ReservationInput from './ReservationInput';
 
-const AddReservationDialog = ({open, setOpen, type, refresh, update, item, workerId }) => {
+const AddReservationDialog = ({open, setOpen, type, refresh, update, item, workerId, clients}) => {
 
     return (
         <Dialog fullScreen open={open} style={commonDialogStyles.dialog} title='Dodaj' >
@@ -33,6 +33,7 @@ const AddReservationDialog = ({open, setOpen, type, refresh, update, item, worke
                         type={type} 
                         refresh={refresh} 
                         workerId={workerId}
+                        clients={clients}
                     />
                 </div>
             </div>

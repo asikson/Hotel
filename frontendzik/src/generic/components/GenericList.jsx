@@ -79,52 +79,6 @@ const GenericList = ({pageKey, admin, goBack}) => {
               onGoBackButtonClick={onGoBackButtonClick}
               />
           }
-<<<<<<< HEAD
-          <div style={styles.listWrapper}>
-            <TableContainer component={Paper} sx={{maxWidth: '95%'}}>
-              <Table sx={{ minWidth: 650 }} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map(createTableCell)}
-                    <StyledTableCell />
-                    {admin && 
-                      <>
-                        <StyledTableCell />
-                        <StyledTableCell />
-                      </>
-                    }
-                  </TableRow>
-                </TableHead>
-        
-                <TableBody>
-                  {items.map((item) => (
-                    <StyledTableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 }}}
-                    >
-                      <TableCell component="th" scope="row" >{item[columns[0]]}</TableCell>
-                        {columns.slice(1).map(column => <TableCell >{item[column]}</TableCell>)}
-                      <TableCell>
-                        <ListButton onClick={onDetailsButtonClick} item={item} label='Szczegóły'/>
-                      </TableCell>
-
-                      {admin &&
-                        <>
-                          <TableCell>
-                            <ListButton onClick={onUpdateButtonClick} item={item} label='Edytuj'/>
-                          </TableCell>
-                          <TableCell>
-                            <ListButton onClick={onDeleteButtonClick} item={item} label='Usuń'/>
-                          </TableCell>
-                        </>
-                      }
-
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-=======
           <ListTable
             items={items} 
             labels={labels}
@@ -133,7 +87,6 @@ const GenericList = ({pageKey, admin, goBack}) => {
             onUpdateButtonClick={onUpdateButtonClick}
             onDeleteButtonClick={onDeleteButtonClick}
           /> 
->>>>>>> b125795 (kinda not working)
         </>
     }
     <DetailsDialog open={openDetailsDialog} setOpen={setDetailsDialogOpen} item={currentItem}/>

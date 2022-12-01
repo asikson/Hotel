@@ -34,6 +34,7 @@ const Reservations = ({ workerId }) => {
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState([]);
     const [addDialogOpen, setAddDialogOpen] = useState(false);
+    const [clients, setClients] = useState([]);
 
     useEffect(() => {
         refresh();
@@ -44,6 +45,9 @@ const Reservations = ({ workerId }) => {
             setItems(response);
             setLoading(false);
         });
+        getItems('users/clients').then(response => {
+            setClients(response);
+        })
     };
 
     const onAddButtonClick = () => {
@@ -64,6 +68,7 @@ const Reservations = ({ workerId }) => {
                 refresh={refresh} 
                 update={false} 
                 workerId={workerId}
+                clients={clients}
             />
         </div>
     )

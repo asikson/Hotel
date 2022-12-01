@@ -28,7 +28,7 @@ const styles = {
     },
 
     sideToSide: {
-        width: '80%',
+        width: '100%',
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
@@ -38,6 +38,17 @@ const styles = {
     dateInput: {
         width: '170px',
         height: '60px',
+    },
+
+    newClientForm: {
+        width: '220px',
+        display: 'flex',
+        flexDirection: 'column'
+    },
+
+    checkbox: {
+        marginLeft: '10px', 
+        marginTop: '10px'
     }
 }
 

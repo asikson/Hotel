@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const localhost = 'http://127.0.0.1:8000/';
 
-
 export const idNames = {
     'rooms/rooms': 'id_room',
     'rooms/conferencerooms': 'id_conference_room',
