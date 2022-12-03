@@ -13,7 +13,7 @@ const ClientSelect = ({clients, clientId, setClientId}) => {
             <Select
                 value={clientId}
                 label='Wybierz klienta'
-                onChange={value => setClientId(value)}
+                onChange={e => setClientId(e.target.value)}
                 color='warning'
             >
                 {clients.map(client => createItem(client))}

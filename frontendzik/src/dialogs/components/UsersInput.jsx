@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/addDialogStyles';
 import { idNames, addUser } from '../../utils/api';
 
-const UsersInput = ({ update, setOpen, item, type, refresh }) => {
+const UsersInput = ({ setOpen, item, type, refresh }) => {
 
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
@@ -59,7 +59,7 @@ const UsersInput = ({ update, setOpen, item, type, refresh }) => {
                 value={priviliges}
                 onChange={e => setPriviliges(e.target.value)}
             />
-            {update
+            {item
                 ? <button style={styles.button} onClick={handleUpdate}>Zapisz</button>
                 : <button style={styles.button} onClick={handleAdd}>Dodaj</button>
             }

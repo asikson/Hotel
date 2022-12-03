@@ -32,26 +32,52 @@ const Reservations = ({ workerId }) => {
 
     const [toggleKey, setToggleKey] = useState('stay');
     const [loading, setLoading] = useState(true);
+    const [stayItems, setStayItems] = useState([]);
+    const [conferenceItems, setConferenceItems] = useState([]);
     const [items, setItems] = useState([]);
     const [addDialogOpen, setAddDialogOpen] = useState(false);
+    const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
     const [clients, setClients] = useState([]);
+    const [currentItem, setCurrentItem] = useState({});
 
     useEffect(() => {
         refresh();
     }, []);
 
+    useEffect(() => {
+        if (toggleKey != 'conference') {
+            setItems(stayItems);
+        }
+    }, [stayItems]);
+
+    useEffect(() => {
+        const currentItems = toggleKey === 'conference' ? conferenceItems : stayItems;
+        setItems(currentItems);
+        setCurrentItem({});  
+    }, [toggleKey]);
+
     const refresh = () => {
-        getItems(`reservations/${toggleKey}reservation`).then(response => {
-            setItems(response);
+        console.log(toggleKey);
+        getItems(`reservations/stayreservation/`).then(response => {
+            setStayItems(response);
             setLoading(false);
         });
-        getItems('users/clients').then(response => {
+        getItems(`reservations/conferencereservation/`).then(response => {
+            setConferenceItems(response);
+            setLoading(false);
+        });
+        getItems('users/clients/').then(response => {
             setClients(response);
-        })
+        });
     };
 
     const onAddButtonClick = () => {
         setAddDialogOpen(true);
+    };
+
+    const onEditButtonClick = (item) => {
+        setCurrentItem(item);
+        setUpdateDialogOpen(true);
     }
 
     return (
@@ -59,16 +85,24 @@ const Reservations = ({ workerId }) => {
             <ReservationsTopBar toggleKey={toggleKey} setToggleKey={setToggleKey} onAddButtonClick={onAddButtonClick}/>
             {loading
                 ? <LoadingOverlay laoding={loading} />
-                : <ListTable items={items} labels={labels[toggleKey]} admin={true}/>
+                : <ListTable items={items} labels={labels[toggleKey]} admin={true} onUpdateButtonClick={onEditButtonClick}/>
             }
             <AddReservationDialog 
                 open={addDialogOpen} 
                 setOpen={setAddDialogOpen} 
                 type={toggleKey} 
                 refresh={refresh} 
-                update={false} 
                 workerId={workerId}
                 clients={clients}
+            />
+            <AddReservationDialog 
+                open={updateDialogOpen} 
+                setOpen={setUpdateDialogOpen} 
+                type={toggleKey} 
+                refresh={refresh} 
+                workerId={workerId}
+                clients={clients}
+                item={currentItem}
             />
         </div>
     )

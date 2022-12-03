@@ -1,13 +1,13 @@
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useState, useEffect, Fragment } from 'react';
 import styles from '../styles/addReservationDialogStyles';
-import { addItem, updateItem, idNames } from '../../utils/api';
+import { idNames, addStayReservation, updateStayReservation } from '../../utils/api';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ClientSelect from './ClientSelect';
 
-const ReservationInput = ({ update, setOpen, item, type, refresh, workerId, clients }) => {
+const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) => {
 
     const [dateFrom, setDateFrom] = useState(null);
     const [dateTo, setDateTo] = useState(null);
@@ -30,12 +30,22 @@ const ReservationInput = ({ update, setOpen, item, type, refresh, workerId, clie
         setDateFrom('');
         setDateTo('');
         setNumOfPeople('');
-        setClientId('');
+        setClientId(null);
         refresh();
     }
 
     const handleAdd = () => { 
-        //addItem(type, dateRange[0], dateRange[1], numOfPeople, clientId, workerId).then(_ => cleanUp())
+        addStayReservation(clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
+            cleanUp();
+            setOpen(false);
+        });
+    };
+
+    const handleUpdate = () => { 
+        updateStayReservation(item[idNames['reservations/stayreservation']], clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
+            cleanUp();
+            setOpen(false);
+        });
     };
 
     return (
@@ -96,7 +106,7 @@ const ReservationInput = ({ update, setOpen, item, type, refresh, workerId, clie
                             onChange={e => setSurname(e.target.value)}
                         />
                     </div>
-                    : <ClientSelect clients={clients}/>
+                    : <ClientSelect clients={clients} clientId={clientId} setClientId={setClientId}/>
                 }
                 <div style={styles.newClientForm}>
                     <FormControlLabel 
@@ -115,7 +125,7 @@ const ReservationInput = ({ update, setOpen, item, type, refresh, workerId, clie
                 </div>
             </div>
             
-            {update
+            {item
                 ? <button style={styles.button} onClick={handleUpdate}>Zapisz</button>
                 : <button style={styles.button} onClick={handleAdd}>Dodaj</button>
             }

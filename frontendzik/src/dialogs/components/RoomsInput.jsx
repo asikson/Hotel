@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/addDialogStyles';
 import { addItem, updateItem, idNames } from '../../utils/api';
 
-const RoomsInput = ({ update, setOpen, item, type, refresh }) => {
+const RoomsInput = ({ setOpen, item, type, refresh }) => {
 
     const [name, setName] = useState('');
     const [numOfPeople, setNumOfPeople] = useState('');
@@ -48,7 +48,7 @@ const RoomsInput = ({ update, setOpen, item, type, refresh }) => {
                 value={numOfPeople}
                 onChange={e => setNumOfPeople(e.target.value)}
             />
-            {update
+            {item
                 ? <button style={styles.button} onClick={handleUpdate}>Zapisz</button>
                 : <button style={styles.button} onClick={handleAdd}>Dodaj</button>
             }

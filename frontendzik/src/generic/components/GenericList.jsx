@@ -18,7 +18,6 @@ const GenericList = ({pageKey, admin, goBack}) => {
   const [openAddDialog, setAddDialogOpen] = useState(false);
   const [openUpdateDialog, setUpdateDialogOpen] = useState(false);
   const [openDeleteDialog, setDeleteDialogOpen] = useState(false);
-
   const [currentItem, setCurrentItem] = useState({});
 
   const updateLabels = () => {
@@ -91,8 +90,8 @@ const GenericList = ({pageKey, admin, goBack}) => {
     }
     <DetailsDialog open={openDetailsDialog} setOpen={setDetailsDialogOpen} item={currentItem}/>
 
-    <AddDialog open={openAddDialog} setOpen={setAddDialogOpen} type={pageKey} refresh={refresh} update={false} />
-    <AddDialog open={openUpdateDialog} setOpen={setUpdateDialogOpen} type={pageKey} refresh={refresh} update={true} item={currentItem} />
+    <AddDialog open={openAddDialog} setOpen={setAddDialogOpen} type={pageKey} refresh={refresh} />
+    <AddDialog open={openUpdateDialog} setOpen={setUpdateDialogOpen} type={pageKey} refresh={refresh} item={currentItem} />
     <DeleteDialog open={openDeleteDialog} setOpen={setDeleteDialogOpen} type={pageKey} refresh={refresh} item={currentItem} />
 
     </div>

@@ -3,19 +3,18 @@ import { Dialog  } from '@mui/material';
 import styles from '../styles/addDialogStyles';
 import commonStyles from '../../styles/commonStyles';
 import commonDialogStyles from '../styles/commonDialogStyles';
-import { Input, TextField } from '@mui/material';
 import RoomsInput from './RoomsInput';
 import UsersInput from './UsersInput';
 
-const AddDialog = ({open, setOpen, type, refresh, update, item }) => {
+const AddDialog = ({open, setOpen, type, refresh, item }) => {
 
     const renderContent = () => {
         switch (type) {
             case 'rooms/rooms':
             case 'rooms/conferencerooms':
-                return <RoomsInput update={update} setOpen={setOpen} refresh={refresh} type={type} item={item} />
+                return <RoomsInput setOpen={setOpen} refresh={refresh} type={type} item={item} />
             case 'users/workers':
-                return <UsersInput update={update} setOpen={setOpen} refresh={refresh} type={type} item={item} />
+                return <UsersInput setOpen={setOpen} refresh={refresh} type={type} item={item} />
             default:
                 null;
         }
@@ -28,7 +27,7 @@ const AddDialog = ({open, setOpen, type, refresh, update, item }) => {
                 <div style={commonDialogStyles.topBar}>
                     <div style={commonDialogStyles.topLeft}>
                         <label style={commonDialogStyles.label}>
-                            {update ? 'Edytuj' : 'Dodaj'}
+                            {item ? 'Edytuj' : 'Dodaj'}
 
                         </label>
                     </div>
