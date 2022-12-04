@@ -7,6 +7,7 @@ import LoadingOverlay from '../../generic/components/LoadingOverlay';
 import { useEffect } from 'react';
 import AddReservationDialog from '../../dialogs/components/AddReservationDialog';
 import DeleteDialog from '../../dialogs/components/DeleteDialog';
+import ReservationDetailsDialog from '../../dialogs/components/ReservationsDetailsDialog';
 
 const labels = {
     'stay': {
@@ -16,16 +17,12 @@ const labels = {
         number_of_people: 'Liczba osób',
         check_in: 'Zameldowanie',
         check_out: 'Wymeldowanie',
-        id_client: 'Klient',
-        id_worker: 'Pracownik'
     },
     'conference': {
         reservation_date: 'Data rezerwacji',
         from_date: 'Od',
         to_date: 'Do',
         number_of_people: 'Liczba osób',
-        id_worker: 'Pracownik',
-        id_client: 'Klient'
     }
 }
 
@@ -38,11 +35,12 @@ const Reservations = ({ workerId }) => {
     const [conferenceItems, setConferenceItems] = useState([]);
     const [clients, setClients] = useState([]);
     const [items, setItems] = useState([]);
-    const [currentItem, setCurrentItem] = useState({});
+    const [currentItem, setCurrentItem] = useState(null);
 
     const [addDialogOpen, setAddDialogOpen] = useState(false);
     const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
 
     useEffect(() => {
         refresh();
@@ -59,7 +57,7 @@ const Reservations = ({ workerId }) => {
     useEffect(() => {
         const currentItems = toggleKey === 'conference' ? conferenceItems : stayItems;
         setItems(currentItems);
-        setCurrentItem({});  
+        setCurrentItem(null);  
     }, [toggleKey]);
 
     const refresh = () => {
@@ -90,6 +88,11 @@ const Reservations = ({ workerId }) => {
         setDeleteDialogOpen(true);
     };
 
+    const onDetailsDialogClick = (item) => {
+        setCurrentItem(item);
+        setDetailsDialogOpen(true);
+    }
+
     const handleDelete = (item) => {
         const endpoint = `reservations/${toggleKey}reservation`;
         deleteStayReservation(endpoint, item[idNames[endpoint]]).then(_ => {
@@ -109,6 +112,7 @@ const Reservations = ({ workerId }) => {
                     admin={true} 
                     onUpdateButtonClick={onEditButtonClick}
                     onDeleteButtonClick={onDeleteButtonClick}
+                    onDetailsButtonClick={onDetailsDialogClick}
                 />
             }
             <AddReservationDialog 
@@ -133,6 +137,11 @@ const Reservations = ({ workerId }) => {
                 setOpen={setDeleteDialogOpen}
                 item={currentItem}
                 handleDelete={handleDelete}
+            />
+            <ReservationDetailsDialog
+                open={detailsDialogOpen}
+                setOpen={setDetailsDialogOpen}
+                item={currentItem}
             />
         </div>
     )

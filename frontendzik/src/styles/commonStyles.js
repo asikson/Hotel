@@ -69,6 +69,10 @@ const commonStyles = {
 
     label: {
         fontSize: '25px'
+    },
+
+    labelText: {
+        fontSize: '20px'
     }
 };
 

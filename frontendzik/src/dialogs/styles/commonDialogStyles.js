@@ -45,6 +45,9 @@ const commonDialogStyles = {
         borderRadius: '30px'
     },
     label: {
+        fontSize: '40px'
+    },
+    labelText: {
         fontSize: '30px'
     }
 }

@@ -7,10 +7,11 @@ import { useAuth } from '../../authorization/useAuth';
 import GenericList from '../../generic/components/GenericList';
 import Calendar from '../../Calendar/components/Calendar';
 import Reservations from '../../reservations/components/Reservations';
+import MerryChristmas from './MerryChristmas';
 
 const Home = () => {
     const { login } = useAuth();
-    const workerId = 123;
+    const workerId = 1;
     const [pageKey, setPageKey] = useState('');
 
     const renderContent = (key) => {
@@ -32,7 +33,7 @@ const Home = () => {
             case 'reservations':
                 return <Reservations  workerId={workerId}/>;
             default: 
-                return null;
+                return <MerryChristmas />;
         }
     }
 
