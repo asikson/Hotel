@@ -106,3 +106,11 @@ export const updateReservation = async (type, id, clientId, workerId, dateFrom, 
 export const deleteStayReservation = async (endpoint, id) => {
     return axios.delete(`${reachEndpoint(endpoint)}/delete/${id}/`);
 };
+
+export const getClientById = async (id) => {
+    return axios.get(`${reachEndpoint(`users/clients/?id_client=${id}`)}`);
+};
+
+export const getWorkerById = async (id) => {
+    return axios.get(`${reachEndpoint(`users/workers/?id_worker=${id}`)}`);
+};

@@ -1,7 +1,7 @@
 import { Dialog  } from '@mui/material';
 import commonDialogStyles from '../styles/commonDialogStyles';
 
-const DetailsDialog = ({open, setOpen, item}) =>{
+const DetailsDialog = ({open, setOpen, item}) => {
     return (
         <Dialog fullScreen open={open} style={commonDialogStyles.dialog} title='Szczegóły' >
             <div style={commonDialogStyles.basicColumn}>

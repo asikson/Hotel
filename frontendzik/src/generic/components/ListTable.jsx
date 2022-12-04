@@ -2,10 +2,11 @@ import styles from '../styles/listStyles';
 import ListButton from './ListButton';
 import { Paper, TableBody, TableContainer, Table, TableHead, TableCell, TableRow } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from '../styles/styled';
+import { idNames } from '../../utils/api';
 
 const ListTable = ({items, labels, admin, onDetailsButtonClick, onUpdateButtonClick, onDeleteButtonClick}) => {
 
-    const columns = items.length === 0 ? items : Object.keys(items[0]);
+    const columns = items.length === 0 ? items : Object.keys(items[0]).filter(key => key in labels);
 
     const createTableCell = (column) => 
         <StyledTableCell>
