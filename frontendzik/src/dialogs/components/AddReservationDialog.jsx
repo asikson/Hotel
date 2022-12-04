@@ -3,32 +3,17 @@ import { Dialog  } from '@mui/material';
 import styles from '../styles/addDialogStyles';
 import commonStyles from '../../styles/commonStyles';
 import commonDialogStyles from '../styles/commonDialogStyles';
-import RoomsInput from './RoomsInput';
-import UsersInput from './UsersInput';
+import ReservationInput from './ReservationInput';
 
-const AddDialog = ({open, setOpen, type, refresh, item }) => {
-
-    const renderContent = () => {
-        switch (type) {
-            case 'rooms/rooms':
-            case 'rooms/conferencerooms':
-                return <RoomsInput setOpen={setOpen} refresh={refresh} type={type} item={item} />
-            case 'users/workers':
-                return <UsersInput setOpen={setOpen} refresh={refresh} type={type} item={item} />
-            default:
-                null;
-        }
-    }
+const AddReservationDialog = ({open, setOpen, type, refresh, update, item, workerId, clients}) => {
 
     return (
         <Dialog fullScreen open={open} style={commonDialogStyles.dialog} title='Dodaj' >
-
             <div style={commonStyles.basicColumn}>
                 <div style={commonDialogStyles.topBar}>
                     <div style={commonDialogStyles.topLeft}>
                         <label style={commonDialogStyles.label}>
-                            {item ? 'Edytuj' : 'Dodaj'}
-
+                            {update ? 'Edytuj' : 'Dodaj'}
                         </label>
                     </div>
                     <div style={commonDialogStyles.topRight}>
@@ -41,11 +26,19 @@ const AddDialog = ({open, setOpen, type, refresh, item }) => {
                     </div>
                 </div>
                 <div style={styles.container}>
-                    {renderContent()}
+                    <ReservationInput 
+                        update={update} 
+                        setOpen={setOpen} 
+                        item={item} 
+                        type={type} 
+                        refresh={refresh} 
+                        workerId={workerId}
+                        clients={clients}
+                    />
                 </div>
             </div>
         </Dialog>
     );
 }
 
-export default AddDialog;
+export default AddReservationDialog;

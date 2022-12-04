@@ -14,10 +14,10 @@ class StayRoomReservationSerializer(serializers.ModelSerializer):
 
 class ConferenceReservationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ConferenceRoomReservation 
-        fields = ['id_stay', 'id_client', 'id_worker', 'reservation_date', 'from_date', 'to_date', 'number_of_people']
+        model = ConferenceReservation 
+        fields = ['id_conference', 'id_client', 'id_worker', 'reservation_date', 'from_date', 'to_date', 'number_of_people']
 
 class ConferenceRoomReservationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ConferenceReservation 
+        model = ConferenceRoomReservation 
         fields = ['id_conference', 'id_conference_room']

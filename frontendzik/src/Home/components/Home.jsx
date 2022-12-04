@@ -6,10 +6,11 @@ import AdminPanel from '../../AdminPanel/components/AdminPanel';
 import { useAuth } from '../../authorization/useAuth';
 import GenericList from '../../generic/components/GenericList';
 import Calendar from '../../Calendar/components/Calendar';
-
+import Reservations from '../../reservations/components/Reservations';
 
 const Home = () => {
     const { login } = useAuth();
+    const workerId = 123;
     const [pageKey, setPageKey] = useState('');
 
     const renderContent = (key) => {
@@ -28,7 +29,8 @@ const Home = () => {
                 return <GenericList pageKey='rooms/rooms' admin={false}/>
             case 'conference_rooms':
                 return <GenericList pageKey='rooms/conferencerooms' admin={false}/>
-
+            case 'reservations':
+                return <Reservations  workerId={workerId}/>;
             default: 
                 return null;
         }
@@ -38,9 +40,7 @@ const Home = () => {
         <div style={commonStyles.page}>
             <div style={commonStyles.spaceEvenlycolumn}>
                 <div style={styles.navigationBar}>
-
-                    <Navigation setKey={setPageKey} login={login} pageKey={pageKey} admin={login === 'admin'}/>
-
+                    <Navigation setKey={setPageKey} login={login} pageKey={pageKey} admin={login === 'admin'} />
                 </div>
                 <div style={styles.content}>
                     {renderContent(pageKey)}

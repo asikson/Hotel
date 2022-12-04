@@ -2,16 +2,9 @@ import styles from '../styles/deleteDialogStyles';
 import commonDialogStyles from '../styles/commonDialogStyles';
 import commonStyles from '../../styles/commonStyles';
 import { Dialog } from '@mui/material';
-import { deleteItem, idNames } from '../../utils/api';
 
-const DeleteDialog = ({open, setOpen, type, refresh, item }) => {
 
-    const handleDelete = () => {
-        deleteItem(type, item[idNames[type]]).then(_ => {
-            setOpen(false);
-            refresh();
-        })
-    }
+const DeleteDialog = ({open, setOpen, item, handleDelete }) => {
 
     return (
         <Dialog fullScreen open={open} style={styles.dialog} title='Dodaj' >
@@ -33,7 +26,7 @@ const DeleteDialog = ({open, setOpen, type, refresh, item }) => {
 
                 </div>
                 <div style={styles.container}>
-                    <button style={styles.button} onClick={handleDelete}>OK</button>
+                    <button style={styles.button} onClick={() => handleDelete(item)}>OK</button>
                 </div>
             </div>
         </Dialog>

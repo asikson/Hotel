@@ -1,24 +1,7 @@
 const styles = {
-    listWrapper: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'start',
+    container: {
         width: '100%',
-        height: '90%',
-        overflowY: 'scroll',
-        marginTop: '15px'
-
-    },
-
-    listButton: {
-        borderRadius: '25px',
-        width: '90px',
-        height: '70%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: '#000000',
-        marginRight: '15px'
+        height: '100%',
     },
 
     topBar: {
@@ -40,7 +23,8 @@ const styles = {
         flexDirection: 'row',
         display: 'flex',
         justifyContent: 'flex-start',
-        paddingLeft: '3%'
+        paddingLeft: '3%',
+        alignItems: 'center'
     },
 
     addButton: {
@@ -55,10 +39,9 @@ const styles = {
         margin: '10px'
     },
 
-    container: {
-        width: '100%',
-        height: '100%',
+    toggle: {
+        height: '35px',
     }
-}
+};
 
 export default styles;

@@ -1,16 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import { Paper, TableBody, TableContainer, Table, TableHead, TableCell, TableRow } from '@mui/material';
-import { StyledTableCell, StyledTableRow } from '../styles/styled';
 import styles from '../styles/listStyles';
-import { getItems } from '../../utils/api';
+import { getItems, deleteItem, idNames } from '../../utils/api';
 import { getLabels } from '../../utils/constants';
 import LoadingOverlay from './LoadingOverlay';
 import DetailsDialog from '../../dialogs/components/DetailsDialog';
-import ListButton from './ListButton';
 import AddDialog from '../../dialogs/components/AddDialog';
 import DeleteDialog from '../../dialogs/components/DeleteDialog';
+import ListTable from './ListTable';
+import TopBar from './TopBar';
 
-const GenericList = ({pageKey, admin}) => {
+const GenericList = ({pageKey, admin, goBack}) => {
 
   const [items, setItems] = useState([]);
   const [labels, setLabels] = useState({});
@@ -19,7 +18,6 @@ const GenericList = ({pageKey, admin}) => {
   const [openAddDialog, setAddDialogOpen] = useState(false);
   const [openUpdateDialog, setUpdateDialogOpen] = useState(false);
   const [openDeleteDialog, setDeleteDialogOpen] = useState(false);
-
   const [currentItem, setCurrentItem] = useState({});
 
   const updateLabels = () => {
@@ -45,10 +43,20 @@ const GenericList = ({pageKey, admin}) => {
   const onDeleteButtonClick = (item) => {
     setCurrentItem(item);
     setDeleteDialogOpen(true);
-  }
+  };
+
+  const onGoBackButtonClick = () => {
+    goBack('adminPanel');
+  };
+
+  const handleDelete = (item) => {
+    deleteItem(type, item[idNames[type]]).then(_ => {
+        setDeleteDialogOpen(false);
+        refresh();
+    })
+  };
 
   const refresh = () => {
-
     setLoading(true);
     setItems([]);
     updateLabels();
@@ -60,75 +68,36 @@ const GenericList = ({pageKey, admin}) => {
 
   useEffect(() => {
     refresh();
-
   }, [pageKey]);
 
-  const columns = items.length === 0 ? items : Object.keys(items[0]);
-
-  const createTableCell = (column) => <StyledTableCell>{(labels && labels[column]) || ''}</StyledTableCell>;
 
   return (
     <div style={styles.container}>
       {loading
-        ? <LoadingOverlay laoding={loading} />
+        ? <LoadingOverlay loading={loading} />
         : <>
-          {admin && <div style={styles.topRight}>
-            <button style={styles.addButton} onClick={onAddButtonClick}>Dodaj</button>
-          </div>
+          {admin 
+            && <TopBar 
+              styles={styles} 
+              onAddButtonClick={onAddButtonClick} 
+              onGoBackButtonClick={onGoBackButtonClick}
+              />
           }
-          <div style={styles.listWrapper}>
-            <TableContainer component={Paper} sx={{maxWidth: '95%'}}>
-              <Table sx={{ minWidth: 650 }} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map(createTableCell)}
-                    <StyledTableCell />
-                    {admin && 
-                      <>
-                        <StyledTableCell />
-                        <StyledTableCell />
-                      </>
-                    }
-                  </TableRow>
-                </TableHead>
-        
-                <TableBody>
-                  {items.map((item) => (
-                    <StyledTableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 }}}
-                    >
-                      <TableCell component="th" scope="row" >{item[columns[0]]}</TableCell>
-                        {columns.slice(1).map(column => <TableCell >{item[column]}</TableCell>)}
-                      <TableCell>
-                        <ListButton onClick={onDetailsButtonClick} item={item} label='Szczegóły'/>
-                      </TableCell>
-
-                      {admin &&
-                        <>
-                          <TableCell>
-                            <ListButton onClick={onUpdateButtonClick} item={item} label='Edytuj'/>
-                          </TableCell>
-                          <TableCell>
-                            <ListButton onClick={onDeleteButtonClick} item={item} label='Usuń'/>
-                          </TableCell>
-                        </>
-                      }
-
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
+          <ListTable
+            items={items} 
+            labels={labels}
+            admin={admin}
+            onDetailsButtonClick={onDetailsButtonClick}
+            onUpdateButtonClick={onUpdateButtonClick}
+            onDeleteButtonClick={onDeleteButtonClick}
+          /> 
         </>
-        
-        
     }
     <DetailsDialog open={openDetailsDialog} setOpen={setDetailsDialogOpen} item={currentItem}/>
 
-    <AddDialog open={openAddDialog} setOpen={setAddDialogOpen} type={pageKey} refresh={refresh} update={false} />
-    <AddDialog open={openUpdateDialog} setOpen={setUpdateDialogOpen} type={pageKey} refresh={refresh} update={true} item={currentItem} />
-    <DeleteDialog open={openDeleteDialog} setOpen={setDeleteDialogOpen} type={pageKey} refresh={refresh} item={currentItem} />
+    <AddDialog open={openAddDialog} setOpen={setAddDialogOpen} type={pageKey} refresh={refresh} />
+    <AddDialog open={openUpdateDialog} setOpen={setUpdateDialogOpen} type={pageKey} refresh={refresh} item={currentItem} />
+    <DeleteDialog open={openDeleteDialog} setOpen={setDeleteDialogOpen} item={currentItem} handleDelete={handleDelete}/>
 
     </div>
   );

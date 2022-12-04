@@ -1,10 +1,10 @@
 const commonDialogStyles = {
     dialog: {
         position: 'fixed',
-        top: '25%',
+        top: '15%',
         left: '35%',
         overflowY: 'auto',
-        height: '40%', 
+        height: '70%', 
         width: '30%', 
         background: '#ffffff', 
         borderRadius: '25px',

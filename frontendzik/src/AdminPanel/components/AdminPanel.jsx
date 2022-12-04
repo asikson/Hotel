@@ -14,7 +14,7 @@ const AdminMenu = ({setPageKey}) => {
 
                 Zarządzaj salami
             </button>
-            <button style={styles.adminButton}>
+            <button style={styles.adminButton} onClick={() => setPageKey('users/workers')}>
                 Zarządzaj kontami
             </button>
         </div>
@@ -29,9 +29,11 @@ const AdminPanel = () => {
     const renderContent = () => {
         switch (pageKey) {
             case 'rooms/rooms':
-                return <GenericList pageKey={pageKey} admin={true}/>
+                return <GenericList pageKey={pageKey} admin={true} goBack={setPageKey}/>
             case 'rooms/conferencerooms':
-                return <GenericList pageKey={pageKey} admin={true}/>
+                return <GenericList pageKey={pageKey} admin={true} goBack={setPageKey}/>
+            case 'users/workers':
+                return <GenericList pageKey={pageKey} admin={true} goBack={setPageKey}/>
             default:
                 return <AdminMenu setPageKey={setPageKey}/>
         }
