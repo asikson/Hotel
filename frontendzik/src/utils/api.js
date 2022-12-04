@@ -6,7 +6,8 @@ export const idNames = {
     'rooms/rooms': 'id_room',
     'rooms/conferencerooms': 'id_conference_room',
     'users/workers': 'id_worker',
-    'reservations/stayreservation': 'id_stay'
+    'reservations/stayreservation': 'id_stay',
+    'reservations/conferencereservation': 'id_conference'
 }
 
 const reachEndpoint = (endpoint) => {
@@ -47,9 +48,13 @@ export const updateUser = async (id, name, surname, priviliges) => {
     );
 };
 
-const getCurrentDate = () => {
-    const date = new Date();
-    console.log(date);
+export const addClient = async (name, surname) => {
+    return axios.post(`${reachEndpoint('users/clients/create/')}`,
+        { name: name, surname: surname }
+    );
+};
+
+const transformDate = (date) => {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');;
     const year = date.getFullYear();
@@ -57,16 +62,22 @@ const getCurrentDate = () => {
     return `${year}-${month}-${day}`;
 };
 
+const getCurrentDate = () => {
+    const date = new Date();
+    return transformDate(date);
+};
+
 const convertToShortFormat = (date) => {
-    return date.toISOString().slice(0, 10);
+    if (typeof(date) === 'string') {
+        return date;
+    }
+
+    const newDate = new Date(date.toString())
+    return transformDate(newDate);
 };
 
-const convertToLongFormat = (date) => {
-    return date + 'T23:00:00.000Z';
-};
-
-export const addStayReservation = async (clientId, workerId, dateFrom, dateTo, numOfPeople) => {
-    return axios.post(`${reachEndpoint('reservations/stayreservation/create/')}`,
+export const addReservation = async (type, clientId, workerId, dateFrom, dateTo, numOfPeople) => {
+    return axios.post(`${reachEndpoint(`reservations/${type}reservation/create/`)}`,
         { 
             id_client: clientId, 
             id_worker: workerId, 
@@ -78,10 +89,10 @@ export const addStayReservation = async (clientId, workerId, dateFrom, dateTo, n
     );
 };
 
-export const updateStayReservation = async (id, clientId, workerId, dateFrom, dateTo, numOfPeople) => {
-    return axios.put(`${reachEndpoint('reservations/stayreservation/update/')}${id}`,
+export const updateReservation = async (type, id, clientId, workerId, dateFrom, dateTo, numOfPeople) => {
+    return axios.put(`${reachEndpoint(`reservations/${type}reservation/update/`)}${id}/`,
         {
-            [idNames['reservations/stayreservation']]: id, 
+            [idNames[`reservations/${type}reservation`]]: id, 
             id_client: clientId, 
             id_worker: workerId, 
             reservation_date: getCurrentDate(), 
@@ -90,4 +101,8 @@ export const updateStayReservation = async (id, clientId, workerId, dateFrom, da
             number_of_people: numOfPeople 
         }
     );
+};
+
+export const deleteStayReservation = async (endpoint, id) => {
+    return axios.delete(`${reachEndpoint(endpoint)}/delete/${id}/`);
 };

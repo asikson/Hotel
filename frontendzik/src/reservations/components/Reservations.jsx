@@ -2,10 +2,11 @@ import { useState } from 'react';
 import ListTable from '../../generic/components/ListTable';
 import styles from '../styles/reservationsStyles'
 import ReservationsTopBar from './ReservationsTopBar';
-import { getItems } from '../../utils/api';
+import { getItems, deleteStayReservation, idNames } from '../../utils/api';
 import LoadingOverlay from '../../generic/components/LoadingOverlay';
 import { useEffect } from 'react';
 import AddReservationDialog from '../../dialogs/components/AddReservationDialog';
+import DeleteDialog from '../../dialogs/components/DeleteDialog';
 
 const labels = {
     'stay': {
@@ -32,23 +33,28 @@ const Reservations = ({ workerId }) => {
 
     const [toggleKey, setToggleKey] = useState('stay');
     const [loading, setLoading] = useState(true);
+
     const [stayItems, setStayItems] = useState([]);
     const [conferenceItems, setConferenceItems] = useState([]);
+    const [clients, setClients] = useState([]);
     const [items, setItems] = useState([]);
+    const [currentItem, setCurrentItem] = useState({});
+
     const [addDialogOpen, setAddDialogOpen] = useState(false);
     const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
-    const [clients, setClients] = useState([]);
-    const [currentItem, setCurrentItem] = useState({});
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     useEffect(() => {
         refresh();
     }, []);
 
     useEffect(() => {
-        if (toggleKey != 'conference') {
+        if (toggleKey === 'conference') {
+            setItems(conferenceItems);
+        } else {
             setItems(stayItems);
         }
-    }, [stayItems]);
+    }, [stayItems, conferenceItems]);
 
     useEffect(() => {
         const currentItems = toggleKey === 'conference' ? conferenceItems : stayItems;
@@ -57,7 +63,6 @@ const Reservations = ({ workerId }) => {
     }, [toggleKey]);
 
     const refresh = () => {
-        console.log(toggleKey);
         getItems(`reservations/stayreservation/`).then(response => {
             setStayItems(response);
             setLoading(false);
@@ -78,14 +83,33 @@ const Reservations = ({ workerId }) => {
     const onEditButtonClick = (item) => {
         setCurrentItem(item);
         setUpdateDialogOpen(true);
-    }
+    };
+
+    const onDeleteButtonClick = (item) => {
+        setCurrentItem(item);
+        setDeleteDialogOpen(true);
+    };
+
+    const handleDelete = (item) => {
+        const endpoint = `reservations/${toggleKey}reservation`;
+        deleteStayReservation(endpoint, item[idNames[endpoint]]).then(_ => {
+            setDeleteDialogOpen(false);
+            refresh();
+        })
+    };
 
     return (
         <div style={styles.container}>
             <ReservationsTopBar toggleKey={toggleKey} setToggleKey={setToggleKey} onAddButtonClick={onAddButtonClick}/>
             {loading
                 ? <LoadingOverlay laoding={loading} />
-                : <ListTable items={items} labels={labels[toggleKey]} admin={true} onUpdateButtonClick={onEditButtonClick}/>
+                : <ListTable 
+                    items={items} 
+                    labels={labels[toggleKey]} 
+                    admin={true} 
+                    onUpdateButtonClick={onEditButtonClick}
+                    onDeleteButtonClick={onDeleteButtonClick}
+                />
             }
             <AddReservationDialog 
                 open={addDialogOpen} 
@@ -103,6 +127,12 @@ const Reservations = ({ workerId }) => {
                 workerId={workerId}
                 clients={clients}
                 item={currentItem}
+            />
+            <DeleteDialog 
+                open={deleteDialogOpen}
+                setOpen={setDeleteDialogOpen}
+                item={currentItem}
+                handleDelete={handleDelete}
             />
         </div>
     )

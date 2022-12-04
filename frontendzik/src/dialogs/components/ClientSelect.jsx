@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { FormControl, FormLabel, Select, MenuItem } from "@mui/material";
 
 const ClientSelect = ({clients, clientId, setClientId}) => {
 
@@ -9,10 +9,9 @@ const ClientSelect = ({clients, clientId, setClientId}) => {
 
     return (
         <FormControl sx={{width: '220px'}}>
-            <InputLabel color='warning'>Wybierz klienta</InputLabel>
+            <FormLabel color='warning'>Wybierz klienta</FormLabel>
             <Select
                 value={clientId}
-                label='Wybierz klienta'
                 onChange={e => setClientId(e.target.value)}
                 color='warning'
             >

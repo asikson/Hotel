@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../styles/listStyles';
-import { getItems } from '../../utils/api';
+import { getItems, deleteItem, idNames } from '../../utils/api';
 import { getLabels } from '../../utils/constants';
 import LoadingOverlay from './LoadingOverlay';
 import DetailsDialog from '../../dialogs/components/DetailsDialog';
@@ -47,10 +47,16 @@ const GenericList = ({pageKey, admin, goBack}) => {
 
   const onGoBackButtonClick = () => {
     goBack('adminPanel');
-  }
+  };
+
+  const handleDelete = (item) => {
+    deleteItem(type, item[idNames[type]]).then(_ => {
+        setDeleteDialogOpen(false);
+        refresh();
+    })
+  };
 
   const refresh = () => {
-
     setLoading(true);
     setItems([]);
     updateLabels();
@@ -62,7 +68,6 @@ const GenericList = ({pageKey, admin, goBack}) => {
 
   useEffect(() => {
     refresh();
-
   }, [pageKey]);
 
 
@@ -92,7 +97,7 @@ const GenericList = ({pageKey, admin, goBack}) => {
 
     <AddDialog open={openAddDialog} setOpen={setAddDialogOpen} type={pageKey} refresh={refresh} />
     <AddDialog open={openUpdateDialog} setOpen={setUpdateDialogOpen} type={pageKey} refresh={refresh} item={currentItem} />
-    <DeleteDialog open={openDeleteDialog} setOpen={setDeleteDialogOpen} type={pageKey} refresh={refresh} item={currentItem} />
+    <DeleteDialog open={openDeleteDialog} setOpen={setDeleteDialogOpen} item={currentItem} handleDelete={handleDelete}/>
 
     </div>
   );

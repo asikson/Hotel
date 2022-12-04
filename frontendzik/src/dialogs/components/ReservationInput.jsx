@@ -1,7 +1,7 @@
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/addReservationDialogStyles';
-import { idNames, addStayReservation, updateStayReservation } from '../../utils/api';
+import { idNames, addReservation, updateReservation, addClient } from '../../utils/api';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -32,17 +32,29 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
         setNumOfPeople('');
         setClientId(null);
         refresh();
-    }
+    };
 
-    const handleAdd = () => { 
-        addStayReservation(clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
+    const handleAddReservation = async (newClientId) => {
+        const reservationClient = newClientId ? newClientId : clientId;
+
+        return addReservation(type, reservationClient, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
             cleanUp();
             setOpen(false);
         });
+    }
+
+    const handleAdd = () => { 
+        if (newClient) {
+            addClient(name, surname).then(response => {
+                handleAddReservation(response.data.id_client);
+            });
+        } else {
+            handleAddReservation();
+        }
     };
 
     const handleUpdate = () => { 
-        updateStayReservation(item[idNames['reservations/stayreservation']], clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
+        updateReservation(type, item[idNames[`reservations/${type}reservation`]], clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
             cleanUp();
             setOpen(false);
         });
@@ -55,7 +67,7 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
                     <div style={styles.dateInput}>
                         <DesktopDatePicker
                             label="Od"
-                            inputFormat="MM/DD/YYYY"
+                            inputFormat="DD/MM/YYYY"
                             value={dateFrom}
                             onChange={(value) => setDateFrom(value)}
                             renderInput={(params) => <TextField 
