@@ -1,9 +1,10 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class ConferenceRooms(models.Model):
     id_conference_room = models.AutoField(primary_key=True)
-    number_of_people = models.IntegerField()
+    number_of_people = models.IntegerField(validators=[MinValueValidator(1)])
     name = models.CharField(max_length=25)
 
     class Meta:
@@ -14,8 +15,9 @@ class ConferenceRooms(models.Model):
 
 class Rooms(models.Model):
     id_room = models.AutoField(primary_key=True)
-    number_of_people = models.IntegerField()
+    number_of_people = models.IntegerField(validators=[MinValueValidator(1)])
     name = models.CharField(max_length=25)
+    standard = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
 
     class Meta:
         managed = True

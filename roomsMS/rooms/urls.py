@@ -1,11 +1,14 @@
-from django.urls import include, path
-from .views import RoomsCreate, RoomsList, RoomsUpdate, RoomsDelete
+from django.urls import include, path, register_converter
+from .views import RoomsCreate, RoomsList, RoomsUpdate, RoomsDelete, VacanciesList
 from .views import ConferenceRoomsCreate, ConferenceRoomsList, ConferenceRoomsUpdate, ConferenceRoomsDelete
+from .converters import DateConverter
 
+register_converter(DateConverter, 'date')
 
 urlpatterns = [
     #Rooms table urls
     path('rooms/', RoomsList.as_view()),
+    path('rooms/vacancies/<date:from_d>/<date:to_d>', VacanciesList.as_view()),
     path('rooms/create/', RoomsCreate.as_view(), name='create-rooms'),
     path('rooms/update/<int:pk>/', RoomsUpdate.as_view(), name='update-rooms'),
     path('rooms/delete/<int:pk>/', RoomsDelete.as_view(), name='delete-rooms'),

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from .models import StayReservation, StayRoomReservation, ConferenceReservation, ConferenceRoomReservation
 from rest_framework import generics
 from .serializers import StayRoomReservationSerializer, StayReservationSerializer, ConferenceReservationSerializer, ConferenceRoomReservationSerializer
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 #VIEWS for StayReservation tab
@@ -15,6 +17,22 @@ class StayReservationList(generics.ListAPIView):
     queryset = StayReservation.objects.all()
     serializer_class = StayReservationSerializer
     filterset_fields = ['id_stay']
+
+class StayReservationListFiltr(generics.ListAPIView):
+    # API endpoint that allows StayReservation to be viewed.
+    serializer_class = StayReservationSerializer
+    def get_queryset(self):
+        from_d = self.kwargs["from_d"]
+        to_d = self.kwargs["to_d"]
+        from_date_in_range = Q(from_date__range=[from_d, to_d])
+        to_date_in_range = Q(to_date__range=[from_d, to_d])
+        from_date_before = Q(from_date__lte = from_d)
+        to_date_after = Q(to_date__gte = to_d)
+        return StayReservation.objects.filter(
+            from_date_in_range
+            | to_date_in_range
+            | (from_date_before & to_date_after)
+        )
 
 class StayReservationUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a StayReservation record to be updated.

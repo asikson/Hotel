@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 class ConferenceReservation(models.Model):
@@ -6,7 +7,7 @@ class ConferenceReservation(models.Model):
     reservation_date = models.DateField()
     from_date = models.DateField()
     to_date = models.DateField()
-    number_of_people = models.IntegerField()
+    number_of_people = models.IntegerField(validators=[MinValueValidator(1)])
     id_client = models.IntegerField()
     id_worker = models.IntegerField()
 
@@ -32,7 +33,7 @@ class StayReservation(models.Model):
     reservation_date = models.DateField()
     from_date = models.DateField()
     to_date = models.DateField()
-    number_of_people = models.IntegerField()
+    number_of_people = models.IntegerField(validators=[MinValueValidator(1)])
     check_in = models.DateField(blank=True, null=True)
     check_out = models.DateField(blank=True, null=True)
     id_client = models.IntegerField()

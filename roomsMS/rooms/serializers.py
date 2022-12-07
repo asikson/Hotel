@@ -5,7 +5,7 @@ from .models import Rooms, ConferenceRooms
 class RoomsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rooms 
-        fields = ['id_room', 'name', 'number_of_people']
+        fields = ['id_room', 'name', 'number_of_people', 'standard']
 
 class ConferenceRoomsSerializer(serializers.ModelSerializer):
     class Meta:

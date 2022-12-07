@@ -73,7 +73,14 @@ WSGI_APPLICATION = 'settingsMS.wsgi.application'
 DATABASE_ROUTERS = ['users.models.usersRouter',]
 
 DATABASES = {
-    'default': {},
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'users',
+        'USER': 'postgres',
+        'PASSWORD': 'betoniarka',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
     'users': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'users',

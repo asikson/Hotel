@@ -27,7 +27,7 @@ def users():
                           (Id_Worker SERIAL PRIMARY KEY NOT NULL,
                           Name VARCHAR(25) NOT NULL,
                           Surname VARCHAR(25) NOT NULL,
-                          Priviliges INT NOT NULL); '''
+                          Priviliges BOOLEAN NOT NULL); '''
         executeDB(cursor, conn, workersQuery)
 
         credentialsQuery = '''CREATE TABLE Credentials
@@ -39,6 +39,17 @@ def users():
                                 FOREIGN KEY (Id_Worker) 
                                 REFERENCES Workers (Id_Worker)); '''
         executeDB(cursor, conn, credentialsQuery)
+
+        credentialsClientsQuery = '''CREATE TABLE ClientsCredentials
+                            (Id_Credential SERIAL PRIMARY KEY NOT NULL, 
+                            Login VARCHAR(25) NOT NULL, 
+                            Password VARCHAR(25) NOT NULL,
+                            Id_Client INT NOT NULL, 
+                            CONSTRAINT FK_1_USER
+                                FOREIGN KEY (Id_Client) 
+                                REFERENCES Clients (Id_Client)); '''
+        executeDB(cursor, conn, credentialsClientsQuery)
+
 
 
     except (Exception, Error) as error:

@@ -14,7 +14,7 @@ class ClientsList(generics.ListAPIView):
     # API endpoint that allows Clients to be viewed.
     queryset = Clients.objects.all()
     serializer_class = ClientsSerializer
-    fieldset_filter = ['id_client', 'name', 'surname']
+    filterset_fields = ['id_client', 'name', 'surname']
 
 class ClientsUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a Clients record to be updated.
@@ -37,7 +37,7 @@ class WorkersList(generics.ListAPIView):
     # API endpoint that allows Workers to be viewed.
     queryset = Workers.objects.all()
     serializer_class = WorkersSerializer
-    fieldset_filter = ['id_worker', 'name', 'surname','priviliges']
+    filterset_fields = ['id_worker', 'name', 'surname','priviliges']
 
 class WorkersUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a Workers record to be updated.
