@@ -19,6 +19,7 @@ def rooms():
         roomsQuery = '''CREATE TABLE Rooms
                           (Id_Room SERIAL PRIMARY KEY NOT NULL,
                           Number_Of_People INT NOT NULL,
+                          Standard INT NOT NULL,
                           Name VARCHAR(25) NOT NULL); '''
         executeDB(cursor, conn, roomsQuery)
 
