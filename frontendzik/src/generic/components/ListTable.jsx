@@ -2,7 +2,6 @@ import styles from '../styles/listStyles';
 import ListButton from './ListButton';
 import { Paper, TableBody, TableContainer, Table, TableHead, TableCell, TableRow } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from '../styles/styled';
-import { idNames } from '../../utils/api';
 
 const ListTable = ({items, labels, admin, onDetailsButtonClick, onUpdateButtonClick, onDeleteButtonClick}) => {
 

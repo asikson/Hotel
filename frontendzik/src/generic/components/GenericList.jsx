@@ -50,7 +50,7 @@ const GenericList = ({pageKey, admin, goBack}) => {
   };
 
   const handleDelete = (item) => {
-    deleteItem(type, item[idNames[type]]).then(_ => {
+    deleteItem(pageKey, item[idNames[pageKey]]).then(_ => {
         setDeleteDialogOpen(false);
         refresh();
     })
