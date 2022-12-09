@@ -7,11 +7,13 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
 
     const [name, setName] = useState('');
     const [numOfPeople, setNumOfPeople] = useState('');
+    const [standard, setStandard] = useState(null);
 
     useEffect (() => {
         if (item) {
             setName(item.name);
             setNumOfPeople(item.number_of_people);
+            setStandard(item.standard || null);
         }
     }, [item]);
 
@@ -19,15 +21,16 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
         setOpen(false);
         setName('');
         setNumOfPeople('');
+        setStandard(null);
         refresh();
     }
 
     const handleAdd = () => { 
-        addItem(type, name, numOfPeople).then(_ => cleanUp())
+        addItem(type, name, numOfPeople, standard).then(_ => cleanUp())
     };
 
     const handleUpdate = () => {
-        updateItem(type, item[idNames[type]], name, numOfPeople).then(_ => cleanUp())
+        updateItem(type, item[idNames[type]], name, numOfPeople, standard).then(_ => cleanUp())
     }
 
     return (
@@ -48,6 +51,18 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
                 value={numOfPeople}
                 onChange={e => setNumOfPeople(e.target.value)}
             />
+            {type === 'rooms/rooms'
+                ? <TextField
+                    style={styles.input} 
+                    type={'number'} 
+                    label={'Standard pokoju'} 
+                    color='warning' 
+                    value={standard}
+                    onChange={e => setStandard(e.target.value)}
+                />
+                : null
+            }
+            
             {item
                 ? <button style={styles.button} onClick={handleUpdate}>Zapisz</button>
                 : <button style={styles.button} onClick={handleAdd}>Dodaj</button>

@@ -61,15 +61,15 @@ const Reservations = ({ workerId }) => {
     }, [toggleKey]);
 
     const refresh = () => {
-        getItems(`reservations/stayreservation/`).then(response => {
+        getItems(`reservations/stayreservation`).then(response => {
             setStayItems(response);
             setLoading(false);
         });
-        getItems(`reservations/conferencereservation/`).then(response => {
+        getItems(`reservations/conferencereservation`).then(response => {
             setConferenceItems(response);
             setLoading(false);
         });
-        getItems('users/clients/').then(response => {
+        getItems('users/clients').then(response => {
             setClients(response);
         });
     };

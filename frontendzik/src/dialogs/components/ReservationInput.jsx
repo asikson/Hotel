@@ -48,7 +48,7 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
     const handleAddReservation = async (newClientId) => {
         const reservationClient = newClientId ? newClientId : clientId;
 
-        return addReservation(type, reservationClient, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
+        return addReservation(type, reservationClient, workerId, dateFrom, dateTo, numOfPeople).then(response => {
             cleanUp();
             setOpen(false);
         });

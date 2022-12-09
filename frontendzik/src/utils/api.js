@@ -13,6 +13,7 @@ export const idNames = {
 const getPort = (key) => {
     switch(key) {
         case 'rooms/rooms':
+        case 'rooms/conferencerooms':
             return 8001;
 
         case 'reservations/stayreservation':
@@ -39,15 +40,21 @@ export const getItems = async (endpoint) => {
         .then(response => response.data);
 };
 
-export const addItem = async (endpoint, name, numOfPeople) => {
+export const addItem = async (endpoint, name, numOfPeople, standard=null) => {
+    const payload = standard 
+        ? { name, number_of_people: numOfPeople, standard}
+        : { name, number_of_people: numOfPeople}
     return axios.post(`${reachEndpoint(endpoint, getPort(endpoint))}/create/`,
-        { name: name, number_of_people: numOfPeople}
+        payload
     );
 };
 
-export const updateItem = async (endpoint, id, name, numOfPeople) => {
+export const updateItem = async (endpoint, id, name, numOfPeople, standard=null) => {
+    const payload = standard 
+        ? { [idNames[endpoint]]: id, name, number_of_people: numOfPeople, standard}
+        : { [idNames[endpoint]]: id, name, number_of_people: numOfPeople}
     return axios.put(`${reachEndpoint(endpoint, getPort(endpoint))}/update/${id}/`,
-        {[idNames[endpoint]]: id, name: name, number_of_people: numOfPeople}
+        payload
     );
 };
 
@@ -137,5 +144,5 @@ export const getWorkerById = async (id) => {
 export const getFreeRooms = async (dateFrom, dateTo) => {
     const from = convertToShortFormat(dateFrom);
     const to = convertToShortFormat(dateTo);
-    return axios.get(`${reachEndpoint(`rooms/vacancies/<date:${from}>/<date:${to}>`, getPort('rooms/rooms'))}`);
+    return axios.get(`${reachEndpoint(`rooms/rooms/vacancies/${from}/${to}`, getPort('rooms/rooms'))}`);
 }
