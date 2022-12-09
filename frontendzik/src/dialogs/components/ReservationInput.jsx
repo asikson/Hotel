@@ -1,7 +1,7 @@
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addReservationDialogStyles';
-import { idNames, addReservation, updateReservation, addClient } from '../../utils/api';
+import { idNames, addReservation, updateReservation, addClient, getFreeRooms } from '../../utils/api';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -31,7 +31,9 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
 
     useEffect(() => {
         if (dateFrom && dateTo) {
-
+            getFreeRooms(dateFrom, dateTo).then(response => {
+                setFreeRooms(response.data);
+            })
         }
     }, [dateFrom, dateTo]);
 
