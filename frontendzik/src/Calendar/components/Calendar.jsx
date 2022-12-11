@@ -1,100 +1,145 @@
-import commonStyles from "../../styles/commonStyles";
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import { useState } from 'react';
 import styles from '../styles/calendarStyles';
-import { useState } from "react";
-import { v4 as uuid } from "uuid";
+import ShowReservationTopBar from './ShowReservationTopBar';
+import ShowListTable from './ShowListTable';
+import { getItems} from '../../utils/api';
+import LoadingOverlay from '../../generic/components/LoadingOverlay';
+import { useEffect } from 'react';
 
 
-const event = [
-    {
-        id: 1,
-        status: 'room',
-        title: 'room 1',
-        start: '2022-11-14',
-        end: '2022-11-18',
+import React from 'react'
+import { render } from 'react-dom'
+import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle} from "react-icons/io";
+import { DAYS, MONTHS } from "./const";
+import { areDatesTheSame, getDateObject, getDaysInMonth, getSortedDays, range } from "./utils";
+
+
+
+const labels = {
+    'stay': {
+        name: 'Nazwa',
+        number_of_people: 'Liczba osób',
     },
-    {
-        id: 2,
-        status: 'room',
-        title: 'room 2',
-        start: '2022-11-07',
-        end: '2022-11-09',
-    },
-    {
-        id: 3,
-        status: 'conference',
-        title: 'confernece 1',
-        start: '2022-11-07',
-        end: '2022-11-12',
-    },
+    'conference': {
+        name: 'Nazwa',
+        number_of_people: 'Liczba osób',
+    }
+}
 
-];
+const Calendar = ({ workerId, startingDate, eventsArr}) => {
 
+    const [toggleKey, setToggleKey] = useState('stay');
+    const [loading, setLoading] = useState(true);
 
-const Calendar = () => {
-    /*
-    const[events, setEvents] = useState([]);
+    const [stayItems, setStayItems] = useState([]);
+    const [conferenceItems, setConferenceItems] = useState([]);
+    const [clients, setClients] = useState([]);
+    const [items, setItems] = useState([]);
+    const [currentItem, setCurrentItem] = useState(null);
 
-    const handleSelect = (info) => {
-        const {start, end} = info;
-        const eventNamePrompt = prompt('Enter, event name');
-        if(eventNamePrompt) {
-            setEvents([
-                ...events,
-                {
-                    start,
-                    end,
-                    title: eventNamePrompt,
-                    id: uuid(),
-                },
-            ]);
+    const [currentMonth, setCurrentMonth] = useState(startingDate.getMonth())
+    const [currentYear, setCurrentYear] = useState(startingDate.getFullYear())
+    const DAYSINMONTHS = getDaysInMonth(currentMonth, currentYear)
+
+    useEffect(() => {
+        refresh();
+    }, []);
+
+    useEffect(() => {
+        if (toggleKey === 'conference') {
+            setItems(conferenceItems);
+        } else {
+            setItems(stayItems);
+        }
+    }, [stayItems, conferenceItems]);
+
+    useEffect(() => {
+        const currentItems = toggleKey === 'conference' ? conferenceItems : stayItems;
+        setItems(currentItems);
+        setCurrentItem(null);  
+    }, [toggleKey]);
+
+    const refresh = () => {
+        getItems(`rooms/rooms/`).then(response => {
+            setStayItems(response);
+            setLoading(false);
+        });
+        getItems(`rooms/conferencerooms/`).then(response => {
+            setConferenceItems(response);
+            setLoading(false);
+        });
+    };
+
+    const nextMonth = () => {
+        if(currentMonth < 11){
+            setCurrentMonth((prev) => prev + 1)
+        } 
+        else {
+            setCurrentMonth(0)
+            setCurrentYear((prev) => prev + 1)
+        }
+    };
+    
+    const prevMonth = () => {
+        if(currentMonth > 0){
+            setCurrentMonth((prev) => prev - 1)
+        } 
+        else {
+            setCurrentMonth(11)
+            setCurrentYear((prev) => prev - 1)
         }
     };
 
-    const EventItem = () => {
-        const { event } = info;
-        return(
-            <div>
-                <p>{event.title}</p>
-            </div>
-        );
-    };*/
 
-    return(
-        <div style={styles.calendar}>
-            <FullCalendar
-            plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-            initialView = 'dayGridMonth'
-           
-            headerToolbar={{
-                start:'today prev',
-                center: 'title',
-                end: 'next',
-            }}
+    return (
+        <div style={styles.container}>
+            <ShowReservationTopBar toggleKey={toggleKey} setToggleKey={setToggleKey}/>
 
-            customButtons={{
-                new: {
-                  text: 'new',
-                  click: () => console.log('new event'),
-                },
-              }}
+                <div style={styles.content}>
+                    <div style={styles.calendarHead}>
+                            <IoIosArrowDropleftCircle onClick={prevMonth}/>
+                                {MONTHS[currentMonth]} {currentYear}
+                            <IoIosArrowDroprightCircle onClick={nextMonth}/>   
+                    </div>
 
-            //aspectRatio={5}
-            height={500}
-            events={event}
+                <div style={styles.topBarReservation}>
+                        <div style={styles.topLeftReservation}>
+                            {loading
+                                ? <LoadingOverlay laoding={loading} />
+                                : <ShowListTable 
+                                items={items} 
+                                labels={labels[toggleKey]} 
+                                admin={true} 
+                                />
+                                }
+                        </div>     
 
-            eventColor='orange'
-           
-
-           nowIndicator
-           dateClick={(e) => console.log(e.dateStr)}
-           eventClick={(e) => console.log(e.event.id)}
-
-            />
+                        <div styles={styles.topRightReservation}>   
+                            <div style={styles.sevenColGrid}>
+                                {getSortedDays(currentMonth, currentYear).map((day) => (
+                                    <div style={styles.headDay}>{day}</div>
+                                ))}
+                                
+                            </div>
+                            <div style={styles.calendarBody} fourCol={DAYSINMONTHS == 28}>
+                                {range(DAYSINMONTHS).map((day) => (
+                                    <div style={styles.styledDay} active={areDatesTheSame(new Date(), getDateObject(day, currentMonth, currentYear))}>
+                                        {day}
+                                        {
+                                        eventsArr.map((ev) => (
+                                           //areDatesTheSame(getDateObject(day, currentMonth, currentYear), ev.date) &&
+                                           <div style={styles.styledEvent}>{ev.title}</div>
+                                            ))
+                                        }
+                                    </div>
+                                 ))}
+                            </div>
+                        </div>
+                    </div>
+                     
+                </div>
         </div>
-    );
+    )
 }
+
 export default Calendar;
