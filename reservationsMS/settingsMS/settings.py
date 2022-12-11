@@ -79,7 +79,7 @@ DATABASES = {
         'NAME': 'reservations',
         'USER': 'postgres',
         'PASSWORD': 'betoniarka',
-        'HOST': 'localhost',
+        'HOST': 'reservationsdb',
         'PORT': '5432',
     },
 }
