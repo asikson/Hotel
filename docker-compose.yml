@@ -1,0 +1,133 @@
+version: '3.9'
+
+
+services:
+  usersdb:
+    container_name: usersdb
+    restart: always
+    build:
+      context: ./usersDB
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    volumes:
+      - usersdb:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: betoniarka
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d users -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  users:
+    build:
+      context: ./usersMS
+      dockerfile: Dockerfile
+    container_name: users
+    depends_on:
+      usersdb:
+        condition: service_healthy
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./usersMS:/app/usersMS
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_DATABASE: users
+      DB_USER: postgres
+      DB_PASSWORD: betoniarka
+
+  roomsdb:
+    container_name: roomsdb
+    restart: always
+    build:
+      context: ./roomsDB
+      dockerfile: Dockerfile
+    ports:
+      - "5433:5433"
+    volumes:
+      - roomsdb:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: rooms
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: betoniarka
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d rooms -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  rooms:
+    build:
+      context: ./roomsMS
+      dockerfile: Dockerfile
+    container_name: rooms
+    depends_on:
+      roomsdb:
+        condition: service_healthy
+    ports:
+        - "8002:8002"
+    volumes:
+        - ./roomsMS:/app/roomsMS
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_DATABASE: rooms
+      DB_USER: postgres
+      DB_PASSWORD: betoniarka
+  reservationsdb:
+    container_name: reservationsdb
+    restart: always
+    build:
+      context: ./reservationsDB
+      dockerfile: Dockerfile
+    ports:
+      - "5434:5434"
+    volumes:
+      - reservationsdb:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: reservations
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: betoniarka
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d reservations -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  reservations:
+    build:
+      context: ./reservationsMS
+      dockerfile: Dockerfile
+    container_name: reservations
+    depends_on:
+      roomsdb:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./reservationsMS:/app/reservationsMS
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_DATABASE: reservations
+      DB_USER: postgres
+      DB_PASSWORD: betoniarka
+  frontend:
+    build:
+      context: ./frontendzik
+      dockerfile: Dockerfile
+
+    ports:
+      - '3000:80'
+
+    volumes:
+      - ./frontendzik:/app/frontendzik
+volumes:
+  usersdb:
+    driver: local
+  roomsdb:
+    driver: local
+  reservationsdb:
+    driver: local
+
+
+

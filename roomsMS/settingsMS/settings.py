@@ -79,7 +79,7 @@ DATABASES = {
         'NAME': 'rooms',
         'USER': 'postgres',
         'PASSWORD': 'betoniarka',
-        'HOST': 'localhost',
+        'HOST': 'roomsdb',
         'PORT': '5432',
     }
 }

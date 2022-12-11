@@ -78,7 +78,7 @@ DATABASES = {
         'NAME': 'users',
         'USER': 'postgres',
         'PASSWORD': 'betoniarka',
-        'HOST': 'localhost',
+        'HOST': 'usersdb',
         'PORT': '5432',
     },
     'users': {
@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'users',
         'USER': 'postgres',
         'PASSWORD': 'betoniarka',
-        'HOST': 'localhost',
+        'HOST': 'usersdb',
         'PORT': '5432',
     }
 }
