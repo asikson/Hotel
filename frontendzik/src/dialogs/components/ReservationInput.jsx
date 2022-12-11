@@ -1,7 +1,7 @@
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addReservationDialogStyles';
-import { addReservation, updateReservation, addClient, getFreeRooms } from '../../utils/api';
+import { addReservation, updateReservation, addClient, getFreeRooms, addStayReservation } from '../../utils/api';
 import { getIdValue } from '../../utils/apiUtils';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -50,8 +50,10 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
         const reservationClient = newClientId ? newClientId : clientId;
 
         return addReservation(type, reservationClient, workerId, dateFrom, dateTo, numOfPeople).then(response => {
-            cleanUp();
-            setOpen(false);
+            addStayReservation(response.data.id_stay, roomId).then(_ => {
+                cleanUp();
+                setOpen(false);
+            })
         });
     }
 

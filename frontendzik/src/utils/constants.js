@@ -22,9 +22,9 @@ export const labels = {
 };
 
 export const ports = {
-    'reservations': 8000,
-    'rooms': 8001,
-    'users': 8002
+    'reservations': 8001,
+    'rooms': 8002,
+    'users': 8003
 };
 
 export const idNames = {
@@ -62,10 +62,14 @@ export const roomStandards = [
     {id: 5, name: 'królewski'}
 ];
 
+export const getStandardName = (value) => {
+    return roomStandards[value].name;
+};
+
 export const mapValue = (column, value) => {
     switch(column) {
         case 'standard':
-            return roomStandards[value].name;
+            return getStandardName(value);
         default:
             return value;
     }

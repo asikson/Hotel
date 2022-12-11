@@ -2,14 +2,16 @@ import { Dialog  } from '@mui/material';
 import commonDialogStyles from '../styles/commonDialogStyles';
 import styles from '../styles/addReservationDialogStyles';
 import React, { useState, useEffect } from 'react';
-import { getClientById, getWorkerById } from '../../utils/api';
+import { getClientById, getRoomById, getRoomForStay, getWorkerById } from '../../utils/api';
 import LoadingOverlay from '../../generic/components/LoadingOverlay';
+import { getStandardName } from '../../utils/constants';
 
 const ReservationDetailsDialog = ({open, setOpen, item}) => {
 
     const [loading, setLoading] = useState(true);
     const [clientInfo, setClientInfo] = useState('');
     const [workerInfo, setWorkerInfo] = useState('');
+    const [roomInfo, setRoomInfo] = useState('');
 
     useEffect(() => {
         if (item) {
@@ -24,7 +26,16 @@ const ReservationDetailsDialog = ({open, setOpen, item}) => {
                     const name = data.name;
                     const surname = data.surname;
                     setWorkerInfo(`${name} ${surname}`);
-                    setLoading(false);
+
+                    getRoomForStay(item['id_stay']).then(response => {
+                        const roomId = response.data[0].id_room;
+                        
+                        getRoomById(roomId).then(response => {
+                            const data = response.data[0];
+                            setRoomInfo(`${data.name} - ${getStandardName(data.standard)}`);
+                            setLoading(false);
+                        })
+                    });
                 });
             });
         }
@@ -68,6 +79,15 @@ const ReservationDetailsDialog = ({open, setOpen, item}) => {
                                 </label>
                                 <label style={commonDialogStyles.labelText}>
                                     {workerInfo}
+                                </label>
+                            </div>
+
+                            <div style={styles.container}>
+                                <label style={commonDialogStyles.labelText}>
+                                    Pokój:
+                                </label>
+                                <label style={commonDialogStyles.labelText}>
+                                    {roomInfo}
                                 </label>
                             </div>
                         </>

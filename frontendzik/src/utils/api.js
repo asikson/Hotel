@@ -104,5 +104,21 @@ export const getWorkerById = async (id) => {
 export const getFreeRooms = async (dateFrom, dateTo) => {
     const from = convertToShortFormat(dateFrom);
     const to = convertToShortFormat(dateTo);
-    return axios.get(`${reachEndpoint(`rooms/rooms/vacancies/${from}/${to}`, getPort('rooms/rooms'))}`);
+    return axios.get(reachEndpoint(`rooms/rooms/vacancies/${from}/${to}`));
+};
+
+export const addStayReservation = async (reservationId, roomId) => {
+    const payload ={
+        id_stay: reservationId,
+        id_room: roomId
+    }
+    return axios.post(reachCreateEndpoint('reservations/stayroomreservation'), payload);
+};
+
+export const getRoomForStay = async (reservationId) => {
+    return axios.get(reachEndpoint(`reservations/stayroomreservation/?id_stay=${reservationId}`));
+};
+
+export const getRoomById = async (roomId) => {
+    return axios.get(reachEndpoint(`rooms/rooms/?id_room=${roomId}`)); 
 }
