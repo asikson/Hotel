@@ -4,10 +4,11 @@ from .models import Rooms, ConferenceRooms
 from rest_framework import generics
 from .serializers import RoomsSerializer, ConferenceRoomsSerializer
 from django.db.models import Q
+from .apis import *
 
 def get_reservations_ids(from_d, to_d):
         results = []
-        url = "http://127.0.0.1:8003/reservations/stayreservation/{}/{}".format(from_d, to_d)
+        url = "http://127.0.0.1:{}/reservations/stayreservation/{}/{}".format(reservationsPort,from_d, to_d)
         api_call = requests.get(url, headers={}).json()
         for record in api_call:
             results.append(record["id_stay"])
@@ -16,7 +17,7 @@ def get_reservations_ids(from_d, to_d):
 def get_rooms_ids_from_reservations_ids(reservations):
         results = []
         for reservation in reservations:
-            url = "http://127.0.0.1:8003/reservations/stayroomreservation/?id_stay={}".format(reservation) 
+            url = "http://127.0.0.1:{}/reservations/stayroomreservation/?id_stay={}".format(reservationsPort, reservation) 
             api_call = requests.get(url, headers={}).json()
             for record in api_call:
                 results.append(record["id_room"])
