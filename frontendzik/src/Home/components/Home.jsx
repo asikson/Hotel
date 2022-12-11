@@ -10,28 +10,25 @@ import Reservations from '../../reservations/components/Reservations';
 import MerryChristmas from './MerryChristmas';
 
 const Home = () => {
+
+    // TODO: zrobić logowanie
     const { login } = useAuth();
     const workerId = 1;
+
     const [pageKey, setPageKey] = useState('');
 
-    const renderContent = (key) => {
+    const renderPageContent = (key) => {
         switch (key) {
-            case 'adminPanel':
-                return <AdminPanel/>
-
             case 'calendar':
-                return <Calendar/>    
-            case 'rooms':
-                return <GenericList pageKey='rooms/rooms'/>
-            case 'conference_rooms':
-                return <GenericList pageKey='rooms/conferencerooms'/>
-
+                return <Calendar/>
+            case 'reservations':
+                return <Reservations  workerId={workerId}/>;
             case 'rooms':
                 return <GenericList pageKey='rooms/rooms' admin={false}/>
             case 'conference_rooms':
                 return <GenericList pageKey='rooms/conferencerooms' admin={false}/>
-            case 'reservations':
-                return <Reservations  workerId={workerId}/>;
+            case 'adminPanel':
+                return <AdminPanel/>
             default: 
                 return <MerryChristmas />;
         }
@@ -41,10 +38,15 @@ const Home = () => {
         <div style={commonStyles.page}>
             <div style={commonStyles.spaceEvenlycolumn}>
                 <div style={styles.navigationBar}>
-                    <Navigation setKey={setPageKey} login={login} pageKey={pageKey} admin={login === 'admin'} />
+                    <Navigation 
+                        setKey={setPageKey} 
+                        login={login} 
+                        pageKey={pageKey} 
+                        admin={login === 'admin'} 
+                    />
                 </div>
                 <div style={styles.content}>
-                    {renderContent(pageKey)}
+                    {renderPageContent(pageKey)}
                 </div>
             </div>
         </div>

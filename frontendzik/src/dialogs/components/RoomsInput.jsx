@@ -1,7 +1,10 @@
-import { TextField } from '@mui/material';
+import { TextField, MenuItem } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addDialogStyles';
-import { addItem, updateItem, idNames } from '../../utils/api';
+import { addItem, updateItem } from '../../utils/api';
+import { getIdValue } from '../../utils/apiUtils';
+import GenericSelect from './GenericSelect';
+import { roomStandards } from '../../utils/constants';
 
 const RoomsInput = ({ setOpen, item, type, refresh }) => {
 
@@ -30,8 +33,12 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
     };
 
     const handleUpdate = () => {
-        updateItem(type, item[idNames[type]], name, numOfPeople, standard).then(_ => cleanUp())
-    }
+        updateItem(type, getIdValue(type, item), name, numOfPeople, standard).then(_ => cleanUp())
+    };
+
+    const createStandardItem = (standard) => {
+        return <MenuItem value={standard.id}>{standard.name}</MenuItem>
+    };
 
     return (
         <div style={styles.container}>
@@ -52,13 +59,12 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
                 onChange={e => setNumOfPeople(e.target.value)}
             />
             {type === 'rooms/rooms'
-                ? <TextField
-                    style={styles.input} 
-                    type={'number'} 
-                    label={'Standard pokoju'} 
-                    color='warning' 
-                    value={standard}
-                    onChange={e => setStandard(e.target.value)}
+                ? <GenericSelect
+                    items={roomStandards}
+                    itemId={standard}
+                    label={'standard pokoju'} 
+                    setItemId={setStandard}
+                    createItem={createStandardItem}
                 />
                 : null
             }

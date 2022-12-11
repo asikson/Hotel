@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../styles/listStyles';
-import { getItems, deleteItem, idNames } from '../../utils/api';
-import { getLabels } from '../../utils/constants';
+import { getItems, deleteItem } from '../../utils/api';
+import { getIdValue, getLabels } from '../../utils/apiUtils';
 import LoadingOverlay from './LoadingOverlay';
 import DetailsDialog from '../../dialogs/components/DetailsDialog';
 import AddDialog from '../../dialogs/components/AddDialog';
@@ -14,11 +14,14 @@ const GenericList = ({pageKey, admin, goBack}) => {
   const [items, setItems] = useState([]);
   const [labels, setLabels] = useState({});
   const [loading, setLoading] = useState(true);
+  const [currentItem, setCurrentItem] = useState({});
+
   const [openDetailsDialog, setDetailsDialogOpen] = useState(false);
   const [openAddDialog, setAddDialogOpen] = useState(false);
   const [openUpdateDialog, setUpdateDialogOpen] = useState(false);
   const [openDeleteDialog, setDeleteDialogOpen] = useState(false);
-  const [currentItem, setCurrentItem] = useState({});
+
+  
 
   const updateLabels = () => {
     const newLabels = getLabels(pageKey);
@@ -50,7 +53,7 @@ const GenericList = ({pageKey, admin, goBack}) => {
   };
 
   const handleDelete = (item) => {
-    deleteItem(pageKey, item[idNames[pageKey]]).then(_ => {
+    deleteItem(pageKey, getIdValue(pageKey, item)).then(_ => {
         setDeleteDialogOpen(false);
         refresh();
     })

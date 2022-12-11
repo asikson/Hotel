@@ -1,3 +1,5 @@
+import { white } from "../../styles/constants";
+
 const styles = {
     content: {
         borderRadius: '25px',
@@ -7,7 +9,7 @@ const styles = {
         justifyContent: 'space-evenly',
         alignItems: 'center',
         opacity: 0.75,
-        backgroundColor: '#f1f1f1',
+        backgroundColor: white,
     },
 
     buttonsLayout: {
@@ -21,14 +23,14 @@ const styles = {
     navigationBar: {
         borderRadius: '25px',
         width: '95vw',
-        height: '10vh',
+        height: '100px',
         display: 'flex',
         justifyContent: 'space-between',
         paddingLeft: '15px',
         paddingRight: '15px',
         alignItems: 'center',
         opacity: 0.75,
-        backgroundColor: '#f1f1f1',
+        backgroundColor: white,
     },
 }
 

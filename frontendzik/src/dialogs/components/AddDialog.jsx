@@ -13,6 +13,7 @@ const AddDialog = ({open, setOpen, type, refresh, item }) => {
             case 'rooms/rooms':
             case 'rooms/conferencerooms':
                 return <RoomsInput setOpen={setOpen} refresh={refresh} type={type} item={item} />
+
             case 'users/workers':
                 return <UsersInput setOpen={setOpen} refresh={refresh} type={type} item={item} />
             default:
@@ -28,7 +29,6 @@ const AddDialog = ({open, setOpen, type, refresh, item }) => {
                     <div style={commonDialogStyles.topLeft}>
                         <label style={commonDialogStyles.label}>
                             {item ? 'Edytuj' : 'Dodaj'}
-
                         </label>
                     </div>
                     <div style={commonDialogStyles.topRight}>

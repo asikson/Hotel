@@ -2,6 +2,7 @@ import styles from '../styles/listStyles';
 import ListButton from './ListButton';
 import { Paper, TableBody, TableContainer, Table, TableHead, TableCell, TableRow } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from '../styles/styled';
+import { mapValue } from '../../utils/constants';
 
 const ListTable = ({items, labels, admin, onDetailsButtonClick, onUpdateButtonClick, onDeleteButtonClick}) => {
 
@@ -35,7 +36,7 @@ const ListTable = ({items, labels, admin, onDetailsButtonClick, onUpdateButtonCl
                       sx={{ '&:last-child td, &:last-child th': { border: 0 }}}
                     >
                       <TableCell component="th" scope="row" >{item[columns[0]]}</TableCell>
-                        {columns.slice(1).map(column => <TableCell >{item[column]}</TableCell>)}
+                        {columns.slice(1).map(column => <TableCell >{mapValue(column, item[column])}</TableCell>)}
                       <TableCell>
                         <ListButton onClick={onDetailsButtonClick} item={item} label='Szczegóły'/>
                       </TableCell>

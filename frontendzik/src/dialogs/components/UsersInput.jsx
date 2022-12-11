@@ -1,13 +1,14 @@
-import { TextField } from '@mui/material';
+import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addDialogStyles';
-import { idNames, addUser } from '../../utils/api';
+import { addUser } from '../../utils/api';
+import { getIdValue } from '../../utils/apiUtils';
 
 const UsersInput = ({ setOpen, item, type, refresh }) => {
 
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
-    const [priviliges, setPriviliges] = useState('');
+    const [priviliges, setPriviliges] = useState(false);
 
     useEffect (() => {
         if (item) {
@@ -30,7 +31,7 @@ const UsersInput = ({ setOpen, item, type, refresh }) => {
     };
 
     const handleUpdate = () => {
-        updateUser(item[idNames[type]], name, surname, priviliges).then(_ => cleanUp())
+        updateUser(getIdValue(type, item), name, surname, priviliges).then(_ => cleanUp())
     }
 
     return (
@@ -51,13 +52,18 @@ const UsersInput = ({ setOpen, item, type, refresh }) => {
                 value={surname}
                 onChange={e => setSurname(e.target.value)}
             />
-            <TextField
-                label='Uprawnienia' 
-                type='number' 
-                style={styles.input} 
-                color='warning' 
-                value={priviliges}
-                onChange={e => setPriviliges(e.target.value)}
+            <FormControlLabel 
+                style={styles.checkbox}
+                label='Administrator' 
+                control={
+                    <Checkbox
+                        value={priviliges}
+                        onChange={e => setPriviliges(e.target.checked)}
+                        sx={{color: 'orange', '&.Mui-checked': {
+                            color: 'orange',
+                        }}}
+                    />
+                }
             />
             {item
                 ? <button style={styles.button} onClick={handleUpdate}>Zapisz</button>

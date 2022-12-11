@@ -1,3 +1,5 @@
+import { snowWhite } from "../../styles/constants";
+
 const commonDialogStyles = {
     dialog: {
         position: 'fixed',
@@ -6,9 +8,10 @@ const commonDialogStyles = {
         overflowY: 'auto',
         height: '70%', 
         width: '30%', 
-        background: '#ffffff', 
+        background: snowWhite, 
         borderRadius: '25px',
     },
+    
     topBar: {
         width: '100%',
         display: 'flex',

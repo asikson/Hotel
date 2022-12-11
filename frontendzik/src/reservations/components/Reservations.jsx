@@ -2,29 +2,14 @@ import { useState } from 'react';
 import ListTable from '../../generic/components/ListTable';
 import styles from '../styles/reservationsStyles'
 import ReservationsTopBar from './ReservationsTopBar';
-import { getItems, deleteStayReservation, idNames } from '../../utils/api';
+import { getItems } from '../../utils/api';
 import LoadingOverlay from '../../generic/components/LoadingOverlay';
 import { useEffect } from 'react';
 import AddReservationDialog from '../../dialogs/components/AddReservationDialog';
 import DeleteDialog from '../../dialogs/components/DeleteDialog';
 import ReservationDetailsDialog from '../../dialogs/components/ReservationsDetailsDialog';
-
-const labels = {
-    'stay': {
-        reservation_date: 'Data rezerwacji',
-        from_date: 'Od',
-        to_date: 'Do',
-        number_of_people: 'Liczba osób',
-        check_in: 'Zameldowanie',
-        check_out: 'Wymeldowanie',
-    },
-    'conference': {
-        reservation_date: 'Data rezerwacji',
-        from_date: 'Od',
-        to_date: 'Do',
-        number_of_people: 'Liczba osób',
-    }
-}
+import { getIdValue } from '../../utils/apiUtils';
+import { reservationLabels } from '../../utils/constants';
 
 const Reservations = ({ workerId }) => {
 
@@ -95,7 +80,7 @@ const Reservations = ({ workerId }) => {
 
     const handleDelete = (item) => {
         const endpoint = `reservations/${toggleKey}reservation`;
-        deleteStayReservation(endpoint, item[idNames[endpoint]]).then(_ => {
+        deleteItem(endpoint, getIdValue(endpoint, item)).then(_ => {
             setDeleteDialogOpen(false);
             refresh();
         })
@@ -108,7 +93,7 @@ const Reservations = ({ workerId }) => {
                 ? <LoadingOverlay laoding={loading} />
                 : <ListTable 
                     items={items} 
-                    labels={labels[toggleKey]} 
+                    labels={reservationLabels[toggleKey]} 
                     admin={true} 
                     onUpdateButtonClick={onEditButtonClick}
                     onDeleteButtonClick={onDeleteButtonClick}

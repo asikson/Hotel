@@ -1,7 +1,8 @@
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addReservationDialogStyles';
-import { idNames, addReservation, updateReservation, addClient, getFreeRooms } from '../../utils/api';
+import { addReservation, updateReservation, addClient, getFreeRooms } from '../../utils/api';
+import { getIdValue } from '../../utils/apiUtils';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -65,7 +66,7 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
     };
 
     const handleUpdate = () => { 
-        updateReservation(type, item[idNames[`reservations/${type}reservation`]], clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
+        updateReservation(type, getIdValue(`reservations/${type}reservation`, item), clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
             cleanUp();
             setOpen(false);
         });
@@ -117,10 +118,11 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
                 onChange={e => setNumOfPeople(e.target.value)}
             />
             <GenericSelect 
+                styles={styles.input}
                 items={freeRooms}
                 itemId={roomId}
                 setItemId={setRoomId}
-                label='pokój'
+                label={type === 'stay' ? 'pokój' : 'salę'}
                 createItem={createRoomItem}
             />
             <div style={styles.sideToSide}>

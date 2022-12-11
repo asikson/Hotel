@@ -1,3 +1,5 @@
+import { snowWhite, black } from "../../styles/constants";
+
 const styles = {
     dialog: {
         position: 'fixed',
@@ -6,7 +8,7 @@ const styles = {
         overflowY: 'auto',
         height: '170px', 
         width: '25%', 
-        background: '#ffffff', 
+        background: snowWhite, 
         borderRadius: '25px',
     },
     button: {
@@ -16,7 +18,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#000000',
+        color: black,
         margin: '20px'
     },
     container: {

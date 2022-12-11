@@ -1,6 +1,8 @@
+import { black, snowWhite } from "../../styles/constants";
+
 const styles = {
     input: {
-        backgroundColor: '#ffffff',
+        backgroundColor: snowWhite,
         width: '220px',
         height: '60px',
         marginBottom: '20px',
@@ -12,7 +14,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#000000',
+        color: black,
         margin: '15px'
     },
     container: {

@@ -1,5 +1,4 @@
 import { FormControl, FormLabel, Select } from "@mui/material";
-import { getItems } from "../../utils/api";
 
 const GenericSelect = ({items, itemId, setItemId, createItem, label}) => {
 
@@ -11,7 +10,7 @@ const GenericSelect = ({items, itemId, setItemId, createItem, label}) => {
                 onChange={e => setItemId(e.target.value)}
                 color='warning'
             >
-                {items.map(item => createItem(getItems))}
+                {items.map(item => createItem(item))}
             </Select>
         </FormControl>
     )

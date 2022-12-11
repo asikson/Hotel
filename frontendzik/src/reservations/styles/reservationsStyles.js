@@ -1,3 +1,5 @@
+import { black } from "../../styles/constants";
+
 const styles = {
     container: {
         width: '100%',
@@ -34,7 +36,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#000000',
+        color: black,
         marginRight: '15px',
         margin: '10px'
     },
