@@ -38,7 +38,7 @@ class Workers(models.Model):
     id_worker = models.AutoField(primary_key=True)
     name = models.CharField(max_length=25)
     surname = models.CharField(max_length=25)
-    priviliges = models.IntegerField()
+    priviliges = models.BooleanField()
 
     class Meta:
         app_label =  'users'
