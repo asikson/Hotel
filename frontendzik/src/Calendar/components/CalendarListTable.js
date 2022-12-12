@@ -3,7 +3,7 @@ import { Paper, TableBody, TableContainer, Table, TableHead, TableCell, TableRow
 import { StyledTableCell, StyledTableRow } from '../../generic/styles/styled';
 
 
-const ShowListTable = ({items, labels}) => {
+const CalendarListTable = ({items, labels}) => {
 
     const columns = items.length === 0 ? items : Object.keys(items[0]).filter(key => key in labels);
 
@@ -16,12 +16,6 @@ const ShowListTable = ({items, labels}) => {
         <div style={styles.listWrapper}>
             <TableContainer component={Paper} sx={{maxWidth: '100%'}}>
               <Table sx={{ minWidth: 100 }} aria-label="customized table">
-               <TableHead>
-                  <TableRow>
-                    {columns.map(createTableCell)}
-                    <StyledTableCell />
-                  </TableRow>
-                </TableHead>
 
                 <TableBody>
                   {items.map((item) => (
@@ -39,4 +33,4 @@ const ShowListTable = ({items, labels}) => {
     )
 }
 
-export default ShowListTable;
+export default CalendarListTable;

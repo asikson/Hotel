@@ -84,14 +84,10 @@ const styles = {
     },
 
     calendarBody: {
-        //height: 'calc(100% - 27px - 40px)',
+        height: '100%',
         display: 'grid',
         gridTemplateColumns: 'repeat(7, 1fr)',
-        gridTemplateRows: 'repeat(${({fourCol}) => (fourCol ? 4 : 5)}, 1fr)'
-    },
-
-    styledDay: {
-        border: '1px solid'
+        //gridTemplateRows: 'repeat(${({fourCol}) => (fourCol ? 4 : 5)}, 1fr)'
     },
 
     styledEvent: {
@@ -101,6 +97,32 @@ const styles = {
         color: 'white',
         padding: '2px',
         borderRadius: '8px'
+    },
+
+    styledDay: {
+        border: '2px solid',
+    },
+
+    styledWeek: {
+        textAlign: 'center',
+        fontSize: '20px',
+        background: '#000000',
+        color: 'white'
+    },
+
+    styledHeader: {
+        fontSize: '20px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gridGap: '20',
+        marginTop: '60px'
+    },
+
+    styledBodyList: {
+        border: '2px solid',
+        display: "grid", 
+        //gridTemplateColumns: 'repeat(7, 1fr)',
+        //gridTemplateRows: 'repeat(7, 1 fr)',
     },
     
 }

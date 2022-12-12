@@ -11,6 +11,7 @@ const Navigation = ({setKey, login, pageKey, admin}) => {
     return (
         <div style={styles.navigationBar}>
             <div style={styles.buttonsLayout}>
+                
                 <NavigationButton label={'Kalendarz'} buttonKey={'calendar'} pageKey={pageKey} onClick={() => setKey('calendar')}/>
                 <NavigationButton label={'Rezerwacje'} buttonKey={'reservations'} pageKey={pageKey} onClick={() => setKey('reservations')} />
                 <NavigationButton label={'Pokoje'} buttonKey={'rooms'} pageKey={pageKey} onClick={() => setKey('rooms')} />

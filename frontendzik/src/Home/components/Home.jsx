@@ -10,6 +10,7 @@ import Reservations from '../../reservations/components/Reservations';
 import MerryChristmas from './MerryChristmas';
 import { MOCEVENTS } from '../../Calendar/components/const';
 
+
 const Home = () => {
     const { login } = useAuth();
     const workerId = 1;
@@ -21,7 +22,7 @@ const Home = () => {
                 return <AdminPanel/>
 
             case 'calendar':
-                return <Calendar workerId={workerId} startingDate={new Date()} eventsArr={MOCEVENTS}/>    
+              return <Calendar workerId={workerId} startingDate={new Date()} eventsArr={MOCEVENTS}/>   
             case 'rooms':
                 return <GenericList pageKey='rooms/rooms'/>
             case 'conference_rooms':
