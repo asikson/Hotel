@@ -1,7 +1,8 @@
 import random
+from copy import copy
 from copy import deepcopy
-import Individual
-import Population
+from .Individual import *
+from .Population import *
 
 
 # Selekcja turniejowa
@@ -10,13 +11,13 @@ def tournament_selection(population, tour):
 
     for i in range(0, 2):
         tournament_list = []
-        papulation_tmp = deepcopy(population)
+        papulation_tmp = copy(population)
 
         for j in range(0, tour):
             idx = random.choice(papulation_tmp)
             tournament_list.append(idx)
             papulation_tmp.remove(idx)
-        best_individual = Individual.Individual([], 100000000.0)
+        best_individual = Individual([], 100000000.0)
 
         for k in tournament_list:
             if (k.fitness < best_individual.fitness):
@@ -31,7 +32,7 @@ def OX(parents, rooms, price):
     parent0 = deepcopy(parents[0])
     parent1 = deepcopy(parents[1])
 
-    child = Individual.Individual([], 0.0)
+    child = Individual([], 0.0)
 
     # wylosowanie puntku poczatkowe i koncowego, w ktorych genom zostanie pociety
     x1 = random.randint(0, len(parents[0].genotype) - 2)
@@ -54,7 +55,7 @@ def OX(parents, rooms, price):
         if i in parent1.genotype:
             parent1.genotype.remove(i)
 
-    second_parent = deepcopy(parent1.genotype)
+    second_parent = copy(parent1.genotype)
 
     # uzupełnienie potomka miastami z drugiego rodzica
     idx = 0
@@ -68,7 +69,7 @@ def OX(parents, rooms, price):
             genotype_child.append(second_parent[idx])
             idx += 1
     child.genotype = genotype_child
-    child.fitness = Population.evaluation(rooms, genotype_child, price)
+    child.fitness = evaluation(rooms, genotype_child, price)
     return child
 
 
@@ -84,6 +85,6 @@ def mutation(child, rooms, price):
 
     # podmiana elementow
     child.genotype[x1], child.genotype[x2] = child.genotype[x2], child.genotype[x1]
-    child.fitness = Population.evaluation(rooms, child.genotype, price)
+    child.fitness = evaluation(rooms, child.genotype, price)
     return child
 

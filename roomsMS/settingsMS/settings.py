@@ -15,7 +15,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '0.0.0.0',
-    'localhost'
+    'localhost',
+    'rooms'
 ]
 
 
@@ -32,6 +33,11 @@ INSTALLED_APPS = [
     'rooms',
     'django_filters',
 ]
+
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'rooms'
+    },}
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS':(
