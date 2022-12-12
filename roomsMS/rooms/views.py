@@ -32,12 +32,12 @@ class RoomsList(generics.ListAPIView):
     # API endpoint that allows Rooms to be viewed.
     queryset = Rooms.objects.all()
     serializer_class = RoomsSerializer
-    filterset_fields = ['id_room','number_of_people','name',"standard"]
+    filterset_fields = ['id_room','number_of_people','name',"standard", "price", "clean_price"]
 
 class VacanciesList(generics.ListAPIView):
     # API endpoint that allows free Rooms to be viewed.
     serializer_class = RoomsSerializer
-    filterset_fields = ['id_room','number_of_people','name',"standard"]
+    filterset_fields = ['id_room','number_of_people','name',"standard", "price", "clean_price"]
     
     def get_queryset(self):
         from_d = self.kwargs["from_d"]

@@ -12,7 +12,7 @@ gen = 100  # ilosc pokolen
 Px = 0.7  # prawdopodobienstwo krzyzowania
 Pm = 0.1  # prawdopodobienstwo mutacji
 Tour = 5  # rozmiar turnieju
-
+#rooms = free_rooms['name']
 
 def genetic_algorithm(rooms, pop_size, gen, Px, Pm, Tour):
     population = Population.generate_population(people, rooms, l_rooms, price, pop_size)
