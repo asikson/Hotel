@@ -18,6 +18,8 @@ class Rooms(models.Model):
     number_of_people = models.IntegerField(validators=[MinValueValidator(1)])
     name = models.CharField(max_length=25)
     standard = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    price = models.IntegerField(validators=[MinValueValidator(1)])
+    clean_price = models.IntegerField(validators=[MinValueValidator(1)])
 
     class Meta:
         managed = True
