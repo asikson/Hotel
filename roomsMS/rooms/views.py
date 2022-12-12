@@ -8,16 +8,17 @@ from .apis import *
 
 def get_reservations_ids(from_d, to_d):
         results = []
-        url = "http://0.0.0.0:{}/reservations/stayreservation/{}/{}".format(reservationsPort,from_d, to_d)
+        url = "http://reservations:{}/reservations/stayreservation/{}/{}".format(reservationsPort,from_d, to_d)
         api_call = requests.get(url, headers={}).json()
         for record in api_call:
             results.append(record["id_stay"])
+            print(results)
         return results
 
 def get_rooms_ids_from_reservations_ids(reservations):
         results = []
         for reservation in reservations:
-            url = "http://0.0.0.0:{}/reservations/stayroomreservation/?id_stay={}".format(reservationsPort, reservation) 
+            url = "http://reservations:{}/reservations/stayroomreservation/?id_stay={}".format(reservationsPort, reservation) 
             api_call = requests.get(url, headers={}).json()
             for record in api_call:
                 results.append(record["id_room"])
@@ -32,12 +33,12 @@ class RoomsList(generics.ListAPIView):
     # API endpoint that allows Rooms to be viewed.
     queryset = Rooms.objects.all()
     serializer_class = RoomsSerializer
-    filterset_fields = ['id_room','number_of_people','name',"standard", "price", "clean_price"]
+    filterset_fields = ['id_room','number_of_people','name', 'standard']
 
 class VacanciesList(generics.ListAPIView):
     # API endpoint that allows free Rooms to be viewed.
     serializer_class = RoomsSerializer
-    filterset_fields = ['id_room','number_of_people','name',"standard", "price", "clean_price"]
+    filterset_fields = ['id_room','number_of_people','name', 'standard']
     
     def get_queryset(self):
         from_d = self.kwargs["from_d"]
