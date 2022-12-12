@@ -27,18 +27,18 @@ export const getItems = async (endpoint) => {
         .then(response => response.data);
 };
 
-export const addItem = async (endpoint, name, numOfPeople, standard=null) => {
-    const payload = standard 
-        ? { name, number_of_people: numOfPeople, standard}
+export const addItem = async (endpoint, name, numOfPeople, standard=null, price=null, cost=null) => {
+    const payload = standard != null
+        ? { name, number_of_people: numOfPeople, standard, price, clean_price: cost}
         : { name, number_of_people: numOfPeople}
 
     return axios.post(reachCreateEndpoint(endpoint), payload);
 };
 
-export const updateItem = async (endpoint, id, name, numOfPeople, standard=null) => {
+export const updateItem = async (endpoint, id, name, numOfPeople, standard=null, price=null, cost=null) => {
 
     const payload = standard 
-        ? { [getIdName(endpoint)]: id, name, number_of_people: numOfPeople, standard}
+        ? { [getIdName(endpoint)]: id, name, number_of_people: numOfPeople, standard, price, clean_price: cost}
         : { [getIdName(endpoint)]: id, name, number_of_people: numOfPeople};
 
     return axios.put(reachUpdateEndpoint(endpoint, id), payload);

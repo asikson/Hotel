@@ -11,12 +11,16 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
     const [name, setName] = useState('');
     const [numOfPeople, setNumOfPeople] = useState('');
     const [standard, setStandard] = useState(null);
+    const [price, setPrice] = useState(null);
+    const [cost, setCost] = useState(null);
 
     useEffect (() => {
         if (item) {
             setName(item.name);
             setNumOfPeople(item.number_of_people);
             setStandard(item.standard || null);
+            setPrice(item.price || null);
+            setCost(item.clean_cost || null);
         }
     }, [item]);
 
@@ -25,15 +29,17 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
         setName('');
         setNumOfPeople('');
         setStandard(null);
+        setPrice(null);
+        setCost(null);
         refresh();
     }
 
     const handleAdd = () => { 
-        addItem(type, name, numOfPeople, standard).then(_ => cleanUp())
+        addItem(type, name, numOfPeople, standard, price, cost).then(_ => cleanUp())
     };
 
     const handleUpdate = () => {
-        updateItem(type, getIdValue(type, item), name, numOfPeople, standard).then(_ => cleanUp())
+        updateItem(type, getIdValue(type, item), name, numOfPeople, standard, price, cost).then(_ => cleanUp())
     };
 
     const createStandardItem = (standard) => {
@@ -59,14 +65,34 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
                 onChange={e => setNumOfPeople(e.target.value)}
             />
             {type === 'rooms/rooms'
-                ? <GenericSelect
-                    items={roomStandards}
-                    itemId={standard}
-                    label={'standard pokoju'} 
-                    setItemId={setStandard}
-                    createItem={createStandardItem}
-                />
+                ? <>
+                    <TextField
+                        style={styles.input} 
+                        type={'number'} 
+                        label={'Cena (PLN)'} 
+                        color='warning' 
+                        value={price}
+                        onChange={e => setPrice(e.target.value)}
+                    />
+                    <TextField
+                        style={styles.input} 
+                        type={'number'} 
+                        label={'Koszt przygotowania (PLN)'} 
+                        color='warning' 
+                        value={cost}
+                        onChange={e => setCost(e.target.value)}
+                    />
+                    <GenericSelect
+                        items={roomStandards}
+                        itemId={standard}
+                        label={'standard pokoju'} 
+                        setItemId={setStandard}
+                        createItem={createStandardItem}
+                    />
+                </>
+                
                 : null
+    
             }
             
             {item

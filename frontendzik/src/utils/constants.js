@@ -1,7 +1,9 @@
 const roomColumns = {
     name: 'Nazwa',
     number_of_people: 'Liczba miejsc',
-    standard: 'Standard'
+    standard: 'Standard',
+    price: 'Cena (PLN)',
+    clean_price: 'Koszt przygotowania (PLN)'
 };
 
 const conferenceRoomColumns = {

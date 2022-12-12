@@ -21,8 +21,6 @@ const GenericList = ({pageKey, admin, goBack}) => {
   const [openUpdateDialog, setUpdateDialogOpen] = useState(false);
   const [openDeleteDialog, setDeleteDialogOpen] = useState(false);
 
-  
-
   const updateLabels = () => {
     const newLabels = getLabels(pageKey);
     setLabels(newLabels);
