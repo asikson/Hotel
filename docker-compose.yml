@@ -121,6 +121,15 @@ services:
 
     volumes:
       - ./frontendzik:/app/frontendzik
+  algorithm:
+    build:
+      context: ./algorythmMS
+      dockerfile: Dockerfile
+    container_name: algorithm
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./algorythmMS:/app/algorythmMS
 volumes:
   usersdb:
     driver: local

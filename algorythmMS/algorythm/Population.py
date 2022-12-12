@@ -1,11 +1,11 @@
 import random
-from copy import deepcopy
-import Individual
+from copy import copy
+from .Individual import *
 
 
 def genotype_search(size, rooms, l_rooms):
-    rooms = deepcopy(rooms)
-    l_rooms = deepcopy(l_rooms)
+    rooms = copy(rooms)
+    l_rooms = copy(l_rooms)
     node_list = []
     index = random.randrange(0, len(rooms))
     start_node = rooms[index]
@@ -33,8 +33,8 @@ def evaluation(rooms, node_list, price):
 def generate_population(people, rooms, l_rooms, price, size):
     population = []
     for i in range(0, size):
-        individual = Individual.Individual([], 0.0)
-        genotype = genotype_search(len(people), rooms, l_rooms)
+        individual = Individual([], 0.0)
+        genotype = genotype_search(people, rooms, l_rooms)
         individual.genotype = genotype
         individual.fitness = evaluation(rooms, genotype, price)
         population.append(individual)

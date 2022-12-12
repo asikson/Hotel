@@ -6,6 +6,5 @@ class Individual:
     def __lt__(self, other):
         return self.fitness < other.fitness
 
-    def print(self):
-        print("genotype: ", self.genotype)
-        print("fitness: ", self.fitness)
+    def get(self):
+        return self.genotype
