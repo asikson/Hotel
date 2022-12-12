@@ -101,10 +101,10 @@ export const getWorkerById = async (id) => {
     return axios.get(reachEndpoint(`users/workers/?id_worker=${id}`));
 };
 
-export const getFreeRooms = async (dateFrom, dateTo) => {
+export const getFreeRooms = async (dateFrom, dateTo, standard) => {
     const from = convertToShortFormat(dateFrom);
     const to = convertToShortFormat(dateTo);
-    return axios.get(reachEndpoint(`rooms/rooms/vacancies/${from}/${to}`));
+    return axios.get(reachEndpoint(`rooms/rooms/vacancies/${from}/${to}/?standard=${standard}`));
 };
 
 export const addStayReservation = async (reservationId, roomId) => {
@@ -121,4 +121,4 @@ export const getRoomForStay = async (reservationId) => {
 
 export const getRoomById = async (roomId) => {
     return axios.get(reachEndpoint(`rooms/rooms/?id_room=${roomId}`)); 
-}
+};

@@ -31,8 +31,8 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
     }, [item]);
 
     useEffect(() => {
-        if (dateFrom && dateTo) {
-            getFreeRooms(dateFrom, dateTo).then(response => {
+        if (dateFrom && dateTo && standard) {
+            getFreeRooms(dateFrom, dateTo, standard).then(response => {
                 setFreeRooms(response.data);
             })
         }

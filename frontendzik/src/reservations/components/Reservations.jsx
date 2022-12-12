@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ListTable from '../../generic/components/ListTable';
 import styles from '../styles/reservationsStyles'
 import ReservationsTopBar from './ReservationsTopBar';
-import { getItems } from '../../utils/api';
+import { deleteItem, getItems } from '../../utils/api';
 import LoadingOverlay from '../../generic/components/LoadingOverlay';
 import { useEffect } from 'react';
 import AddReservationDialog from '../../dialogs/components/AddReservationDialog';
@@ -81,9 +81,12 @@ const Reservations = ({ workerId }) => {
     const handleDelete = (item) => {
         const endpoint = `reservations/${toggleKey}reservation`;
         deleteItem(endpoint, getIdValue(endpoint, item)).then(_ => {
-            setDeleteDialogOpen(false);
-            refresh();
-        })
+            const key = toggleKey === 'stay' ? getIdValue('rooms/rooms') : getIdValue('rooms/conferencerooms');
+            deleteItem(`reservations/${toggleKey}roomreservation/${item.key}`).then(_ => {
+                setDeleteDialogOpen(false);
+                refresh();
+            });
+        });
     };
 
     return (
