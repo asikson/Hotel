@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getCurrentDate, convertToShortFormat, getPort, getIdName, getPrefix } from './apiUtils';
 
-const localhost = 'http://127.0.0.1:'
+const localhost = 'http://0.0.0.0:'
 
 const reachEndpoint = (endpoint) => {
     const prefix = getPrefix(endpoint);
