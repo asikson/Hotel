@@ -1,11 +1,13 @@
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addReservationDialogStyles';
-import { idNames, addReservation, updateReservation, addClient } from '../../utils/api';
+import { addReservation, updateReservation, addClient, getFreeRooms, addStayReservation } from '../../utils/api';
+import { getIdValue } from '../../utils/apiUtils';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import ClientSelect from './ClientSelect';
+import { MenuItem } from '@mui/material';
+import GenericSelect from './GenericSelect';
 
 const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) => {
 
@@ -14,8 +16,10 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
     const [numOfPeople, setNumOfPeople] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
+    const [roomId, setRoomId] = useState(null);
     const [newClient, setNewClient] = useState(false);
     const [clientId, setClientId] = useState(null);
+    const [freeRooms, setFreeRooms] = useState([]);
 
     useEffect(() => {
         if (item) {
@@ -25,6 +29,14 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
             setClientId(item.id_client);
         }
     }, [item]);
+
+    useEffect(() => {
+        if (dateFrom && dateTo) {
+            getFreeRooms(dateFrom, dateTo).then(response => {
+                setFreeRooms(response.data);
+            })
+        }
+    }, [dateFrom, dateTo]);
 
     const cleanUp = () => {
         setDateFrom('');
@@ -37,9 +49,11 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
     const handleAddReservation = async (newClientId) => {
         const reservationClient = newClientId ? newClientId : clientId;
 
-        return addReservation(type, reservationClient, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
-            cleanUp();
-            setOpen(false);
+        return addReservation(type, reservationClient, workerId, dateFrom, dateTo, numOfPeople).then(response => {
+            addStayReservation(response.data.id_stay, roomId).then(_ => {
+                cleanUp();
+                setOpen(false);
+            })
         });
     }
 
@@ -54,11 +68,18 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
     };
 
     const handleUpdate = () => { 
-        updateReservation(type, item[idNames[`reservations/${type}reservation`]], clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
+        updateReservation(type, getIdValue(`reservations/${type}reservation`, item), clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
             cleanUp();
             setOpen(false);
         });
     };
+
+    const createClientItem = (client) => {
+        const label = `${client.name} ${client.surname}`;
+        return <MenuItem value={client.id_client}>{label}</MenuItem>
+    };
+
+    const createRoomItem = (room) => <MenuItem value={room.id_room}>{room.name}</MenuItem>;
 
     return (
         <div style={styles.container}>
@@ -98,6 +119,14 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
                 value={numOfPeople}
                 onChange={e => setNumOfPeople(e.target.value)}
             />
+            <GenericSelect 
+                styles={styles.input}
+                items={freeRooms}
+                itemId={roomId}
+                setItemId={setRoomId}
+                label={type === 'stay' ? 'pokój' : 'salę'}
+                createItem={createRoomItem}
+            />
             <div style={styles.sideToSide}>
                 {newClient
                     ? <div style={styles.newClientForm}>
@@ -118,7 +147,13 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
                             onChange={e => setSurname(e.target.value)}
                         />
                     </div>
-                    : <ClientSelect clients={clients} clientId={clientId} setClientId={setClientId}/>
+                    : <GenericSelect 
+                        items={clients}
+                        itemId={clientId} 
+                        setItemId={setClientId} 
+                        label='klienta'
+                        createItem={createClientItem}
+                    />
                 }
                 <div style={styles.newClientForm}>
                     <FormControlLabel 

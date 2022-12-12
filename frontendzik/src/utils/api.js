@@ -1,83 +1,73 @@
 import axios from 'axios';
+import { getCurrentDate, convertToShortFormat, getPort, getIdName, getPrefix } from './apiUtils';
 
-const localhost = 'http://127.0.0.1:8000/';
-
-export const idNames = {
-    'rooms/rooms': 'id_room',
-    'rooms/conferencerooms': 'id_conference_room',
-    'users/workers': 'id_worker',
-    'reservations/stayreservation': 'id_stay',
-    'reservations/conferencereservation': 'id_conference'
-}
+const localhost = 'http://0.0.0.0:'
 
 const reachEndpoint = (endpoint) => {
-    return `${localhost}${endpoint}`;
+    const prefix = getPrefix(endpoint);
+    const port = getPort(prefix);
 
+    return `${localhost}${port}/${endpoint}`;
 };
+
+const reachCreateEndpoint = (endpoint) => {
+    return `${reachEndpoint(endpoint)}/create/`;
+};
+
+const reachUpdateEndpoint = (endpoint, id) => {
+    return `${reachEndpoint(endpoint)}/update/${id}/`;
+};
+
+const reachDeleteEndpoint = (endpoint, id) => {
+    return `${reachEndpoint(endpoint)}/delete/${id}/`;
+}
 
 export const getItems = async (endpoint) => {
     return axios.get(reachEndpoint(endpoint))
         .then(response => response.data);
 };
 
-export const addItem = async (endpoint, name, numOfPeople) => {
-    return axios.post(`${reachEndpoint(endpoint)}/create/`,
-        { name: name, number_of_people: numOfPeople}
-    );
+export const addItem = async (endpoint, name, numOfPeople, standard=null) => {
+    const payload = standard 
+        ? { name, number_of_people: numOfPeople, standard}
+        : { name, number_of_people: numOfPeople}
+
+    return axios.post(reachCreateEndpoint(endpoint), payload);
 };
 
-export const updateItem = async (endpoint, id, name, numOfPeople) => {
-    return axios.put(`${reachEndpoint(endpoint)}/update/${id}/`,
-        {[idNames[endpoint]]: id, name: name, number_of_people: numOfPeople}
-    );
+export const updateItem = async (endpoint, id, name, numOfPeople, standard=null) => {
+
+    const payload = standard 
+        ? { [getIdName(endpoint)]: id, name, number_of_people: numOfPeople, standard}
+        : { [getIdName(endpoint)]: id, name, number_of_people: numOfPeople};
+
+    return axios.put(reachUpdateEndpoint(endpoint, id), payload);
 };
 
 export const deleteItem = async (endpoint, id) => {
-    return axios.delete(`${reachEndpoint(endpoint)}/delete/${id}/`);
+    return axios.delete(reachDeleteEndpoint(endpoint, id));
 };
-1
+
 export const addUser = async (name, surname, priviliges) => {
-    return axios.post(`${reachEndpoint('users/workers/create/')}`,
+    return axios.post(reachCreateEndpoint('users/workers'),
         { name: name, surname: surname, priviliges: priviliges}
     );
 };
 
 export const updateUser = async (id, name, surname, priviliges) => {
-    return axios.put(`${reachEndpoint('users/workers/update/')}${id}/`,
-        { [idNames['users/workers']]: id, name: name, surname: surname, priviliges: priviliges}
+    return axios.put(reachUpdateEndpoint('users/workers', id),
+        { [getIdName('users/workers')]: id, name: name, surname: surname, priviliges: priviliges}
     );
 };
 
 export const addClient = async (name, surname) => {
-    return axios.post(`${reachEndpoint('users/clients/create/')}`,
+    return axios.post(reachCreateEndpoint('users/clients'),
         { name: name, surname: surname }
     );
 };
 
-const transformDate = (date) => {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');;
-    const year = date.getFullYear();
-
-    return `${year}-${month}-${day}`;
-};
-
-const getCurrentDate = () => {
-    const date = new Date();
-    return transformDate(date);
-};
-
-const convertToShortFormat = (date) => {
-    if (typeof(date) === 'string') {
-        return date;
-    }
-
-    const newDate = new Date(date.toString())
-    return transformDate(newDate);
-};
-
 export const addReservation = async (type, clientId, workerId, dateFrom, dateTo, numOfPeople) => {
-    return axios.post(`${reachEndpoint(`reservations/${type}reservation/create/`)}`,
+    return axios.post(reachCreateEndpoint(`reservations/${type}reservation`),
         { 
             id_client: clientId, 
             id_worker: workerId, 
@@ -90,9 +80,9 @@ export const addReservation = async (type, clientId, workerId, dateFrom, dateTo,
 };
 
 export const updateReservation = async (type, id, clientId, workerId, dateFrom, dateTo, numOfPeople) => {
-    return axios.put(`${reachEndpoint(`reservations/${type}reservation/update/`)}${id}/`,
+    return axios.put(reachUpdateEndpoint(`reservations/${type}reservation`, id),
         {
-            [idNames[`reservations/${type}reservation`]]: id, 
+            [getIdName(`reservations/${type}reservation`)]: id, 
             id_client: clientId, 
             id_worker: workerId, 
             reservation_date: getCurrentDate(), 
@@ -103,6 +93,32 @@ export const updateReservation = async (type, id, clientId, workerId, dateFrom, 
     );
 };
 
-export const deleteStayReservation = async (endpoint, id) => {
-    return axios.delete(`${reachEndpoint(endpoint)}/delete/${id}/`);
+export const getClientById = async (id) => {
+    return axios.get(reachEndpoint(`users/clients/?id_client=${id}`));
 };
+
+export const getWorkerById = async (id) => {
+    return axios.get(reachEndpoint(`users/workers/?id_worker=${id}`));
+};
+
+export const getFreeRooms = async (dateFrom, dateTo) => {
+    const from = convertToShortFormat(dateFrom);
+    const to = convertToShortFormat(dateTo);
+    return axios.get(reachEndpoint(`rooms/rooms/vacancies/${from}/${to}`));
+};
+
+export const addStayReservation = async (reservationId, roomId) => {
+    const payload ={
+        id_stay: reservationId,
+        id_room: roomId
+    }
+    return axios.post(reachCreateEndpoint('reservations/stayroomreservation'), payload);
+};
+
+export const getRoomForStay = async (reservationId) => {
+    return axios.get(reachEndpoint(`reservations/stayroomreservation/?id_stay=${reservationId}`));
+};
+
+export const getRoomById = async (roomId) => {
+    return axios.get(reachEndpoint(`rooms/rooms/?id_room=${roomId}`)); 
+}

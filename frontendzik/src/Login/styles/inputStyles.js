@@ -1,10 +1,12 @@
+import { white } from "../../styles/constants";
+
 const styles = {
     label: {
         fontSize: '25px'
     },
 
     input: {
-        backgroundColor: '#f1f1f1',
+        backgroundColor: white,
         width: '100%',
         height: '80px'
     },

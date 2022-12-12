@@ -1,4 +1,5 @@
 import background from './background.jpg';
+import { black, orange } from './constants';
 
 const commonStyles = {
     page: {
@@ -13,8 +14,8 @@ const commonStyles = {
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        width: "100vw",
-        height: "100vh",
+        width: '100vw',
+        height: '100vh'
     },
 
     spaceEvenlycolumn: {
@@ -41,34 +42,41 @@ const commonStyles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#000000',
+        color: black,
+        backgroundColor: orange,
+        opacity: 1,
     },
 
     button: {
         borderRadius: '25px',
-        width: '15%',
-        height: '70%',
+        width: '170px',
+        height: '70px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#000000',
+        color: black,
         marginRight: '15px'
     },
 
     coloredButton: {
         borderRadius: '25px',
-        width: '15%',
-        height: '70%',
+        width: '170px',
+        height: '70px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#000000',
-        backgroundColor: '#FFA07A',
+        color: black,
+        backgroundColor: orange,
+        opacity: 1,
         marginRight: '15px'
     },
 
     label: {
         fontSize: '25px'
+    },
+
+    labelText: {
+        fontSize: '20px'
     }
 };
 

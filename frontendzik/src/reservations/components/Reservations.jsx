@@ -2,32 +2,14 @@ import { useState } from 'react';
 import ListTable from '../../generic/components/ListTable';
 import styles from '../styles/reservationsStyles'
 import ReservationsTopBar from './ReservationsTopBar';
-import { getItems, deleteStayReservation, idNames } from '../../utils/api';
+import { getItems } from '../../utils/api';
 import LoadingOverlay from '../../generic/components/LoadingOverlay';
 import { useEffect } from 'react';
 import AddReservationDialog from '../../dialogs/components/AddReservationDialog';
 import DeleteDialog from '../../dialogs/components/DeleteDialog';
-
-const labels = {
-    'stay': {
-        reservation_date: 'Data rezerwacji',
-        from_date: 'Od',
-        to_date: 'Do',
-        number_of_people: 'Liczba osób',
-        check_in: 'Zameldowanie',
-        check_out: 'Wymeldowanie',
-        id_client: 'Klient',
-        id_worker: 'Pracownik'
-    },
-    'conference': {
-        reservation_date: 'Data rezerwacji',
-        from_date: 'Od',
-        to_date: 'Do',
-        number_of_people: 'Liczba osób',
-        id_worker: 'Pracownik',
-        id_client: 'Klient'
-    }
-}
+import ReservationDetailsDialog from '../../dialogs/components/ReservationsDetailsDialog';
+import { getIdValue } from '../../utils/apiUtils';
+import { reservationLabels } from '../../utils/constants';
 
 const Reservations = ({ workerId }) => {
 
@@ -38,11 +20,12 @@ const Reservations = ({ workerId }) => {
     const [conferenceItems, setConferenceItems] = useState([]);
     const [clients, setClients] = useState([]);
     const [items, setItems] = useState([]);
-    const [currentItem, setCurrentItem] = useState({});
+    const [currentItem, setCurrentItem] = useState(null);
 
     const [addDialogOpen, setAddDialogOpen] = useState(false);
     const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
 
     useEffect(() => {
         refresh();
@@ -59,19 +42,19 @@ const Reservations = ({ workerId }) => {
     useEffect(() => {
         const currentItems = toggleKey === 'conference' ? conferenceItems : stayItems;
         setItems(currentItems);
-        setCurrentItem({});  
+        setCurrentItem(null);  
     }, [toggleKey]);
 
     const refresh = () => {
-        getItems(`reservations/stayreservation/`).then(response => {
+        getItems(`reservations/stayreservation`).then(response => {
             setStayItems(response);
             setLoading(false);
         });
-        getItems(`reservations/conferencereservation/`).then(response => {
+        getItems(`reservations/conferencereservation`).then(response => {
             setConferenceItems(response);
             setLoading(false);
         });
-        getItems('users/clients/').then(response => {
+        getItems('users/clients').then(response => {
             setClients(response);
         });
     };
@@ -90,9 +73,14 @@ const Reservations = ({ workerId }) => {
         setDeleteDialogOpen(true);
     };
 
+    const onDetailsDialogClick = (item) => {
+        setCurrentItem(item);
+        setDetailsDialogOpen(true);
+    }
+
     const handleDelete = (item) => {
         const endpoint = `reservations/${toggleKey}reservation`;
-        deleteStayReservation(endpoint, item[idNames[endpoint]]).then(_ => {
+        deleteItem(endpoint, getIdValue(endpoint, item)).then(_ => {
             setDeleteDialogOpen(false);
             refresh();
         })
@@ -105,10 +93,11 @@ const Reservations = ({ workerId }) => {
                 ? <LoadingOverlay laoding={loading} />
                 : <ListTable 
                     items={items} 
-                    labels={labels[toggleKey]} 
+                    labels={reservationLabels[toggleKey]} 
                     admin={true} 
                     onUpdateButtonClick={onEditButtonClick}
                     onDeleteButtonClick={onDeleteButtonClick}
+                    onDetailsButtonClick={onDetailsDialogClick}
                 />
             }
             <AddReservationDialog 
@@ -133,6 +122,11 @@ const Reservations = ({ workerId }) => {
                 setOpen={setDeleteDialogOpen}
                 item={currentItem}
                 handleDelete={handleDelete}
+            />
+            <ReservationDetailsDialog
+                open={detailsDialogOpen}
+                setOpen={setDetailsDialogOpen}
+                item={currentItem}
             />
         </div>
     )

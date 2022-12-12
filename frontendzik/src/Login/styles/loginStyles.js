@@ -1,3 +1,5 @@
+import { white } from "../../styles/constants";
+
 const loginStyles = {
     container: {
         borderRadius: '25px',
@@ -7,7 +9,7 @@ const loginStyles = {
         justifyContent: 'space-evenly',
         alignItems: 'center',
         opacity: 0.75,
-        backgroundColor: '#f1f1f1'
+        backgroundColor: white
     },
 
     header: {

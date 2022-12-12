@@ -1,3 +1,5 @@
+import { black } from "../../styles/constants";
+
 const styles = {
     adminButton: {
         borderRadius: '100px',
@@ -6,7 +8,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#000000',
+        color: black,
         marginRight: '15px',
         marginTop: '30px',
         marginBottom: '30px',

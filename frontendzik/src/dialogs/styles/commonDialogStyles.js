@@ -1,3 +1,5 @@
+import { snowWhite } from "../../styles/constants";
+
 const commonDialogStyles = {
     dialog: {
         position: 'fixed',
@@ -6,29 +8,33 @@ const commonDialogStyles = {
         overflowY: 'auto',
         height: '70%', 
         width: '30%', 
-        background: '#ffffff', 
+        background: snowWhite, 
         borderRadius: '25px',
     },
+    
     topBar: {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
         height: '40px'
     },
+
     topLeft: {
-        width: '50%',
+        width: '70%',
         flexDirection: 'row',
         display: 'flex',
         justifyContent: 'flex-start',
         padding: '20px'
     },
+
     topRight: {
-        width: '50%',
+        width: '30%',
         flexDirection: 'row',
         display: 'flex',
         justifyContent: 'flex-end',
         padding: '20px'
     },
+
     basicColumn: {
         display: 'flex',
         flexDirection: 'column',
@@ -36,6 +42,7 @@ const commonDialogStyles = {
         alignItems: 'center',
         width: '100%'
     },
+
     xButton: {
         width: '40px',
         height: '40px',
@@ -44,7 +51,12 @@ const commonDialogStyles = {
         alignItems: 'center',
         borderRadius: '30px'
     },
+
     label: {
+        fontSize: '35px'
+    },
+
+    labelText: {
         fontSize: '30px'
     }
 }
