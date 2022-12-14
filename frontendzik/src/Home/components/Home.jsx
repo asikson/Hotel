@@ -22,7 +22,7 @@ const Home = () => {
                 return <AdminPanel/>
 
             case 'calendar':
-              return <Calendar workerId={workerId} startingDate={new Date()} eventsArr={MOCEVENTS}/>   
+              return <Calendar workerId={workerId}/>   
             case 'rooms':
                 return <GenericList pageKey='rooms/rooms'/>
             case 'conference_rooms':

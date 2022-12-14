@@ -24,6 +24,9 @@ const CalendarListTable = ({items, labels}) => {
                     >
                       <TableCell component="th" scope="row" >{item[columns[0]]}</TableCell>
                         {columns.slice(1).map(column => <TableCell >{item[column]}</TableCell>)}
+                        <TableCell>
+                         {/*{item[columns[1]]}*/}
+                      </TableCell>
                     </StyledTableRow>
                   ))}
                 </TableBody>

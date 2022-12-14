@@ -14,19 +14,21 @@ import { DAYS, MONTHS } from "./const";
 import { areDatesTheSame, getDateObject, getDaysInMonth, getDaysInWeek, getSortedDays, range } from "./utils";
 import {format,startOfWeek,addDays,isSameDay,lastDayOfWeek,getWeek,addWeeks,subWeeks} from "date-fns";
 import CalendarListTable from './CalendarListTable';
-
+import ListTable from '../../generic/components/ListTable';
 
 
 const labels = {
     'stay': {
-        name: 'Nazwa',
-        number_of_people: 'Liczba osób',
+        id_stay: 'Numer id',
+        from_date : 'Rezerwaja od',
+        to_date: 'Rezerwacja do',
     },
     'conference': {
         name: 'Nazwa',
         number_of_people: 'Liczba osób',
     },
 }
+
 
 const Calendar = ({ workerId, startingDate, eventsArr}) => {
 
@@ -64,7 +66,8 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
     }, [toggleKey]);
 
     const refresh = () => {
-        getItems(`rooms/rooms/`).then(response => {
+        //getItems(`rooms/rooms/`).then(response => {
+        getItems(`reservations/stayreservation/`).then(response => {
             setStayItems(response);
             setLoading(false);
         });
@@ -74,7 +77,7 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
         });
     };
 
-    const nextMonth = () => {
+    /*const nextMonth = () => {
         if(currentMonth < 11){
             setCurrentMonth((prev) => prev + 1)
         } 
@@ -92,7 +95,7 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
             setCurrentMonth(11)
             setCurrentYear((prev) => prev - 1)
         }
-    };
+    };*/
 
   ///////
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -181,21 +184,84 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
           {days}
         </div>
       );
-      days = [];
+      //days = [];
     }
     return <div className="body" >
         {rows}
-       
-        <div style={{border: '2px solid'}}>
+        
+        {/*{console.log("test", days)}*/}
+
+       {/* <div style={{border: '2px solid'}}>
         <CalendarListTable 
             items={items} 
             labels={labels[toggleKey]}
-                /></div>
+  /></div>*/}
         
    </div>
   };
 
-  ///////  
+  ///////// create 3 obiect JSON and show in table 
+  const[rooms, setRooms] = useState([])
+  const[reservation_rooms, setReservationRooms] = useState([])
+  const [stay_rooms, setStayRooms] = useState([])
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const url_rooms = "http://127.0.0.1:8000/rooms/rooms/"
+  const url_reservation_rooms = 'http://127.0.0.1:8000/reservations/stayreservation/'
+  const url_stay_rooms = 'http://127.0.0.1:8000/reservations/stayroomreservation/'
+
+const fetchDataRooms = () => {
+  setIsLoading(true)
+  fetch(url_rooms)
+  .then(response => {
+    return response.json()
+  })
+  .then(data => {
+    setIsLoading(false)
+    setRooms(data)
+  })
+}
+
+
+const fetchDataReservationRooms = () => {
+  setIsLoading(true)
+  fetch(url_reservation_rooms)
+  .then(response => {
+    return response.json()
+  })
+  .then(data => {
+    setIsLoading(false)
+    setReservationRooms(data)
+  })
+}
+
+const fetchDataStayRooms = () => {
+  setIsLoading(true)
+  fetch(url_stay_rooms)
+  .then(response => {
+    return response.json()
+  })
+  .then(data => {
+    setIsLoading(false)
+    setStayRooms(data)
+  })
+}
+
+
+useEffect(() => {
+  fetchDataRooms()
+  fetchDataReservationRooms()
+  fetchDataStayRooms()
+}, [])
+
+const getFormater = (dateStr) => {
+  const date = new Date(dateStr)
+  return  date.toLocaleDateString()//date.getDate() 
+}
+
+
+  ///////
 
     return (
         <div style={styles.container}>
@@ -210,7 +276,7 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
 
                 <div style={styles.topBarReservation}>
                         <div style={styles.topLeftReservation}>
-                            {loading
+                           {/*} {loading
                                 ? <LoadingOverlay laoding={loading} />
                                 : <ShowListTable 
                                 items={items} 
@@ -218,8 +284,8 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
                                 admin={true} 
                                 />
                                 }
-                        </div>     
-
+                        </div>   
+                
                         <div style={styles.topRightReservation}>   
                            {/*} <div style={styles.sevenColGrid}>
                                 {DAYS.map((day) => <div style={styles.headDay}>{day}</div>)}
@@ -249,6 +315,63 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
                                     </div>
                                  ))}
                             </div>*/}
+
+                            {isLoading
+                                ? <LoadingOverlay laoding={isLoading} />
+                                :  <tbody>
+                                    <tr>
+                                        <th>Nazwa</th>
+                                        <th>Ilość osób</th>
+                                      
+                                    </tr>
+                                    {rooms.map((rooms, id_room) => (
+                                        <tr key={id_room}>
+                                            <td>{rooms.name}</td>
+                                            <td>{rooms.number_of_people}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                }
+
+                                {isLoading
+                                ? <LoadingOverlay loading={isLoading} />
+                                : <tbody>
+                                <tr>
+                                        <th>  Data rezerwacji</th>
+                                        <th>Nowy format daty</th>
+                                        <th> Ilość osób</th>
+                                        <th> Rezerwacja od</th>
+                                        <th> Rezerwacja do</th>
+                                      
+                                    </tr>
+                                    {reservation_rooms.map((reservation_rooms, id_stay) => (
+                                        <tr key={id_stay}>
+                                            <td>{reservation_rooms.reservation_date}</td>
+                                            {getFormater(reservation_rooms.reservation_date)}
+                                            <td>{reservation_rooms.number_of_people}</td>
+                                            <td style={{backgroundColor: "blue"}}>{reservation_rooms.from_date}</td>
+                                            <td>{reservation_rooms.to_date}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                }
+
+                                {isLoading 
+                                ? <LoadingOverlay loading={isLoading}/>
+                                : <tbody>
+                                <tr>
+                                        <th> Id rzerwacji </th>
+                                        <th> Id pokoju</th>
+                                      
+                                    </tr>
+                                    {stay_rooms.map((stay_rooms, id_stay) => (
+                                        <tr key={id_stay}>
+                                            <td>{stay_rooms.id_stay}</td>
+                                            <td>{stay_rooms.id_room}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                }
 
                                 <div>
                                 {renderHeader()}
