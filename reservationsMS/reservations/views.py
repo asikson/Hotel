@@ -78,6 +78,22 @@ class ConferenceReservationList(generics.ListAPIView):
     serializer_class = ConferenceReservationSerializer
     filterset_fields = ['id_conference']
 
+class ConferenceReservationListFiltr(generics.ListAPIView):
+    # API endpoint that allows StayReservation to be viewed.
+    serializer_class = ConferenceReservationSerializer
+    def get_queryset(self):
+        from_d = self.kwargs["from_d"]
+        to_d = self.kwargs["to_d"]
+        from_date_in_range = Q(from_date__range=[from_d, to_d])
+        to_date_in_range = Q(to_date__range=[from_d, to_d])
+        from_date_before = Q(from_date__lte = from_d)
+        to_date_after = Q(to_date__gte = to_d)
+        return ConferenceReservation.objects.filter(
+            from_date_in_range
+            | to_date_in_range
+            | (from_date_before & to_date_after)
+        )
+
 class ConferenceReservationUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a ConferenceReservation record to be updated.
     queryset = ConferenceReservation.objects.all()
