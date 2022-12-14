@@ -4,7 +4,14 @@ import { Paper, TableBody, TableContainer, Table, TableHead, TableCell, TableRow
 import { StyledTableCell, StyledTableRow } from '../styles/styled';
 import { mapValue } from '../../utils/constants';
 
-const ListTable = ({items, labels, admin, onDetailsButtonClick, onUpdateButtonClick, onDeleteButtonClick}) => {
+const ListTable = (
+  {items, 
+  labels, 
+  admin, 
+  onDetailsButtonClick, 
+  onUpdateButtonClick,
+  onDeleteButtonClick
+}) => {
 
     const columns = items.length === 0 ? items : Object.keys(items[0]).filter(key => key in labels);
 
@@ -42,9 +49,13 @@ const ListTable = ({items, labels, admin, onDetailsButtonClick, onUpdateButtonCl
                       </TableCell>
                       {admin &&
                         <>
-                          <TableCell>
-                            <ListButton onClick={onUpdateButtonClick} item={item} label='Edytuj'/>
-                          </TableCell>
+                          {onUpdateButtonClick
+                            ? <TableCell>
+                                <ListButton onClick={onUpdateButtonClick} item={item} label='Edytuj'/>
+                              </TableCell>
+                            : null
+                          }
+                          
                           <TableCell>
                             <ListButton onClick={onDeleteButtonClick} item={item} label='Usuń'/>
                           </TableCell>

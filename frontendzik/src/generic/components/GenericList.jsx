@@ -8,6 +8,7 @@ import AddDialog from '../../dialogs/components/AddDialog';
 import DeleteDialog from '../../dialogs/components/DeleteDialog';
 import ListTable from './ListTable';
 import TopBar from './TopBar';
+import EmptyPage from '../../Home/components/EmptyPage';
 
 const GenericList = ({pageKey, admin, goBack}) => {
 
@@ -71,6 +72,9 @@ const GenericList = ({pageKey, admin, goBack}) => {
     refresh();
   }, [pageKey]);
 
+  if (!loading && items.length === 0 && !admin) {
+    return <EmptyPage />
+  }
 
   return (
     <div style={styles.container}>

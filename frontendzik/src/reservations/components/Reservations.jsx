@@ -10,6 +10,7 @@ import DeleteDialog from '../../dialogs/components/DeleteDialog';
 import ReservationDetailsDialog from '../../dialogs/components/ReservationsDetailsDialog';
 import { getIdValue } from '../../utils/apiUtils';
 import { reservationLabels } from '../../utils/constants';
+import AlgorithmDialog from '../../dialogs/components/AlgorithmDialog';
 
 const Reservations = ({ workerId }) => {
 
@@ -23,9 +24,9 @@ const Reservations = ({ workerId }) => {
     const [currentItem, setCurrentItem] = useState(null);
 
     const [addDialogOpen, setAddDialogOpen] = useState(false);
-    const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+    const [algorithmDialogOpen, setAlgorithmDialogOpen] = useState(false);
 
     useEffect(() => {
         refresh();
@@ -41,8 +42,7 @@ const Reservations = ({ workerId }) => {
 
     useEffect(() => {
         const currentItems = toggleKey === 'conference' ? conferenceItems : stayItems;
-        setItems(currentItems);
-        setCurrentItem(null);  
+        setItems(currentItems);  
     }, [toggleKey]);
 
     const refresh = () => {
@@ -63,11 +63,6 @@ const Reservations = ({ workerId }) => {
         setAddDialogOpen(true);
     };
 
-    const onEditButtonClick = (item) => {
-        setCurrentItem(item);
-        setUpdateDialogOpen(true);
-    };
-
     const onDeleteButtonClick = (item) => {
         setCurrentItem(item);
         setDeleteDialogOpen(true);
@@ -80,12 +75,10 @@ const Reservations = ({ workerId }) => {
 
     const handleDelete = (item) => {
         const endpoint = `reservations/${toggleKey}reservation`;
+
         deleteItem(endpoint, getIdValue(endpoint, item)).then(_ => {
-            const key = toggleKey === 'stay' ? getIdValue('rooms/rooms') : getIdValue('rooms/conferencerooms');
-            deleteItem(`reservations/${toggleKey}roomreservation/${item.key}`).then(_ => {
-                setDeleteDialogOpen(false);
-                refresh();
-            });
+            setDeleteDialogOpen(false);
+            refresh();
         });
     };
 
@@ -98,7 +91,6 @@ const Reservations = ({ workerId }) => {
                     items={items} 
                     labels={reservationLabels[toggleKey]} 
                     admin={true} 
-                    onUpdateButtonClick={onEditButtonClick}
                     onDeleteButtonClick={onDeleteButtonClick}
                     onDetailsButtonClick={onDetailsDialogClick}
                 />
@@ -110,15 +102,7 @@ const Reservations = ({ workerId }) => {
                 refresh={refresh} 
                 workerId={workerId}
                 clients={clients}
-            />
-            <AddReservationDialog 
-                open={updateDialogOpen} 
-                setOpen={setUpdateDialogOpen} 
-                type={toggleKey} 
-                refresh={refresh} 
-                workerId={workerId}
-                clients={clients}
-                item={currentItem}
+                setAlgorithmDialogOpen={setAlgorithmDialogOpen}
             />
             <DeleteDialog 
                 open={deleteDialogOpen}
@@ -130,6 +114,10 @@ const Reservations = ({ workerId }) => {
                 open={detailsDialogOpen}
                 setOpen={setDetailsDialogOpen}
                 item={currentItem}
+            />
+            <AlgorithmDialog
+                open={algorithmDialogOpen}
+                setOpen={setAlgorithmDialogOpen}
             />
         </div>
     )

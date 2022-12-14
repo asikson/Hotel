@@ -1,4 +1,4 @@
-import { snowWhite, black } from "../../styles/constants";
+import { snowWhite, black, orange } from "../../styles/constants";
 
 const styles = {
     dialog: {
@@ -11,6 +11,7 @@ const styles = {
         background: snowWhite, 
         borderRadius: '25px',
     },
+    
     button: {
         borderRadius: '25px',
         width: '100px',
@@ -19,8 +20,10 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         color: black,
-        margin: '20px'
+        margin: '20px',
+        backgroundColor: orange
     },
+
     container: {
         width: '100%',
         height: '100%',

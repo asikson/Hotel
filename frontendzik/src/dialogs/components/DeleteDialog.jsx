@@ -20,7 +20,7 @@ const DeleteDialog = ({open, setOpen, item, handleDelete }) => {
                             style={commonDialogStyles.xButton}
                             onClick={() => setOpen(false)}
                         >
-                            <label style={commonDialogStyles.label}>X</label>
+                            <label style={commonDialogStyles.xLabel}>X</label>
                         </button>
                     </div>
 

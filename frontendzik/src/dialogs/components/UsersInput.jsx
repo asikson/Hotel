@@ -2,7 +2,7 @@ import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addDialogStyles';
 import { addUser } from '../../utils/api';
-import { getIdValue } from '../../utils/apiUtils';
+import { getIdValue, isEmpty } from '../../utils/apiUtils';
 
 const UsersInput = ({ setOpen, item, type, refresh }) => {
 
@@ -32,7 +32,9 @@ const UsersInput = ({ setOpen, item, type, refresh }) => {
 
     const handleUpdate = () => {
         updateUser(getIdValue(type, item), name, surname, priviliges).then(_ => cleanUp())
-    }
+    };
+
+    const addDisabled = isEmpty(name) || isEmpty(surname);
 
     return (
         <div style={styles.container}>
@@ -66,8 +68,8 @@ const UsersInput = ({ setOpen, item, type, refresh }) => {
                 }
             />
             {item
-                ? <button style={styles.button} onClick={handleUpdate}>Zapisz</button>
-                : <button style={styles.button} onClick={handleAdd}>Dodaj</button>
+                ? <button style={styles.button} onClick={handleUpdate} disabled={addDisabled}>Zapisz</button>
+                : <button style={styles.button} onClick={handleAdd} disabled={addDisabled}>Dodaj</button>
             }
         </div>
     )

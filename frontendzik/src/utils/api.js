@@ -79,20 +79,6 @@ export const addReservation = async (type, clientId, workerId, dateFrom, dateTo,
     );
 };
 
-export const updateReservation = async (type, id, clientId, workerId, dateFrom, dateTo, numOfPeople) => {
-    return axios.put(reachUpdateEndpoint(`reservations/${type}reservation`, id),
-        {
-            [getIdName(`reservations/${type}reservation`)]: id, 
-            id_client: clientId, 
-            id_worker: workerId, 
-            reservation_date: getCurrentDate(), 
-            from_date: convertToShortFormat(dateFrom), 
-            to_date: convertToShortFormat(dateTo), 
-            number_of_people: numOfPeople 
-        }
-    );
-};
-
 export const getClientById = async (id) => {
     return axios.get(reachEndpoint(`users/clients/?id_client=${id}`));
 };
@@ -101,10 +87,10 @@ export const getWorkerById = async (id) => {
     return axios.get(reachEndpoint(`users/workers/?id_worker=${id}`));
 };
 
-export const getFreeRooms = async (dateFrom, dateTo, standard) => {
+export const getFreeRooms = async (dateFrom, dateTo, standard, numOfPeople) => {
     const from = convertToShortFormat(dateFrom);
     const to = convertToShortFormat(dateTo);
-    return axios.get(reachEndpoint(`rooms/rooms/vacancies/${from}/${to}/?standard=${standard}`));
+    return axios.get(reachEndpoint(`rooms/rooms/vacancies/${from}/${to}?standard=${standard}&number_of_people=${numOfPeople}`));
 };
 
 export const addStayReservation = async (reservationId, roomId) => {

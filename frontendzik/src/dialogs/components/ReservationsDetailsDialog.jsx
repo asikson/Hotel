@@ -55,7 +55,7 @@ const ReservationDetailsDialog = ({open, setOpen, item}) => {
                             style={commonDialogStyles.xButton}
                             onClick={() => setOpen(false)}
                         >
-                            <label style={commonDialogStyles.label}>X</label>
+                            <label style={commonDialogStyles.xLabel}>X</label>
                         </button>
                     </div>
                 </div>
@@ -64,6 +64,15 @@ const ReservationDetailsDialog = ({open, setOpen, item}) => {
                     {loading 
                         ? <LoadingOverlay loading={loading} />
                         : <>
+                            <div style={styles.container}>
+                                <label style={commonDialogStyles.labelText}>
+                                    Data:
+                                </label>
+                                <label style={commonDialogStyles.labelText}>
+                                    {`${item.from_date}  ->  ${item.to_date}`}
+                                </label>
+                            </div>
+
                             <div style={styles.container}>
                                 <label style={commonDialogStyles.labelText}>
                                     Klient:
@@ -93,7 +102,6 @@ const ReservationDetailsDialog = ({open, setOpen, item}) => {
                         </>
                     }
                 </div>
-                
             </div>
         </Dialog>
     );

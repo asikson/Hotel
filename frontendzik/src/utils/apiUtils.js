@@ -44,4 +44,6 @@ export const getIdName = (table) => {
 
 export const getIdValue = (type, item) => {
     return item[getIdName(type)];
-}
+};
+
+export const isEmpty = (field) => field === null || field === '';

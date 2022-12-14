@@ -1,13 +1,13 @@
-import { snowWhite } from "../../styles/constants";
+import { snowWhite, orange } from "../../styles/constants";
 
 const commonDialogStyles = {
     dialog: {
         position: 'fixed',
-        top: '15%',
-        left: '35%',
+        top: '10%',
+        left: '30%',
         overflowY: 'auto',
-        height: '70%', 
-        width: '30%', 
+        height: '80%', 
+        width: '40%', 
         background: snowWhite, 
         borderRadius: '25px',
     },
@@ -49,11 +49,16 @@ const commonDialogStyles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: '30px'
+        borderRadius: '30px',
+        background: orange
     },
 
     label: {
         fontSize: '35px'
+    },
+
+    xLabel: {
+        fontSize: '20px'
     },
 
     labelText: {

@@ -1,10 +1,10 @@
-import { TextField, MenuItem } from '@mui/material';
+import { TextField} from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addDialogStyles';
 import { addItem, updateItem } from '../../utils/api';
 import { getIdValue } from '../../utils/apiUtils';
-import GenericSelect from './GenericSelect';
-import { roomStandards } from '../../utils/constants';
+import StandardDropdown from './StandardDropdown';
+import { isEmpty } from '../../utils/apiUtils';
 
 const RoomsInput = ({ setOpen, item, type, refresh }) => {
 
@@ -42,9 +42,7 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
         updateItem(type, getIdValue(type, item), name, numOfPeople, standard, price, cost).then(_ => cleanUp())
     };
 
-    const createStandardItem = (standard) => {
-        return <MenuItem value={standard.id}>{standard.name}</MenuItem>
-    };
+    const addDisabled = [name, numOfPeople, standard, price, cost].some(isEmpty);
 
     return (
         <div style={styles.container}>
@@ -82,12 +80,9 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
                         value={cost}
                         onChange={e => setCost(e.target.value)}
                     />
-                    <GenericSelect
-                        items={roomStandards}
-                        itemId={standard}
-                        label={'standard pokoju'} 
-                        setItemId={setStandard}
-                        createItem={createStandardItem}
+                    <StandardDropdown
+                        standard={standard}
+                        setStandard={setStandard}
                     />
                 </>
                 
@@ -96,8 +91,8 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
             }
             
             {item
-                ? <button style={styles.button} onClick={handleUpdate}>Zapisz</button>
-                : <button style={styles.button} onClick={handleAdd}>Dodaj</button>
+                ? <button style={styles.button} onClick={handleUpdate} disabled={addDisabled}>Zapisz</button>
+                : <button style={styles.button} onClick={handleAdd} disabled={addDisabled}>Dodaj</button>
             }
         </div>
     )
