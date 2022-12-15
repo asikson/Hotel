@@ -59,8 +59,6 @@ const styles = {
 
     content: {
         height: '90%',
-        border: '1px solid',
-        margin: '20px',
     },
 
     calendarHead: {
@@ -124,6 +122,11 @@ const styles = {
         //gridTemplateColumns: 'repeat(7, 1fr)',
         //gridTemplateRows: 'repeat(7, 1 fr)',
     },
+
+    cells : {
+        height: '80%',
+        overflow: 'scroll',
+    }
     
 }
 export default styles;

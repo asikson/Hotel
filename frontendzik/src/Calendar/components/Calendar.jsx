@@ -16,21 +16,21 @@ import {format,startOfWeek,addDays,isSameDay,lastDayOfWeek,getWeek,addWeeks,subW
 import CalendarListTable from './CalendarListTable';
 import ListTable from '../../generic/components/ListTable';
 
+const tab = ['Pokój 1', 'Pokój 2']
 
 const labels = {
     'stay': {
-        id_stay: 'Numer id',
-        from_date : 'Rezerwaja od',
-        to_date: 'Rezerwacja do',
+        id_room: 'Id pokoju',
+        name : 'Nazwa',
     },
     'conference': {
+        id_conference: 'Id konferencji',
         name: 'Nazwa',
-        number_of_people: 'Liczba osób',
     },
 }
 
 
-const Calendar = ({ workerId, startingDate, eventsArr}) => {
+const Calendar = ({workerId}) => {
 
     const [toggleKey, setToggleKey] = useState('stay');
     const [loading, setLoading] = useState(true);
@@ -42,9 +42,6 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
     const [items, setItems] = useState([]);
     const [currentItem, setCurrentItem] = useState(null);
 
-    //const [currentMonth, setCurrentMonth] = useState(startingDate.getMonth())
-    //const [currentYear, setCurrentYear] = useState(startingDate.getFullYear())
-    //const DAYSINMONTHS = getDaysInMonth(currentMonth, currentYear)
 
 
     useEffect(() => {
@@ -66,8 +63,8 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
     }, [toggleKey]);
 
     const refresh = () => {
-        //getItems(`rooms/rooms/`).then(response => {
-        getItems(`reservations/stayreservation/`).then(response => {
+        getItems(`rooms/rooms/`).then(response => {
+       // getItems(`reservations/stayreservation/`).then(response => {
             setStayItems(response);
             setLoading(false);
         });
@@ -77,25 +74,7 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
         });
     };
 
-    /*const nextMonth = () => {
-        if(currentMonth < 11){
-            setCurrentMonth((prev) => prev + 1)
-        } 
-        else {
-            setCurrentMonth(0)
-            setCurrentYear((prev) => prev + 1)
-        }
-    };
-    
-    const prevMonth = () => {
-        if(currentMonth > 0){
-            setCurrentMonth((prev) => prev - 1)
-        } 
-        else {
-            setCurrentMonth(11)
-            setCurrentYear((prev) => prev - 1)
-        }
-    };*/
+
 
   ///////
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -142,6 +121,12 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
     const dateFormat = "EEEE";
     const days = [];
     let startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
+    days.push(
+      <div className="col col-center" key={0}>
+        Pokoje
+      </div>
+    );
+    
     for (let i = 0; i < 7; i++) {
       days.push(
         <div className="col col-center" key={i}>
@@ -161,6 +146,23 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
     let days = [];
     let day = startDate;
     let formattedDate = "";
+
+    for (let j=0; j < tab.length; j++){
+      let day = startOfWeek(currentMonth, {weekStartsOn: 1})
+      let days = [];
+      days.push(
+        <div
+   
+        className={`col cell ${
+          isSameDay(day, new Date())
+          ? "today"
+          : ""
+        }`}
+        key={0}
+        >
+        {tab[j]}
+        </div>
+      );
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
@@ -177,25 +179,17 @@ const Calendar = ({ workerId, startingDate, eventsArr}) => {
           </div>
         );
         day = addDays(day, 1);
-      }
+      }}
 
       rows.push(
         <div className="row" key={day} style={styles.styledDay}>
           {days}
         </div>
       );
-      //days = [];
-    }
+      days = [];
+    } 
     return <div className="body" >
         {rows}
-        
-        {/*{console.log("test", days)}*/}
-
-       {/* <div style={{border: '2px solid'}}>
-        <CalendarListTable 
-            items={items} 
-            labels={labels[toggleKey]}
-  /></div>*/}
         
    </div>
   };
@@ -259,8 +253,6 @@ const getFormater = (dateStr) => {
   const date = new Date(dateStr)
   return  date.toLocaleDateString()//date.getDate() 
 }
-
-
   ///////
 
     return (
@@ -268,54 +260,14 @@ const getFormater = (dateStr) => {
             <ShowReservationTopBar toggleKey={toggleKey} setToggleKey={setToggleKey}/>
 
                 <div style={styles.content}>
-                    {/*<div style={styles.calendarHead}>
-                            <IoIosArrowDropleftCircle onClick={prevMonth}/>
-                                {MONTHS[currentMonth]} {currentYear}
-                            <IoIosArrowDroprightCircle onClick={nextMonth}/>   
-                    </div>*/}
-
-                <div style={styles.topBarReservation}>
-                        <div style={styles.topLeftReservation}>
-                           {/*} {loading
-                                ? <LoadingOverlay laoding={loading} />
-                                : <ShowListTable 
-                                items={items} 
-                                labels={labels[toggleKey]} 
-                                admin={true} 
-                                />
-                                }
-                        </div>   
+                  
+                      <div>{renderHeader()}</div>
+                      <div>{renderDays()}</div>
+                      <div>{renderCells()}</div>
+                </div> 
                 
-                        <div style={styles.topRightReservation}>   
-                           {/*} <div style={styles.sevenColGrid}>
-                                {DAYS.map((day) => <div style={styles.headDay}>{day}</div>)}
-                            </div>
-                            <div style={styles.calendarBody}>
-                            {range(DAYSINMONTHS).map((day) => (
-                                    <div style={styles.styledDay}>
-                                        {day}
-                                    </div>
-                                 ))}
-                                </div>
-                                {getSortedDays(currentMonth, currentYear).map((day) => (
-                                    <div style={styles.headDay}>{day}</div>
-                                ))}
-                                
-                            </div>
-                            <div style={styles.calendarBody} fourCol={DAYSINMONTHS == 28}>
-                                {range(DAYSINMONTHS).map((day) => (
-                                    <div style={styles.styledDay} active={areDatesTheSame(new Date(), getDateObject(day, currentMonth, currentYear))}>
-                                        {day}
-                                        {
-                                        eventsArr.map((ev) => (
-                                           //areDatesTheSame(getDateObject(day, currentMonth, currentYear), ev.date) &&
-                                           <div style={styles.styledEvent}>{ev.title}</div>
-                                            ))
-                                        }
-                                    </div>
-                                 ))}
-                            </div>*/}
-
+          </div>
+                          /*
                             {isLoading
                                 ? <LoadingOverlay laoding={isLoading} />
                                 :  <tbody>
@@ -371,17 +323,7 @@ const getFormater = (dateStr) => {
                                         </tr>
                                     ))}
                                 </tbody>
-                                }
-
-                                <div>
-                                {renderHeader()}
-                                {renderDays()}
-                                {renderCells()}</div> 
-                        </div> 
-                    </div>
-                     
-                </div>
-        </div>
+                                }*/
     )
 }
 
