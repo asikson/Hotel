@@ -52,6 +52,24 @@ class VacanciesList(generics.ListAPIView):
         not_rooms_id = ~Q(id_room__in = rooms_ids)
         return Rooms.objects.filter(not_rooms_id)
 
+class VacanciesListByStandard(generics.ListAPIView):
+    # API endpoint that allows free Rooms to be viewed.
+    serializer_class = RoomsSerializer
+    filterset_fields = ['id_room','number_of_people','name', 'standard']
+    
+    def get_queryset(self):
+        from_d = self.kwargs["from_d"]
+        to_d = self.kwargs["to_d"]
+        standard = self.kwargs["standard"]
+        record_name = "id_stay"
+        url = "http://reservations:{}/reservations/stayreservation/".format(reservationsPort)
+        reservations = get_reservations_ids(from_d, to_d, record_name, url)
+        url = "http://reservations:{}/reservations/stayroomreservation/?{}=".format(reservationsPort, record_name)
+        record_name = "id_room"
+        rooms_ids = get_rooms_ids_from_reservations_ids(reservations, record_name, url)
+        not_rooms_id = ~Q(id_room__in = rooms_ids)
+        return Rooms.objects.filter(not_rooms_id & Q(standard__gte = standard))
+
 class RoomsUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a Rooms record to be updated.
     queryset = Rooms.objects.all()
