@@ -6,22 +6,22 @@ from .serializers import RoomsSerializer, ConferenceRoomsSerializer
 from django.db.models import Q
 from .apis import *
 
-def get_reservations_ids(from_d, to_d):
+def get_reservations_ids(from_d, to_d, record_name, url):
         results = []
-        url = "http://reservations:{}/reservations/stayreservation/{}/{}".format(reservationsPort,from_d, to_d)
-        api_call = requests.get(url, headers={}).json()
+        temp_url = url + "{}/{}/".format(from_d, to_d)
+        api_call = requests.get(temp_url, headers={}).json()
         for record in api_call:
-            results.append(record["id_stay"])
-            print(results)
+            print(record)
+            results.append(record[record_name])
         return results
 
-def get_rooms_ids_from_reservations_ids(reservations):
+def get_rooms_ids_from_reservations_ids(reservations, record_name, url):
         results = []
         for reservation in reservations:
-            url = "http://reservations:{}/reservations/stayroomreservation/?id_stay={}".format(reservationsPort, reservation) 
-            api_call = requests.get(url, headers={}).json()
+            temp_url = url + str(reservation)
+            api_call = requests.get(temp_url, headers={}).json()
             for record in api_call:
-                results.append(record["id_room"])
+                results.append(record[record_name])
         return results
 
 class RoomsCreate(generics.CreateAPIView):
@@ -43,8 +43,12 @@ class VacanciesList(generics.ListAPIView):
     def get_queryset(self):
         from_d = self.kwargs["from_d"]
         to_d = self.kwargs["to_d"]
-        reservations = get_reservations_ids(from_d, to_d)
-        rooms_ids = get_rooms_ids_from_reservations_ids(reservations)
+        record_name = "id_stay"
+        url = "http://reservations:{}/reservations/stayreservation/".format(reservationsPort)
+        reservations = get_reservations_ids(from_d, to_d, record_name, url)
+        url = "http://reservations:{}/reservations/stayroomreservation/?{}=".format(reservationsPort, record_name)
+        record_name = "id_room"
+        rooms_ids = get_rooms_ids_from_reservations_ids(reservations, record_name, url)
         not_rooms_id = ~Q(id_room__in = rooms_ids)
         return Rooms.objects.filter(not_rooms_id)
 
@@ -70,6 +74,46 @@ class ConferenceRoomsList(generics.ListAPIView):
     queryset = ConferenceRooms.objects.all()
     serializer_class = ConferenceRoomsSerializer
     filterset_fields = ['id_conference_room','number_of_people','name']
+
+class ConferenceRoomsListByPeople(generics.ListAPIView):
+    # API endpoint that allows ConferenceRooms to be viewed.
+    serializer_class = ConferenceRoomsSerializer
+    filterset_fields = ['id_conference_room','number_of_people','name']
+    def get_queryset(self):
+        number_of_people = self.kwargs['number_of_people'] 
+        return ConferenceRooms.objects.filter(number_of_people__gte = number_of_people)
+
+class FreeConferenceRoomsList(generics.ListAPIView):
+    # API endpoint that allows ConferenceRooms to be viewed.
+    serializer_class = ConferenceRoomsSerializer
+    filterset_fields = ['id_conference_room','number_of_people','name']
+    def get_queryset(self):
+        from_d = self.kwargs["from_d"]
+        to_d = self.kwargs["to_d"]
+        record_name = "id_conference"
+        url = "http://reservations:8001/reservations/conferencereservation/".format(reservationsPort)
+        reservations = get_reservations_ids(from_d, to_d, record_name, url)
+        url = "http://reservations:{}/reservations/conferenceroomreservation/?{}=".format(reservationsPort, record_name)
+        record_name = "id_conference_room"
+        rooms_ids = get_rooms_ids_from_reservations_ids(reservations, record_name, url)
+        not_rooms_id = ~Q(id_conference_room__in = rooms_ids)
+        return ConferenceRooms.objects.filter(not_rooms_id)
+        
+class FreeConferenceRoomsListByPeople(generics.ListAPIView):
+    # API endpoint that allows ConferenceRooms to be viewed.
+    serializer_class = ConferenceRoomsSerializer
+    filterset_fields = ['id_conference_room','number_of_people','name']
+    def get_queryset(self):
+        from_d = self.kwargs["from_d"]
+        to_d = self.kwargs["to_d"]
+        number_of_people = self.kwargs["number_of_people"]
+        record_name = "id_conference"
+        url = "http://reservations:{}/reservations/conferencereservation/".format(reservationsPort)
+        reservations = get_reservations_ids(from_d, to_d, record_name, url)
+        url = "http://reservations:{}/reservations/conferenceroomreservation/?{}=".format(reservationsPort, record_name)
+        rooms_ids = get_rooms_ids_from_reservations_ids(reservations, record_name, url)
+        not_rooms_id = ~Q(id_conference_room__in = rooms_ids)
+        return ConferenceRooms.objects.filter(not_rooms_id & Q(number_of_people__gte = number_of_people))
 
 class ConferenceRoomsUpdate(generics.RetrieveUpdateAPIView):
     # API endpoint that allows a ConferenceRooms record to be updated.
