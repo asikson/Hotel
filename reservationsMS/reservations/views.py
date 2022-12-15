@@ -4,7 +4,22 @@ from rest_framework import generics
 from .serializers import StayRoomReservationSerializer, StayReservationSerializer, ConferenceReservationSerializer, ConferenceRoomReservationSerializer
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .apis import *
+import requests
 
+def get_reservations(url):
+    results = requests.get(url, headers={}).json()
+    return results
+
+def get_rooms(url):
+    results = requests.get(url, headers={}).json()
+    return results
+
+def get_room_info(url):
+    results = requests.get(url, headers={}).json()
+    return results
 
 #VIEWS for StayReservation tab
 class StayReservationCreate(generics.CreateAPIView):
@@ -17,6 +32,18 @@ class StayReservationList(generics.ListAPIView):
     queryset = StayReservation.objects.all()
     serializer_class = StayReservationSerializer
     filterset_fields = ['id_stay']
+
+@api_view(['GET'])
+def StayReservationListFull(request):
+    reservations = get_reservations("http://reservations:{}/reservations/stayreservation/".format(reservationsPort))
+    for reservation in reservations:
+        rooms = get_rooms("http://reservations:{}/reservations/stayroomreservation/?id_stay={}".format(reservationsPort, reservation['id_stay']))
+        rooms_info = []
+        for room in rooms:
+            room_info = get_room_info("http://rooms:{}/rooms/rooms/?id_room={}".format(roomsPort, room['id_room']))
+            rooms_info.extend(room_info)
+        reservation['rooms'] = rooms_info
+    return Response(reservations)
 
 class StayReservationListFiltr(generics.ListAPIView):
     # API endpoint that allows StayReservation to be viewed.
@@ -77,6 +104,19 @@ class ConferenceReservationList(generics.ListAPIView):
     queryset = ConferenceReservation.objects.all()
     serializer_class = ConferenceReservationSerializer
     filterset_fields = ['id_conference']
+
+
+@api_view(['GET'])
+def ConferenceReservationListFull(request):
+    reservations = get_reservations("http://reservations:{}/reservations/conferencereservation/".format(reservationsPort))
+    for reservation in reservations:
+        rooms = get_rooms("http://reservations:{}/reservations/conferenceroomreservation/?id_conference={}".format(reservationsPort, reservation['id_conference']))
+        rooms_info = []
+        for room in rooms:
+            room_info = get_room_info("http://rooms:{}/rooms/conferencerooms/?id_conference_room={}".format(roomsPort, room['id_conference_room']))
+            rooms_info.extend(room_info)
+        reservation['rooms'] = rooms_info
+    return Response(reservations)
 
 class ConferenceReservationListFiltr(generics.ListAPIView):
     # API endpoint that allows StayReservation to be viewed.
