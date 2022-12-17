@@ -49,14 +49,14 @@ const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey})
                 <TableBody>
                   {rooms.map((room) => (
                     <StyledTableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 }, height: '100px'}}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 }, height: '120px'}}
                     >
                         <TableCell component="th" scope="row" sx={{backgroundColor: black, color: white}}>{room.name}</TableCell>
                         {columns.map(column => {
                           const item = cellContent(room, column);
                           const color = item ? orange : white;
                           return <TableCell sx={{backgroundColor: color}}>
-                            {item && <button style={{width: '100%', height: '100px', opacity: 0}} onClick={() => onButtonClick(item)}></button>}
+                            {item && <button style={{width: '100%', height: '70px', opacity: 0}} onClick={() => onButtonClick(item)}></button>}
                           </TableCell>
                         })}
                     </StyledTableRow>
