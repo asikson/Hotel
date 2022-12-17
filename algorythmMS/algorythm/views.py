@@ -22,11 +22,15 @@ def algorythm(request, from_date, to_date, number_of_people):
     rooms = []
     price = []
     l_rooms = []
+    chosen_rooms = []
+    people = 0
     for room in free_rooms:
         rooms.append(room['name'])
-        price.append(room['price']-room['clean_price'])
+        price.append(room['price']+room['clean_price'])
         l_rooms.append(room['number_of_people'])
-    chosen_rooms = genetic_algorithm(number_of_people, price, rooms, l_rooms).get()
+        people = people + room['number_of_people']
+    if people >= number_of_people:
+        chosen_rooms = genetic_algorithm(number_of_people, price, rooms, l_rooms).get()
     results = []
     for room in free_rooms:
         if room['name'] in chosen_rooms:
