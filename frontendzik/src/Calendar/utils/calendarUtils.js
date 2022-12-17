@@ -6,20 +6,25 @@ export const checkIfDateBetween = (date, fromDate, toDate) => {
     return dt >= from && dt <= to;
 };
 
-export const transformData = (data) => {
+export const transformData = (data, toggleKey) => {
     let result = {};
+    const stay = toggleKey === 'stay'
 
     data.map(reservation => {
-        const dateFrom = reservation.from_date;
-        const dateTo = reservation.to_date;
-        const clientId = reservation.id_client;
+        const idName = stay ? 'id_stay': 'id_conference';
+        const idRoom = stay ? 'id_room' : 'id_conference_room';
+
+        const { from_date, to_date, id_client, id_worker} = reservation;
+        const reservationId = reservation[idName];
 
         reservation.rooms.map(room => {
-            const id = room.id_room;
+            const id = room[idRoom];
             const payload = {
-                dateFrom,
-                dateTo,
-                clientId
+                from_date,
+                to_date,
+                id_client,
+                id_worker,
+                [idName]: reservationId
             };
 
             if (id in result) {
@@ -34,8 +39,8 @@ export const transformData = (data) => {
 };
 
 export const checkReservation = (reservation, column) => {
-    const { dateFrom, dateTo } = reservation;
-    if (checkIfDateBetween(column, dateFrom, dateTo)) {
+    const { from_date, to_date } = reservation;
+    if (checkIfDateBetween(column, from_date, to_date)) {
         return true;
     }
     

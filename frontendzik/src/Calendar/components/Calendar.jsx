@@ -20,7 +20,7 @@ const Calendar = () => {
         getItems(`rooms/${type}rooms`).then(response => {
             setItems(response);
             getCalendarData(toggleKey).then(response => {
-                const transformedData = transformData(response.data);
+                const transformedData = transformData(response.data, toggleKey);
                 setReservationData(transformedData);
                 setLoading(false);
             });
@@ -28,7 +28,8 @@ const Calendar = () => {
         
     }, [toggleKey]);
 
-    const idName = toggleKey === 'stay' ? 'id_room' : 'id_conference_room';
+    const stay = toggleKey === 'stay';
+    const idRoom = stay ? 'id_room' : 'id_conference_room';
 
     return(
         <div style={styles.container}>
@@ -39,7 +40,8 @@ const Calendar = () => {
                     columns={columns} 
                     rooms={items} 
                     reservationData={reservationData}
-                    idName={idName}
+                    idRoom={idRoom}
+                    toggleKey={toggleKey}
                 />
             }
         </div>
