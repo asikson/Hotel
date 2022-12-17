@@ -28,7 +28,7 @@ def tournament_selection(population, tour):
     return parents_individual
 
 
-def OX(parents, rooms, price):
+def OX(parents, rooms, price, l_rooms):
     parent0 = deepcopy(parents[0])
     parent1 = deepcopy(parents[1])
 
@@ -69,12 +69,12 @@ def OX(parents, rooms, price):
             genotype_child.append(second_parent[idx])
             idx += 1
     child.genotype = genotype_child
-    child.fitness = evaluation(rooms, genotype_child, price)
+    child.fitness = evaluation(rooms, genotype_child, price, l_rooms)
     return child
 
 
 # Mutacja (inwersja)
-def mutation(child, rooms, price):
+def mutation(child, rooms, price, l_rooms):
     # wylosowanie elementów, które mają być zamienione
     x1 = random.randint(0, len(child.genotype) - 1)
     x2 = random.randint(0, len(child.genotype) - 1)
@@ -85,6 +85,6 @@ def mutation(child, rooms, price):
 
     # podmiana elementow
     child.genotype[x1], child.genotype[x2] = child.genotype[x2], child.genotype[x1]
-    child.fitness = evaluation(rooms, child.genotype, price)
+    child.fitness = evaluation(rooms, child.genotype, price, l_rooms)
     return child
 

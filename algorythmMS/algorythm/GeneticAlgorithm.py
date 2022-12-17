@@ -27,15 +27,15 @@ def genetic_algorithm(people, price, rooms, l_rooms):
 
             # krzyzowanie
             if probablility < Px and probablility > Pm:
-                child1 = OX(parents_individual, rooms, price)
-                child2 = OX(parents_individual, rooms, price)
+                child1 = OX(parents_individual, rooms, price, l_rooms)
+                child2 = OX(parents_individual, rooms, price, l_rooms)
                 new_generation.append(child1)
                 new_generation.append(child2)
             elif probablility < Pm:
-                child1 = OX(parents_individual, rooms, price)
+                child1 = OX(parents_individual, rooms, price, l_rooms)
                 new_generation.append(child1)
-                child2 = OX(parents_individual, rooms, price)
-                child2 = mutation(child2, rooms, price)
+                child2 = OX(parents_individual, rooms, price, l_rooms)
+                child2 = mutation(child2, rooms, price, l_rooms)
                 new_generation.append(child2)
             else:
                 new_generation.append(parent1)
