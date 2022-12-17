@@ -22,12 +22,17 @@ def genotype_search(size, rooms, l_rooms):
     return node_list
 
 
-def evaluation(rooms, node_list, price):
+def evaluation(rooms, node_list, price, l_rooms):
     total_cost = 0
+    cost = 0
     for i in node_list:
         index = rooms.index(i)
         total_cost = total_cost + price[index]
-    total_cost = total_cost + 300 * len(node_list)
+    n = set(node_list)
+    for i in list(n):
+        index = rooms.index(i)
+        cost = cost + l_rooms[index]
+    total_cost = total_cost + 300 * cost +  400 * len(n)
     return total_cost
 
 
@@ -37,6 +42,6 @@ def generate_population(people, rooms, l_rooms, price, size):
         individual = Individual([], 0.0)
         genotype = genotype_search(people, rooms, l_rooms)
         individual.genotype = genotype
-        individual.fitness = evaluation(rooms, genotype, price)
+        individual.fitness = evaluation(rooms, genotype, price, l_rooms)
         population.append(individual)
     return population
