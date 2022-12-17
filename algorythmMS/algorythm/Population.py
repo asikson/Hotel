@@ -7,18 +7,16 @@ def genotype_search(size, rooms, l_rooms):
     rooms = copy(rooms)
     l_rooms = copy(l_rooms)
     node_list = []
-    index = random.randrange(0, len(rooms))
-    start_node = rooms[index]
-
-    node_list.append(start_node)
-    l_rooms[index] = l_rooms[index] - 1
-    while (size - 1):
+    while (size):
         node = random.choice(rooms)
         index = rooms.index(node)
         if l_rooms[index] > 0:
-            node_list.append(node)
-            l_rooms[index] = l_rooms[index] - 1
-            size = size - 1
+            while(l_rooms[index]):
+                if size == 0:
+                    return node_list
+                node_list.append(node)
+                l_rooms[index] = l_rooms[index] - 1
+                size = size - 1
     return node_list
 
 
@@ -32,7 +30,7 @@ def evaluation(rooms, node_list, price, l_rooms):
     for i in list(n):
         index = rooms.index(i)
         cost = cost + l_rooms[index]
-    total_cost = total_cost + 300 * cost +  400 * len(n)
+    total_cost = total_cost + 100 * cost
     return total_cost
 
 
