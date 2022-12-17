@@ -27,6 +27,7 @@ def evaluation(rooms, node_list, price):
     for i in node_list:
         index = rooms.index(i)
         total_cost = total_cost + price[index]
+    total_cost = total_cost + 300 * len(node_list)
     return total_cost
 
 
