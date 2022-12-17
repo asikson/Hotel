@@ -87,24 +87,45 @@ export const getWorkerById = async (id) => {
     return axios.get(reachEndpoint(`users/workers/?id_worker=${id}`));
 };
 
-export const getFreeRooms = async (dateFrom, dateTo, standard, numOfPeople) => {
+export const getFreeRooms = async (type, dateFrom, dateTo, numOfPeople, standard=null) => {
     const from = convertToShortFormat(dateFrom);
     const to = convertToShortFormat(dateTo);
-    return axios.get(reachEndpoint(`rooms/rooms/vacancies/${from}/${to}?standard=${standard}&number_of_people=${numOfPeople}`));
-};
-
-export const addStayReservation = async (reservationId, roomId) => {
-    const payload ={
-        id_stay: reservationId,
-        id_room: roomId
+ 
+    if (type === 'conference') {
+        return axios.get(reachEndpoint(`rooms/conferencerooms/${from}/${to}/${numOfPeople}`));
+    } else {
+        return axios.get(reachEndpoint(`rooms/rooms/vacancies/${from}/${to}?standard=${standard}&number_of_people=${numOfPeople}`));
     }
-    return axios.post(reachCreateEndpoint('reservations/stayroomreservation'), payload);
 };
 
-export const getRoomForStay = async (reservationId) => {
-    return axios.get(reachEndpoint(`reservations/stayroomreservation/?id_stay=${reservationId}`));
+export const addStayReservation = async (type, reservationId, roomId) => {
+    const idStay = type === 'stay' ? 'id_stay' : 'id_conference';
+    const id = type === 'stay' ? 'id_room' : 'id_conference_room';
+    const payload = {
+        [idStay]: reservationId,
+        [id]: roomId
+    };
+
+    return axios.post(reachCreateEndpoint(`reservations/${type}roomreservation`), payload);
 };
 
-export const getRoomById = async (roomId) => {
-    return axios.get(reachEndpoint(`rooms/rooms/?id_room=${roomId}`)); 
+export const getRoomForStay = async (ifStay, reservationId) => {
+    const id = ifStay ? 'id_stay' : 'id_conference';
+    const type = ifStay ? 'stay' : 'conference';
+    return axios.get(reachEndpoint(`reservations/${type}roomreservation/?${id}=${reservationId}`));
 };
+
+export const getRoomById = async (ifStay, roomId) => {
+    const id = ifStay ? 'id_room' : 'id_conference_room';
+    const type = ifStay ? '' : 'conference';
+    return axios.get(reachEndpoint(`rooms/${type}rooms/?${id}=${roomId}`)); 
+};
+
+export const getAlgorithmData = async (dateFrom, dateTo, numOfPeople, standard=0) => {
+    const from = convertToShortFormat(dateFrom);
+    const to = convertToShortFormat(dateTo);
+
+    return axios.get(reachEndpoint(`algorythm/${from}/${to}/${numOfPeople}`));
+};
+
+///${standard}

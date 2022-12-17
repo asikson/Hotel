@@ -20,7 +20,7 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
             setNumOfPeople(item.number_of_people);
             setStandard(item.standard || null);
             setPrice(item.price || null);
-            setCost(item.clean_cost || null);
+            setCost(item.clean_price || null);
         }
     }, [item]);
 
@@ -42,7 +42,10 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
         updateItem(type, getIdValue(type, item), name, numOfPeople, standard, price, cost).then(_ => cleanUp())
     };
 
-    const addDisabled = [name, numOfPeople, standard, price, cost].some(isEmpty);
+    const ifRooms = type == 'rooms/rooms'
+
+    const addDisabled = isEmpty(name) || isEmpty(numOfPeople)
+        || ifRooms && [standard, price, cost].some(isEmpty);
 
     return (
         <div style={styles.container}>
@@ -62,7 +65,7 @@ const RoomsInput = ({ setOpen, item, type, refresh }) => {
                 value={numOfPeople}
                 onChange={e => setNumOfPeople(e.target.value)}
             />
-            {type === 'rooms/rooms'
+            {ifRooms
                 ? <>
                     <TextField
                         style={styles.input} 

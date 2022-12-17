@@ -1,7 +1,7 @@
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addReservationDialogStyles';
-import { addReservation, addClient, getFreeRooms, addStayReservation } from '../../utils/api';
+import { addReservation, addClient, getFreeRooms, addStayReservation, getAlgorithmData } from '../../utils/api';
 import { isEmpty } from '../../utils/apiUtils';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -18,7 +18,8 @@ const ReservationInput = (
         refresh, 
         workerId,
         clients, 
-        setAlgorithmDialogOpen 
+        setAlgorithmDialogOpen,
+        setAlgorithmData
     }
 ) => {
 
@@ -45,8 +46,12 @@ const ReservationInput = (
     }, [item]);
 
     useEffect(() => {
-        if (dateFrom && dateTo && standard != null && numOfPeople) {
-            getFreeRooms(dateFrom, dateTo, standard, numOfPeople).then(response => {
+        if (stay && dateFrom && dateTo && standard != null && numOfPeople) {
+            getFreeRooms('', dateFrom, dateTo, numOfPeople, standard).then(response => {
+                setFreeRooms(response.data);
+            })
+        } else if (dateFrom && dateTo && numOfPeople) {
+            getFreeRooms('conference', dateFrom, dateTo, numOfPeople).then(response => {
                 setFreeRooms(response.data);
             })
         }
@@ -64,12 +69,16 @@ const ReservationInput = (
         const reservationClient = newClientId ? newClientId : clientId;
 
         return addReservation(type, reservationClient, workerId, dateFrom, dateTo, numOfPeople).then(response => {
-            addStayReservation(response.data.id_stay, roomId).then(_ => {
+            const idStay = stay ? 'id_stay' : 'id_conference';
+            addStayReservation(type, response.data[idStay], roomId).then(_ => {
                 cleanUp();
                 setOpen(false);
 
                 if (!stay) {
                     setAlgorithmDialogOpen(true);
+                    getAlgorithmData(dateFrom, dateTo, numOfPeople).then(response => {
+                        setAlgorithmData(response.data);
+                    });
                 }
             })
         });
@@ -90,10 +99,14 @@ const ReservationInput = (
         return <MenuItem value={client.id_client}>{label}</MenuItem>
     };
 
-    const createRoomItem = (room) => <MenuItem value={room.id_room}>{room.name}</MenuItem>;
+    const createRoomItem = (room) => {
+        const idName = stay ? 'id_room' : 'id_conference_room';
+        return <MenuItem value={room[idName]}>{room.name}</MenuItem>;
+    }
 
-    const addDisabled = [dateFrom, dateTo, numOfPeople, standard, roomId].some(isEmpty)
-        || newClient && (isEmpty(name) || isEmpty(surname)) || !newClient && isEmpty(clientId);
+    const addDisabled = [dateFrom, dateTo, numOfPeople, roomId].some(isEmpty)
+        || newClient && (isEmpty(name) || isEmpty(surname)) || !newClient && isEmpty(clientId)
+        || stay && isEmpty(standard);
 
     return (
         <div style={styles.container}>

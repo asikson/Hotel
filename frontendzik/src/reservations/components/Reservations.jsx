@@ -22,6 +22,7 @@ const Reservations = ({ workerId }) => {
     const [clients, setClients] = useState([]);
     const [items, setItems] = useState([]);
     const [currentItem, setCurrentItem] = useState(null);
+    const [algorithmData, setAlgorithmData] = useState(null);
 
     const [addDialogOpen, setAddDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -103,6 +104,7 @@ const Reservations = ({ workerId }) => {
                 workerId={workerId}
                 clients={clients}
                 setAlgorithmDialogOpen={setAlgorithmDialogOpen}
+                setAlgorithmData={setAlgorithmData}
             />
             <DeleteDialog 
                 open={deleteDialogOpen}
@@ -114,10 +116,13 @@ const Reservations = ({ workerId }) => {
                 open={detailsDialogOpen}
                 setOpen={setDetailsDialogOpen}
                 item={currentItem}
+                toggleKey={toggleKey}
             />
             <AlgorithmDialog
                 open={algorithmDialogOpen}
                 setOpen={setAlgorithmDialogOpen}
+                data={algorithmData}
+                setData={setAlgorithmData}
             />
         </div>
     )

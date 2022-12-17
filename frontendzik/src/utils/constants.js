@@ -24,6 +24,7 @@ export const labels = {
 };
 
 export const ports = {
+    'algorythm': 8000,
     'reservations': 8001,
     'rooms': 8002,
     'users': 8003

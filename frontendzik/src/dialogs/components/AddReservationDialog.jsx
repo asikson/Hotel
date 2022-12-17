@@ -13,7 +13,8 @@ const AddReservationDialog = (
     item, 
     workerId, 
     clients,
-    setAlgorithmDialogOpen
+    setAlgorithmDialogOpen,
+    setAlgorithmData
 }) => {
 
     return (
@@ -44,6 +45,7 @@ const AddReservationDialog = (
                         workerId={workerId}
                         clients={clients}
                         setAlgorithmDialogOpen={setAlgorithmDialogOpen}
+                        setAlgorithmData={setAlgorithmData}
                     />
                 </div>
             </div>

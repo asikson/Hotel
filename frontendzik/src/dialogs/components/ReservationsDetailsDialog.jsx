@@ -6,12 +6,14 @@ import { getClientById, getRoomById, getRoomForStay, getWorkerById } from '../..
 import LoadingOverlay from '../../generic/components/LoadingOverlay';
 import { getStandardName } from '../../utils/constants';
 
-const ReservationDetailsDialog = ({open, setOpen, item}) => {
+const ReservationDetailsDialog = ({open, setOpen, item, toggleKey}) => {
 
     const [loading, setLoading] = useState(true);
     const [clientInfo, setClientInfo] = useState('');
     const [workerInfo, setWorkerInfo] = useState('');
     const [roomInfo, setRoomInfo] = useState('');
+
+    const stay = toggleKey === 'stay';
 
     useEffect(() => {
         if (item) {
@@ -26,13 +28,18 @@ const ReservationDetailsDialog = ({open, setOpen, item}) => {
                     const name = data.name;
                     const surname = data.surname;
                     setWorkerInfo(`${name} ${surname}`);
-
-                    getRoomForStay(item['id_stay']).then(response => {
-                        const roomId = response.data[0].id_room;
+                    
+                    const stayId = stay ? 'id_stay' : 'id_conference';
+                    getRoomForStay(stay, item[stayId]).then(response => {
+                        const id = stay ? 'id_room' : 'id_conference_room'
+                        const roomId = response.data[0][id];
                         
-                        getRoomById(roomId).then(response => {
+                        getRoomById(stay, roomId).then(response => {
                             const data = response.data[0];
-                            setRoomInfo(`${data.name} - ${getStandardName(data.standard)}`);
+                            const info = stay
+                                ? `${data.name} - ${getStandardName(data.standard)}`
+                                : data.name
+                            setRoomInfo(info);
                             setLoading(false);
                         })
                     });
