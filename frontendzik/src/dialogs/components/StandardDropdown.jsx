@@ -3,7 +3,7 @@ import { roomStandards } from '../../utils/constants';
 import GenericSelect from './GenericSelect';
 import { MenuItem } from '@mui/material';
 
-const StandardDropdown = ({standard, setStandard}) => {
+const StandardDropdown = ({standard, setStandard, label}) => {
 
     const createStandardItem = (standard) => {
         return <MenuItem value={standard.id}>{standard.name}</MenuItem>
@@ -14,7 +14,7 @@ const StandardDropdown = ({standard, setStandard}) => {
         <GenericSelect
             items={roomStandards}
             itemId={standard}
-            label={'standard pokoju'} 
+            label={label} 
             setItemId={setStandard}
             createItem={createStandardItem}
         />

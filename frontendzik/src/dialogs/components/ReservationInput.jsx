@@ -9,6 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MenuItem } from '@mui/material';
 import GenericSelect from './GenericSelect';
 import StandardDropdown from './StandardDropdown';
+import commonDialogStyles from '../styles/commonDialogStyles';
 
 const ReservationInput = (
     {
@@ -17,9 +18,9 @@ const ReservationInput = (
         type, 
         refresh, 
         workerId,
-        clients, 
+        clients,
         setAlgorithmDialogOpen,
-        setAlgorithmData
+        handleOpenAlgorithmDialog
     }
 ) => {
 
@@ -76,8 +77,8 @@ const ReservationInput = (
 
                 if (!stay) {
                     setAlgorithmDialogOpen(true);
-                    getAlgorithmData(dateFrom, dateTo, numOfPeople).then(response => {
-                        setAlgorithmData(response.data);
+                    getAlgorithmData(dateFrom, dateTo, numOfPeople, standard).then(response => {
+                        handleOpenAlgorithmDialog(response.data, reservationClient, dateFrom, dateTo);
                     });
                 }
             })
@@ -104,9 +105,8 @@ const ReservationInput = (
         return <MenuItem value={room[idName]}>{room.name}</MenuItem>;
     }
 
-    const addDisabled = [dateFrom, dateTo, numOfPeople, roomId].some(isEmpty)
-        || newClient && (isEmpty(name) || isEmpty(surname)) || !newClient && isEmpty(clientId)
-        || stay && isEmpty(standard);
+    const addDisabled = [dateFrom, dateTo, numOfPeople, roomId, standard].some(isEmpty)
+        || newClient && (isEmpty(name) || isEmpty(surname)) || !newClient && isEmpty(clientId);
 
     return (
         <div style={styles.container}>
@@ -145,14 +145,15 @@ const ReservationInput = (
                 color='warning' 
                 value={numOfPeople}
                 onChange={e => setNumOfPeople(e.target.value)}
+            /> 
+            <StandardDropdown
+                standard={standard}
+                setStandard={setStandard}
+                label={stay 
+                    ? 'standard pokoju'
+                    : 'standard pokojów dla uczestników'
+                }
             />
-            {stay 
-                ? <StandardDropdown
-                    standard={standard}
-                    setStandard={setStandard}
-                />
-                : null
-            }
             
             <GenericSelect 
                 styles={styles.input}

@@ -6,16 +6,18 @@ import commonDialogStyles from '../styles/commonDialogStyles';
 import ReservationInput from './ReservationInput';
 
 const AddReservationDialog = (
-    {open, 
-    setOpen, 
-    type, 
-    refresh, 
-    item, 
-    workerId, 
-    clients,
-    setAlgorithmDialogOpen,
-    setAlgorithmData
-}) => {
+    {
+        open, 
+        setOpen, 
+        type, 
+        refresh, 
+        item, 
+        workerId, 
+        clients,
+        setAlgorithmDialogOpen,
+        handleOpenAlgorithmDialog
+    }
+) => {
 
     return (
         <Dialog fullScreen open={open} style={commonDialogStyles.dialog} title='Dodaj' >
@@ -45,7 +47,7 @@ const AddReservationDialog = (
                         workerId={workerId}
                         clients={clients}
                         setAlgorithmDialogOpen={setAlgorithmDialogOpen}
-                        setAlgorithmData={setAlgorithmData}
+                        handleOpenAlgorithmDialog={handleOpenAlgorithmDialog}
                     />
                 </div>
             </div>

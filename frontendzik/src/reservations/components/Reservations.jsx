@@ -22,7 +22,11 @@ const Reservations = ({ workerId }) => {
     const [clients, setClients] = useState([]);
     const [items, setItems] = useState([]);
     const [currentItem, setCurrentItem] = useState(null);
+
     const [algorithmData, setAlgorithmData] = useState(null);
+    const [currentClient, setCurrentClient] = useState(null);
+    const [currentDateFrom, setCurrentDateFrom] = useState(null);
+    const [currentDateTo, setCurrentDateTo] = useState(null);
 
     const [addDialogOpen, setAddDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -72,7 +76,7 @@ const Reservations = ({ workerId }) => {
     const onDetailsDialogClick = (item) => {
         setCurrentItem(item);
         setDetailsDialogOpen(true);
-    }
+    };
 
     const handleDelete = (item) => {
         const endpoint = `reservations/${toggleKey}reservation`;
@@ -81,6 +85,13 @@ const Reservations = ({ workerId }) => {
             setDeleteDialogOpen(false);
             refresh();
         });
+    };
+
+    const handleOpenAlgorithmDialog = (data, clientId, dateFrom, dateTo) => {
+        setAlgorithmData(data);
+        setCurrentClient(clientId);
+        setCurrentDateFrom(dateFrom);
+        setCurrentDateTo(dateTo);
     };
 
     return (
@@ -104,7 +115,7 @@ const Reservations = ({ workerId }) => {
                 workerId={workerId}
                 clients={clients}
                 setAlgorithmDialogOpen={setAlgorithmDialogOpen}
-                setAlgorithmData={setAlgorithmData}
+                handleOpenAlgorithmDialog={handleOpenAlgorithmDialog}
             />
             <DeleteDialog 
                 open={deleteDialogOpen}
@@ -123,6 +134,11 @@ const Reservations = ({ workerId }) => {
                 setOpen={setAlgorithmDialogOpen}
                 data={algorithmData}
                 setData={setAlgorithmData}
+                clientId={currentClient}
+                workerId={workerId}
+                dateFrom={currentDateFrom}
+                dateTo={currentDateTo}
+                refresh={refresh}
             />
         </div>
     )

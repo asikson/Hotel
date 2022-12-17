@@ -12,7 +12,7 @@ const ListTable = (
     onDetailsButtonClick, 
     onUpdateButtonClick,
     onDeleteButtonClick,
-    details=false
+    details=true
   }
 ) => {
 
