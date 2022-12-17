@@ -1,7 +1,7 @@
 from django.urls import include, path, register_converter
-from .views import ConferenceReservationCreate, ConferenceReservationList, ConferenceReservationUpdate, ConferenceReservationDelete, ConferenceReservationListFiltr
+from .views import ConferenceReservationCreate, ConferenceReservationList, ConferenceReservationUpdate, ConferenceReservationDelete, ConferenceReservationListFiltr, ConferenceReservationListFull
 from .views import ConferenceRoomReservationCreate, ConferenceRoomReservationList, ConferenceRoomReservationUpdate, ConferenceRoomReservationDelete
-from .views import StayReservationCreate, StayReservationList, StayReservationUpdate, StayReservationDelete, StayReservationListFiltr
+from .views import StayReservationCreate, StayReservationList, StayReservationUpdate, StayReservationDelete, StayReservationListFiltr, StayReservationListFull
 from .views import StayRoomReservationCreate, StayRoomReservationList, StayRoomReservationUpdate, StayRoomReservationDelete
 from .converters import DateConverter
 
@@ -11,12 +11,14 @@ register_converter(DateConverter, 'date')
 urlpatterns = [
     #ConferenceReservation table urls
     path('conferencereservation/', ConferenceReservationList.as_view()),
+    path('conferencereservation/full/', ConferenceReservationListFull),
     path('conferencereservation/<date:from_d>/<date:to_d>/', ConferenceReservationListFiltr.as_view()),
     path('conferencereservation/create/', ConferenceReservationCreate.as_view(), name='create-conferencereservation'),
     path('conferencereservation/update/<int:pk>/', ConferenceReservationUpdate.as_view(), name='update-conferencereservation'),
     path('conferencereservation/delete/<int:pk>/', ConferenceReservationDelete.as_view(), name='delete-conferencereservation'),
     #StayReservation table urls
     path('stayreservation/', StayReservationList.as_view()),
+    path('stayreservation/full/', StayReservationListFull),
     path('stayreservation/<date:from_d>/<date:to_d>/', StayReservationListFiltr.as_view()),
     path('stayreservation/create/', StayReservationCreate.as_view(), name='create-stayreservation'),
     path('stayreservation/update/<int:pk>/', StayReservationUpdate.as_view(), name='update-stayreservation'),
