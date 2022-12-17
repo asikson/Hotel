@@ -4,7 +4,17 @@ import { Paper, TableBody, TableContainer, Table, TableHead, TableCell, TableRow
 import { StyledTableCell, StyledTableRow } from '../styles/styled';
 import { mapValue } from '../../utils/constants';
 
-const ListTable = ({items, labels, admin, onDetailsButtonClick, onUpdateButtonClick, onDeleteButtonClick}) => {
+const ListTable = (
+  {
+    items, 
+    labels, 
+    admin, 
+    onDetailsButtonClick, 
+    onUpdateButtonClick,
+    onDeleteButtonClick,
+    details=true
+  }
+) => {
 
     const columns = items.length === 0 ? items : Object.keys(items[0]).filter(key => key in labels);
 
@@ -20,7 +30,7 @@ const ListTable = ({items, labels, admin, onDetailsButtonClick, onUpdateButtonCl
                 <TableHead>
                   <TableRow>
                     {columns.map(createTableCell)}
-                    <StyledTableCell />
+                    {details ? <StyledTableCell />  : null}
                     {admin && 
                       <>
                         <StyledTableCell />
@@ -37,14 +47,21 @@ const ListTable = ({items, labels, admin, onDetailsButtonClick, onUpdateButtonCl
                     >
                       <TableCell component="th" scope="row" >{item[columns[0]]}</TableCell>
                         {columns.slice(1).map(column => <TableCell >{mapValue(column, item[column])}</TableCell>)}
-                      <TableCell>
-                        <ListButton onClick={onDetailsButtonClick} item={item} label='Szczegóły'/>
-                      </TableCell>
+                        {details 
+                          ? <TableCell>
+                              <ListButton onClick={onDetailsButtonClick} item={item} label='Szczegóły'/>
+                            </TableCell>
+                          : null
+                        }
                       {admin &&
                         <>
-                          <TableCell>
-                            <ListButton onClick={onUpdateButtonClick} item={item} label='Edytuj'/>
-                          </TableCell>
+                          {onUpdateButtonClick
+                            ? <TableCell>
+                                <ListButton onClick={onUpdateButtonClick} item={item} label='Edytuj'/>
+                              </TableCell>
+                            : null
+                          }
+                          
                           <TableCell>
                             <ListButton onClick={onDeleteButtonClick} item={item} label='Usuń'/>
                           </TableCell>

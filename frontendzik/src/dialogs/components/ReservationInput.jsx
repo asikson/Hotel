@@ -1,25 +1,41 @@
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/addReservationDialogStyles';
-import { addReservation, updateReservation, addClient, getFreeRooms, addStayReservation } from '../../utils/api';
-import { getIdValue } from '../../utils/apiUtils';
+import { addReservation, addClient, getFreeRooms, addStayReservation, getAlgorithmData } from '../../utils/api';
+import { isEmpty } from '../../utils/apiUtils';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MenuItem } from '@mui/material';
 import GenericSelect from './GenericSelect';
+import StandardDropdown from './StandardDropdown';
+import commonDialogStyles from '../styles/commonDialogStyles';
 
-const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) => {
+const ReservationInput = (
+    {
+        setOpen, 
+        item, 
+        type, 
+        refresh, 
+        workerId,
+        clients,
+        setAlgorithmDialogOpen,
+        handleOpenAlgorithmDialog
+    }
+) => {
 
     const [dateFrom, setDateFrom] = useState(null);
     const [dateTo, setDateTo] = useState(null);
     const [numOfPeople, setNumOfPeople] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
+    const [standard, setStandard] = useState(null);
     const [roomId, setRoomId] = useState(null);
     const [newClient, setNewClient] = useState(false);
     const [clientId, setClientId] = useState(null);
     const [freeRooms, setFreeRooms] = useState([]);
+
+    const stay = type === 'stay';
 
     useEffect(() => {
         if (item) {
@@ -31,12 +47,16 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
     }, [item]);
 
     useEffect(() => {
-        if (dateFrom && dateTo) {
-            getFreeRooms(dateFrom, dateTo).then(response => {
+        if (stay && dateFrom && dateTo && standard != null && numOfPeople) {
+            getFreeRooms('', dateFrom, dateTo, numOfPeople, standard).then(response => {
+                setFreeRooms(response.data);
+            })
+        } else if (dateFrom && dateTo && numOfPeople) {
+            getFreeRooms('conference', dateFrom, dateTo, numOfPeople).then(response => {
                 setFreeRooms(response.data);
             })
         }
-    }, [dateFrom, dateTo]);
+    }, [dateFrom, dateTo, standard, numOfPeople]);
 
     const cleanUp = () => {
         setDateFrom('');
@@ -50,9 +70,17 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
         const reservationClient = newClientId ? newClientId : clientId;
 
         return addReservation(type, reservationClient, workerId, dateFrom, dateTo, numOfPeople).then(response => {
-            addStayReservation(response.data.id_stay, roomId).then(_ => {
+            const idStay = stay ? 'id_stay' : 'id_conference';
+            addStayReservation(type, response.data[idStay], roomId).then(_ => {
                 cleanUp();
                 setOpen(false);
+
+                if (!stay) {
+                    setAlgorithmDialogOpen(true);
+                    getAlgorithmData(dateFrom, dateTo, numOfPeople, standard).then(response => {
+                        handleOpenAlgorithmDialog(response.data, reservationClient, dateFrom, dateTo);
+                    });
+                }
             })
         });
     }
@@ -67,19 +95,18 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
         }
     };
 
-    const handleUpdate = () => { 
-        updateReservation(type, getIdValue(`reservations/${type}reservation`, item), clientId, workerId, dateFrom, dateTo, numOfPeople).then(_ => {
-            cleanUp();
-            setOpen(false);
-        });
-    };
-
     const createClientItem = (client) => {
         const label = `${client.name} ${client.surname}`;
         return <MenuItem value={client.id_client}>{label}</MenuItem>
     };
 
-    const createRoomItem = (room) => <MenuItem value={room.id_room}>{room.name}</MenuItem>;
+    const createRoomItem = (room) => {
+        const idName = stay ? 'id_room' : 'id_conference_room';
+        return <MenuItem value={room[idName]}>{room.name}</MenuItem>;
+    }
+
+    const addDisabled = [dateFrom, dateTo, numOfPeople, roomId, standard].some(isEmpty)
+        || newClient && (isEmpty(name) || isEmpty(surname)) || !newClient && isEmpty(clientId);
 
     return (
         <div style={styles.container}>
@@ -118,15 +145,25 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
                 color='warning' 
                 value={numOfPeople}
                 onChange={e => setNumOfPeople(e.target.value)}
+            /> 
+            <StandardDropdown
+                standard={standard}
+                setStandard={setStandard}
+                label={stay 
+                    ? 'standard pokoju'
+                    : 'standard pokojów dla uczestników'
+                }
             />
+            
             <GenericSelect 
                 styles={styles.input}
                 items={freeRooms}
                 itemId={roomId}
                 setItemId={setRoomId}
-                label={type === 'stay' ? 'pokój' : 'salę'}
+                label={stay ? 'pokój' : 'salę'}
                 createItem={createRoomItem}
             />
+            
             <div style={styles.sideToSide}>
                 {newClient
                     ? <div style={styles.newClientForm}>
@@ -172,10 +209,7 @@ const ReservationInput = ({ setOpen, item, type, refresh, workerId, clients }) =
                 </div>
             </div>
             
-            {item
-                ? <button style={styles.button} onClick={handleUpdate}>Zapisz</button>
-                : <button style={styles.button} onClick={handleAdd}>Dodaj</button>
-            }
+            <button style={styles.button} onClick={handleAdd} disabled={addDisabled}>Dodaj</button>
         </div>
     )
 }

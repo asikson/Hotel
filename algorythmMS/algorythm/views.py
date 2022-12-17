@@ -35,7 +35,7 @@ def algorythm(request, from_date, to_date, number_of_people):
 
 @api_view(['GET'])
 def algorythmByStandard(request, from_date, to_date, number_of_people, standard):
-    free_rooms = get_vacancies(from_date, to_date, standard)
+    free_rooms = get_vacancies_by_standard(from_date, to_date, standard)
     rooms = []
     price = []
     l_rooms = []

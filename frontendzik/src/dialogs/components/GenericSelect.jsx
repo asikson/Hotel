@@ -1,4 +1,6 @@
-import { FormControl, FormLabel, Select } from "@mui/material";
+import { FormControl, FormLabel, Select, MenuItem } from "@mui/material";
+
+const emptyItem = <MenuItem value={'empty'}>Brak elementów</MenuItem>;
 
 const GenericSelect = ({items, itemId, setItemId, createItem, label}) => {
 
@@ -10,7 +12,10 @@ const GenericSelect = ({items, itemId, setItemId, createItem, label}) => {
                 onChange={e => setItemId(e.target.value)}
                 color='warning'
             >
-                {items.map(item => createItem(item))}
+                {items.length === 0
+                    ? emptyItem
+                    : items.map(item => createItem(item))
+                }
             </Select>
         </FormControl>
     )

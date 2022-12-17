@@ -5,7 +5,19 @@ import commonStyles from '../../styles/commonStyles';
 import commonDialogStyles from '../styles/commonDialogStyles';
 import ReservationInput from './ReservationInput';
 
-const AddReservationDialog = ({open, setOpen, type, refresh, update, item, workerId, clients}) => {
+const AddReservationDialog = (
+    {
+        open, 
+        setOpen, 
+        type, 
+        refresh, 
+        item, 
+        workerId, 
+        clients,
+        setAlgorithmDialogOpen,
+        handleOpenAlgorithmDialog
+    }
+) => {
 
     return (
         <Dialog fullScreen open={open} style={commonDialogStyles.dialog} title='Dodaj' >
@@ -13,7 +25,7 @@ const AddReservationDialog = ({open, setOpen, type, refresh, update, item, worke
                 <div style={commonDialogStyles.topBar}>
                     <div style={commonDialogStyles.topLeft}>
                         <label style={commonDialogStyles.label}>
-                            {update ? 'Edytuj' : 'Dodaj'}
+                            Dodaj
                         </label>
                     </div>
                     <div style={commonDialogStyles.topRight}>
@@ -21,19 +33,21 @@ const AddReservationDialog = ({open, setOpen, type, refresh, update, item, worke
                             style={commonDialogStyles.xButton}
                             onClick={() => setOpen(false)}
                         >
-                            <label style={commonDialogStyles.label}>X</label>
+                            <label style={commonDialogStyles.xLabel}>X</label>
                         </button>
                     </div>
                 </div>
+
                 <div style={styles.container}>
                     <ReservationInput 
-                        update={update} 
                         setOpen={setOpen} 
                         item={item} 
                         type={type} 
                         refresh={refresh} 
                         workerId={workerId}
                         clients={clients}
+                        setAlgorithmDialogOpen={setAlgorithmDialogOpen}
+                        handleOpenAlgorithmDialog={handleOpenAlgorithmDialog}
                     />
                 </div>
             </div>

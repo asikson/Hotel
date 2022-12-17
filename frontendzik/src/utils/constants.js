@@ -1,7 +1,9 @@
 const roomColumns = {
     name: 'Nazwa',
     number_of_people: 'Liczba miejsc',
-    standard: 'Standard'
+    standard: 'Standard',
+    price: 'Cena (PLN)',
+    clean_price: 'Koszt przygotowania (PLN)'
 };
 
 const conferenceRoomColumns = {
@@ -22,6 +24,7 @@ export const labels = {
 };
 
 export const ports = {
+    'algorythm': 8000,
     'reservations': 8001,
     'rooms': 8002,
     'users': 8003

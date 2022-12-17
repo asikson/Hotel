@@ -1,4 +1,4 @@
-import { black, snowWhite } from "../../styles/constants";
+import { black, snowWhite, orange } from "../../styles/constants";
 
 const styles = {
     input: {
@@ -16,7 +16,8 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         color: black,
-        margin: '15px'
+        margin: '15px',
+        backgroundColor: orange
     },
 
     container: {

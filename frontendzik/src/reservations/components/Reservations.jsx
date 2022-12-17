@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ListTable from '../../generic/components/ListTable';
 import styles from '../styles/reservationsStyles'
 import ReservationsTopBar from './ReservationsTopBar';
-import { getItems } from '../../utils/api';
+import { deleteItem, getItems } from '../../utils/api';
 import LoadingOverlay from '../../generic/components/LoadingOverlay';
 import { useEffect } from 'react';
 import AddReservationDialog from '../../dialogs/components/AddReservationDialog';
@@ -10,6 +10,7 @@ import DeleteDialog from '../../dialogs/components/DeleteDialog';
 import ReservationDetailsDialog from '../../dialogs/components/ReservationsDetailsDialog';
 import { getIdValue } from '../../utils/apiUtils';
 import { reservationLabels } from '../../utils/constants';
+import AlgorithmDialog from '../../dialogs/components/AlgorithmDialog';
 
 const Reservations = ({ workerId }) => {
 
@@ -22,10 +23,15 @@ const Reservations = ({ workerId }) => {
     const [items, setItems] = useState([]);
     const [currentItem, setCurrentItem] = useState(null);
 
+    const [algorithmData, setAlgorithmData] = useState(null);
+    const [currentClient, setCurrentClient] = useState(null);
+    const [currentDateFrom, setCurrentDateFrom] = useState(null);
+    const [currentDateTo, setCurrentDateTo] = useState(null);
+
     const [addDialogOpen, setAddDialogOpen] = useState(false);
-    const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+    const [algorithmDialogOpen, setAlgorithmDialogOpen] = useState(false);
 
     useEffect(() => {
         refresh();
@@ -41,8 +47,7 @@ const Reservations = ({ workerId }) => {
 
     useEffect(() => {
         const currentItems = toggleKey === 'conference' ? conferenceItems : stayItems;
-        setItems(currentItems);
-        setCurrentItem(null);  
+        setItems(currentItems);  
     }, [toggleKey]);
 
     const refresh = () => {
@@ -63,11 +68,6 @@ const Reservations = ({ workerId }) => {
         setAddDialogOpen(true);
     };
 
-    const onEditButtonClick = (item) => {
-        setCurrentItem(item);
-        setUpdateDialogOpen(true);
-    };
-
     const onDeleteButtonClick = (item) => {
         setCurrentItem(item);
         setDeleteDialogOpen(true);
@@ -76,14 +76,22 @@ const Reservations = ({ workerId }) => {
     const onDetailsDialogClick = (item) => {
         setCurrentItem(item);
         setDetailsDialogOpen(true);
-    }
+    };
 
     const handleDelete = (item) => {
         const endpoint = `reservations/${toggleKey}reservation`;
+
         deleteItem(endpoint, getIdValue(endpoint, item)).then(_ => {
             setDeleteDialogOpen(false);
             refresh();
-        })
+        });
+    };
+
+    const handleOpenAlgorithmDialog = (data, clientId, dateFrom, dateTo) => {
+        setAlgorithmData(data);
+        setCurrentClient(clientId);
+        setCurrentDateFrom(dateFrom);
+        setCurrentDateTo(dateTo);
     };
 
     return (
@@ -95,7 +103,6 @@ const Reservations = ({ workerId }) => {
                     items={items} 
                     labels={reservationLabels[toggleKey]} 
                     admin={true} 
-                    onUpdateButtonClick={onEditButtonClick}
                     onDeleteButtonClick={onDeleteButtonClick}
                     onDetailsButtonClick={onDetailsDialogClick}
                 />
@@ -107,15 +114,8 @@ const Reservations = ({ workerId }) => {
                 refresh={refresh} 
                 workerId={workerId}
                 clients={clients}
-            />
-            <AddReservationDialog 
-                open={updateDialogOpen} 
-                setOpen={setUpdateDialogOpen} 
-                type={toggleKey} 
-                refresh={refresh} 
-                workerId={workerId}
-                clients={clients}
-                item={currentItem}
+                setAlgorithmDialogOpen={setAlgorithmDialogOpen}
+                handleOpenAlgorithmDialog={handleOpenAlgorithmDialog}
             />
             <DeleteDialog 
                 open={deleteDialogOpen}
@@ -127,6 +127,18 @@ const Reservations = ({ workerId }) => {
                 open={detailsDialogOpen}
                 setOpen={setDetailsDialogOpen}
                 item={currentItem}
+                toggleKey={toggleKey}
+            />
+            <AlgorithmDialog
+                open={algorithmDialogOpen}
+                setOpen={setAlgorithmDialogOpen}
+                data={algorithmData}
+                setData={setAlgorithmData}
+                clientId={currentClient}
+                workerId={workerId}
+                dateFrom={currentDateFrom}
+                dateTo={currentDateTo}
+                refresh={refresh}
             />
         </div>
     )

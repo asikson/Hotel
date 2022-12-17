@@ -19,7 +19,7 @@ class ConferenceReservation(models.Model):
 
 class ConferenceRoomReservation(models.Model):
     id_conference_rooms = models.AutoField(primary_key=True)
-    id_conference = models.ForeignKey(ConferenceReservation, models.DO_NOTHING, db_column='id_conference')
+    id_conference = models.ForeignKey(ConferenceReservation, models.CASCADE, db_column='id_conference')
     id_conference_room = models.IntegerField()
 
     class Meta:
@@ -47,7 +47,7 @@ class StayReservation(models.Model):
 
 class StayRoomReservation(models.Model):
     id_stay_rooms = models.AutoField(primary_key=True)
-    id_stay = models.ForeignKey(StayReservation, models.DO_NOTHING, db_column='id_stay')
+    id_stay = models.ForeignKey(StayReservation, models.CASCADE, db_column='id_stay')
     id_room = models.IntegerField()
 
     class Meta:
