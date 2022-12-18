@@ -125,7 +125,9 @@ export const getAlgorithmData = async (dateFrom, dateTo, numOfPeople, standard=0
     const from = convertToShortFormat(dateFrom);
     const to = convertToShortFormat(dateTo);
 
-    return axios.get(reachEndpoint(`algorythm/${from}/${to}/${numOfPeople}`));
+    return axios.get(reachEndpoint(`algorythm/${from}/${to}/${numOfPeople}/${standard}`));
 };
 
-///${standard}
+export const getCalendarData = (toggleKey) => {
+    return axios.get(reachEndpoint(`reservations/${toggleKey}reservation/full`));
+};

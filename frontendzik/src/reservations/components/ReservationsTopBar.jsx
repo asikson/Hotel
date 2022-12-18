@@ -19,7 +19,10 @@ const ReservationsTopBar = ({onAddButtonClick, toggleKey, setToggleKey}) => {
               </ToggleButtonGroup>
             </div>
             <div style={styles.topRight}>
-              <button style={styles.addButton} onClick={onAddButtonClick}>Dodaj</button>
+              {onAddButtonClick
+                ? <button style={styles.addButton} onClick={onAddButtonClick}>Dodaj</button>
+                : null
+              }
             </div>
           </div>
     );

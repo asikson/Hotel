@@ -1,100 +1,53 @@
-import commonStyles from "../../styles/commonStyles";
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import styles from '../styles/calendarStyles';
-import { useState } from "react";
-import { v4 as uuid } from "uuid";
-
-
-const event = [
-    {
-        id: 1,
-        status: 'room',
-        title: 'room 1',
-        start: '2022-11-14',
-        end: '2022-11-18',
-    },
-    {
-        id: 2,
-        status: 'room',
-        title: 'room 2',
-        start: '2022-11-07',
-        end: '2022-11-09',
-    },
-    {
-        id: 3,
-        status: 'conference',
-        title: 'confernece 1',
-        start: '2022-11-07',
-        end: '2022-11-12',
-    },
-
-];
-
+import { useState, useEffect } from 'react';
+import { getCalendarData, getItems } from '../../utils/api';
+import styles from '../../generic/styles/listStyles';
+import CalendarListTable from './CalendarListTable';
+import LoadingOverlay from '../../generic/components/LoadingOverlay';
+import ReservationsTopBar from '../../reservations/components/ReservationsTopBar';
+import { transformData } from '../utils/calendarUtils';
+import DateTopBar from './DateTopBar';
+import { getDatesFromCurrentWeek } from '../utils/calendarUtils';
 
 const Calendar = () => {
-    /*
-    const[events, setEvents] = useState([]);
+   
+    const [loading, setLoading] = useState(true);
+    const [toggleKey, setToggleKey] = useState('stay');
+    const [items, setItems] = useState([]);
+    const [reservationData, setReservationData] = useState([]);
+    const [columns, setColumns] = useState(getDatesFromCurrentWeek());
 
-    const handleSelect = (info) => {
-        const {start, end} = info;
-        const eventNamePrompt = prompt('Enter, event name');
-        if(eventNamePrompt) {
-            setEvents([
-                ...events,
-                {
-                    start,
-                    end,
-                    title: eventNamePrompt,
-                    id: uuid(),
-                },
-            ]);
-        }
-    };
+    useEffect(() => {
+        const type = toggleKey === 'stay' ? '' : 'conference'
+        getItems(`rooms/${type}rooms`).then(response => {
+            setItems(response);
+            getCalendarData(toggleKey).then(response => {
+                const transformedData = transformData(response.data, toggleKey);
+                setReservationData(transformedData);
+                setLoading(false);
+            });
+        });
+        
+    }, [toggleKey]);
 
-    const EventItem = () => {
-        const { event } = info;
-        return(
-            <div>
-                <p>{event.title}</p>
-            </div>
-        );
-    };*/
+    const stay = toggleKey === 'stay';
+    const idRoom = stay ? 'id_room' : 'id_conference_room';
 
     return(
-        <div style={styles.calendar}>
-            <FullCalendar
-            plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-            initialView = 'dayGridMonth'
-           
-            headerToolbar={{
-                start:'today prev',
-                center: 'title',
-                end: 'next',
-            }}
-
-            customButtons={{
-                new: {
-                  text: 'new',
-                  click: () => console.log('new event'),
-                },
-              }}
-
-            //aspectRatio={5}
-            height={500}
-            events={event}
-
-            eventColor='orange'
-           
-
-           nowIndicator
-           dateClick={(e) => console.log(e.dateStr)}
-           eventClick={(e) => console.log(e.event.id)}
-
-            />
+        <div style={styles.container}>
+            <ReservationsTopBar toggleKey={toggleKey} setToggleKey={setToggleKey} />
+            <DateTopBar columns={columns} setColumns={setColumns}/>
+            {loading
+                ? <LoadingOverlay loading={loading} />
+                : <CalendarListTable 
+                    columns={columns}
+                    rooms={items} 
+                    reservationData={reservationData}
+                    idRoom={idRoom}
+                    toggleKey={toggleKey}
+                />
+            }
         </div>
     );
 }
+
 export default Calendar;

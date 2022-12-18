@@ -1,6 +1,6 @@
 import { idNames, labels, ports } from './constants';
 
-const transformDate = (date) => {
+export const transformDate = (date) => {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');;
     const year = date.getFullYear();
