@@ -5,8 +5,8 @@ import CalendarListTable from './CalendarListTable';
 import LoadingOverlay from '../../generic/components/LoadingOverlay';
 import ReservationsTopBar from '../../reservations/components/ReservationsTopBar';
 import { transformData } from '../utils/calendarUtils';
-
-const columns = ['2022-12-12', '2022-12-13', '2022-12-14', '2022-12-15', '2022-12-16', '2022-12-17', '2022-12-18'];
+import DateTopBar from './DateTopBar';
+import { getDatesFromCurrentWeek } from '../utils/calendarUtils';
 
 const Calendar = () => {
    
@@ -14,6 +14,7 @@ const Calendar = () => {
     const [toggleKey, setToggleKey] = useState('stay');
     const [items, setItems] = useState([]);
     const [reservationData, setReservationData] = useState([]);
+    const [columns, setColumns] = useState(getDatesFromCurrentWeek());
 
     useEffect(() => {
         const type = toggleKey === 'stay' ? '' : 'conference'
@@ -34,10 +35,11 @@ const Calendar = () => {
     return(
         <div style={styles.container}>
             <ReservationsTopBar toggleKey={toggleKey} setToggleKey={setToggleKey} />
+            <DateTopBar columns={columns} setColumns={setColumns}/>
             {loading
                 ? <LoadingOverlay loading={loading} />
                 : <CalendarListTable 
-                    columns={columns} 
+                    columns={columns}
                     rooms={items} 
                     reservationData={reservationData}
                     idRoom={idRoom}

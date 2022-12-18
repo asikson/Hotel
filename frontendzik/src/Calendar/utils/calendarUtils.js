@@ -1,3 +1,5 @@
+import { transformDate } from "../../utils/apiUtils";
+
 export const checkIfDateBetween = (date, fromDate, toDate) => {
     const dt = new Date(date);
     const from = new Date(fromDate);
@@ -45,4 +47,36 @@ export const checkReservation = (reservation, column) => {
     }
     
     return false;
+};
+
+export const getDatesFromCurrentWeek = () => {
+    const currentDate = new Date;
+    const first = currentDate.getDate() - currentDate.getDay() - 6;
+    
+    const days = Array.from(Array(7), (_, index) => new Date(currentDate.setDate(first + index)));
+    
+    return days.map(transformDate);
+};
+
+const weekDays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nd'];
+
+export const addWeekDays = (dates) => {
+    return dates.map((date, index) => `${weekDays[index]}, ${date}`);
+};
+
+const shiftDates = (days, shift) => {
+    return days.map(d => {
+        const day = new Date(d);
+        const date = day.getDate();
+        const dayWithShift = new Date(day.setDate(date + shift));
+        return transformDate(dayWithShift);
+    });
+};
+
+export const getNextWeek = (week) => {
+    return shiftDates(week, 7);
+};
+
+export const getPreviousWeek = (week) => {
+    return shiftDates(week, -7);
 };

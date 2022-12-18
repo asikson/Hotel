@@ -5,6 +5,7 @@ import { checkReservation } from '../utils/calendarUtils';
 import { black, white, orange } from '../../styles/constants';
 import { useState } from 'react';
 import ReservationDetailsDialog from '../../dialogs/components/ReservationsDetailsDialog';
+import { addWeekDays } from '../utils/calendarUtils';
 
 const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey}) => {
 
@@ -42,7 +43,7 @@ const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey})
                 <TableRow />
                   <TableRow>
                     <TableCell></TableCell>
-                    {columns.map(createTableCell)}
+                    {addWeekDays(columns).map(createTableCell)}
                   </TableRow>
                 </TableHead>
         
