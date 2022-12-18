@@ -50,14 +50,14 @@ def OX(parents, rooms, price, l_rooms):
         genotype_child.append(parent0.genotype[j])
         tab.append(parent0.genotype[j])
 
-    # usunięcie z drugiego rodzica miast, które potem wziął z pierwszego rodzica
+    # usunięcie z drugiego rodzica, które potem wziął z pierwszego rodzica
     for i in tab:
         if i in parent1.genotype:
             parent1.genotype.remove(i)
 
     second_parent = copy(parent1.genotype)
 
-    # uzupełnienie potomka miastami z drugiego rodzica
+    # uzupełnienie potomka z drugiego rodzica
     idx = 0
     for k in range(0, x1):
         genotype_child.insert(k, parent1.genotype[k])
