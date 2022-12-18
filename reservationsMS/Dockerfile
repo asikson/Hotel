@@ -15,4 +15,5 @@ RUN pip install -r requirements/dev.txt
 
 EXPOSE 8001
 
-CMD python3 manage.py runserver 0.0.0.0:8001
+#CMD python3 manage.py runserver 0.0.0.0:8001
+CMD gunicorn --bind 0.0.0.0:8001 settingsMS.wsgi:application --timeout 1
