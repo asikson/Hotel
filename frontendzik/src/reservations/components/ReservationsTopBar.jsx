@@ -12,7 +12,12 @@ const ReservationsTopBar = ({onAddButtonClick, toggleKey, setToggleKey}) => {
                 exclusive
                 aria-label="Platform"
                 value={toggleKey}
-                onChange={(event, value) => setToggleKey(value)}
+                onChange={(event, value) => {
+                  if (value) {
+                    return setToggleKey(value);
+                  }
+                  return () => {};
+                }}
               >
                 <ToggleButton value='stay'>Pokoje</ToggleButton>
                 <ToggleButton value='conference'>Sale konferencyjne</ToggleButton>

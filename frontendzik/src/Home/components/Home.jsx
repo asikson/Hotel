@@ -11,9 +11,8 @@ import MerryChristmas from './MerryChristmas';
 
 const Home = () => {
 
-    // TODO: zrobić logowanie
-    const { login } = useAuth();
-    const workerId = 1;
+    const { userData } = useAuth();
+    const { id_worker: workerId, name, surname, priviliges } = userData;
 
     const [pageKey, setPageKey] = useState('');
 
@@ -40,9 +39,9 @@ const Home = () => {
                 <div style={styles.navigationBar}>
                     <Navigation 
                         setKey={setPageKey} 
-                        login={login} 
+                        login={`${name} ${surname}` }
                         pageKey={pageKey} 
-                        admin={login === 'admin'} 
+                        admin={priviliges} 
                     />
                 </div>
                 <div style={styles.content}>

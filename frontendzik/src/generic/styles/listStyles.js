@@ -6,10 +6,9 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'start',
         width: '100%',
-        height: '90%',
+        height: '80%',
         overflowY: 'scroll',
         marginTop: '15px'
-
     },
 
     listButton: {

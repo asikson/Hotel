@@ -26,7 +26,7 @@ const ListTable = (
     return (
         <div style={styles.listWrapper}>
             <TableContainer component={Paper} sx={{maxWidth: '95%'}}>
-              <Table sx={{ minWidth: 650 }} aria-label="customized table">
+              <Table sx={{ minWidth: 450 }} aria-label="customized table">
                 <TableHead>
                   <TableRow>
                     {columns.map(createTableCell)}

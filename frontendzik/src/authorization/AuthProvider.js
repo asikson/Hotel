@@ -1,29 +1,34 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { fakeAuth } from '../Login/utils/loginUtils';
 import { AuthContext} from './useAuth';
+import { logIn } from '../utils/api';
 
 const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
-    const [token, setToken] = useState(null);
-    const [login, setLogin] = useState('');
+    const [userData, setUserData] = useState(null);
   
     const handleLogin = async (login, password) => {
-      const token = await fakeAuth(login, password);
-      setToken(token);
-      setLogin(login);
-      navigate('home');
+      if (login != '' && password != '') {
+        logIn(login, password).then(response => {
+          if (Array.isArray(response.data)) {
+            const data = response.data[0];
+            if ('id_worker' in data) {
+              setUserData(data);
+              navigate('home');
+            }
+          }
+        });
+      }
     };
   
     const handleLogout = () => {
-      setToken(null);
+      setUserData(null);
     };
   
     const value = {
-      token,
+      userData,
       onLogin: handleLogin,
       onLogout: handleLogout,
-      login
     };
   
     return (
