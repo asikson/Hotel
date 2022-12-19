@@ -15,7 +15,7 @@ class Clientscredentials(models.Model):
     id_credential = models.AutoField(primary_key=True)
     login = models.CharField(max_length=25)
     password = models.CharField(max_length=25)
-    id_client = models.ForeignKey(Clients, models.DO_NOTHING, db_column='id_client')
+    id_client = models.ForeignKey(Clients, models.CASCADE, db_column='id_client')
 
     class Meta:
         managed = True
@@ -26,7 +26,7 @@ class Credentials(models.Model):
     id_credential = models.AutoField(primary_key=True)
     login = models.CharField(max_length=25)
     password = models.CharField(max_length=25)
-    id_worker = models.ForeignKey('Workers', models.DO_NOTHING, db_column='id_worker')
+    id_worker = models.ForeignKey('Workers', models.CASCADE, db_column='id_worker')
 
     class Meta:
         app_label =  'users'
