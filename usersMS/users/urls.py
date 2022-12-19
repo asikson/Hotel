@@ -1,7 +1,7 @@
 from django.urls import include, path
 from .views import ClientsCreate, ClientsList, ClientsUpdate, ClientsDelete
 from .views import WorkersCreate, WorkersList, WorkersUpdate, WorkersDelete
-from .views import CredentialsCreate, CredentialsList, CredentialsUpdate, CredentialsDelete
+from .views import CredentialsCreate, CredentialsList, CredentialsUpdate, CredentialsDelete, login
 
 
 urlpatterns = [
@@ -11,6 +11,7 @@ urlpatterns = [
     path('clients/update/<int:pk>/', ClientsUpdate.as_view(), name='update-clients'),
     path('clients/delete/<int:pk>/', ClientsDelete.as_view(), name='delete-clients'),
     #credentials table urls
+    path('login/<str:login>/<str:password>/', login),
     path('credentials/', CredentialsList.as_view()),
     path('credentials/create/', CredentialsCreate.as_view(), name='create-credentials'),
     path('credentials/update/<int:pk>/', CredentialsUpdate.as_view(), name='update-credentials'),
