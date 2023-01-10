@@ -39,8 +39,8 @@ const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey})
         <div style={styles.listWrapper}>
             <TableContainer component={Paper} sx={{maxWidth: '95%'}}>
               <Table sx={{ minWidth: 650 }} aria-label="customized table">
-                <TableHead>
-                <TableRow />
+                <TableHead sx={{position: 'sticky'}}>
+                  <TableRow/>
                   <TableRow>
                     <TableCell></TableCell>
                     {addWeekDays(columns).map(createTableCell)}

@@ -131,3 +131,7 @@ export const getAlgorithmData = async (dateFrom, dateTo, numOfPeople, standard=0
 export const getCalendarData = (toggleKey) => {
     return axios.get(reachEndpoint(`reservations/${toggleKey}reservation/full`));
 };
+
+export const logIn = (login, password) => {
+    return axios.get(reachEndpoint(`users/login/${login}/${password}`));
+};

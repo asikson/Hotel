@@ -9,7 +9,7 @@ import DateTopBar from './DateTopBar';
 import { getDatesFromCurrentWeek } from '../utils/calendarUtils';
 
 const Calendar = () => {
-   
+
     const [loading, setLoading] = useState(true);
     const [toggleKey, setToggleKey] = useState('stay');
     const [items, setItems] = useState([]);
