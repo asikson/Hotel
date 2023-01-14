@@ -1,5 +1,7 @@
 import { transformDate } from "../../utils/apiUtils";
 
+const dayMs = 86400000;
+
 export const checkIfDateBetween = (date, fromDate, toDate) => {
     const dt = new Date(date);
     const from = new Date(fromDate);
@@ -50,11 +52,10 @@ export const checkReservation = (reservation, column) => {
 };
 
 export const getDatesFromCurrentWeek = () => {
-    const currentDate = new Date;
-    const first = currentDate.getDate() - currentDate.getDay() - 6;
-    
-    const days = Array.from(Array(7), (_, index) => new Date(currentDate.setDate(first + index)));
-    
+    const currentDate = new Date(Date.now());
+    const first = currentDate.getTime() - (currentDate.getDay() - 1) % 7 * dayMs;
+
+    const days = Array.from(Array(7), (_, index) => new Date(currentDate.setTime(first + index * 86400000)));
     return days.map(transformDate);
 };
 
@@ -64,7 +65,7 @@ export const addWeekDays = (dates) => {
     return dates.map((date, index) => `${weekDays[index]}, ${date}`);
 };
 
-const shiftDates = (days, shift) => {
+export const shiftDates = (days, shift) => {
     return days.map(d => {
         const day = new Date(d);
         const date = day.getDate();

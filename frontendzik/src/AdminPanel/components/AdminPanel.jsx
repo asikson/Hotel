@@ -1,6 +1,5 @@
 import commonStyles from "../../styles/commonStyles";
 import styles from '../styles/adminPanelStyles';
-
 import React, { useState } from 'react';
 import GenericList from "../../generic/components/GenericList";
 

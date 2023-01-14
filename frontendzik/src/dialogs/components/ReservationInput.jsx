@@ -108,6 +108,8 @@ const ReservationInput = (
     const addDisabled = [dateFrom, dateTo, numOfPeople, roomId, standard].some(isEmpty)
         || newClient && (isEmpty(name) || isEmpty(surname)) || !newClient && isEmpty(clientId);
 
+    const test = new Date()
+
     return (
         <div style={styles.container}>
             <div style={styles.sideToSide}>
