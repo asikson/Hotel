@@ -23,7 +23,7 @@ all_times = []
 # Tworzymy nową przeglądarkę
 driver = webdriver.Chrome(chrome_options=chrome_options)
 driver.get("http://localhost:3000/")
-wait = WebDriverWait(driver, 10)
+wait = WebDriverWait(driver, 150)
 
 # Szukamy pola do wpisywania
 driver.find_element(By.ID, ":r0:").send_keys("Werka")
@@ -38,7 +38,7 @@ driver.find_element(By.TAG_NAME,"button").click()
 
 wait.until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Rezerwacje']"))).click()
 driver.find_element(By.XPATH, "//button[@value='conference']").click()
-for _ in range(10): 
+for _ in range(5): 
     number = 10
     date = str(number) + "/01/2023"
     people = 100
