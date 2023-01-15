@@ -5,6 +5,8 @@ from rest_framework import generics
 from .serializers import RoomsSerializer, ConferenceRoomsSerializer
 from django.db.models import Q
 from .apis import *
+import time
+
 
 def get_reservations_ids(from_d, to_d, record_name, url):
         results = []
@@ -25,9 +27,17 @@ def get_rooms_ids_from_reservations_ids(reservations, record_name, url):
         return results
 
 class RoomsCreate(generics.CreateAPIView):
-    # API endpoint that allows creation of a new Rooms
+    # API endpoint that allows creation of a new Room
     queryset = Rooms.objects.all()
     serializer_class = RoomsSerializer
+    def form_valid(self, form):
+        start = time.time()
+        response = super().form_valid(form)
+        # Do something with the object that was just created, such as writing to a file
+        end = time.time()
+        with open('output.csv', 'a') as f:
+            f.write(str(end - start) + ", ")
+        return response
 
 class RoomsList(generics.ListAPIView):
     # API endpoint that allows Rooms to be viewed.
