@@ -19,7 +19,7 @@ const ListTable = (
     const columns = items.length === 0 ? items : Object.keys(items[0]).filter(key => key in labels);
 
     const createTableCell = (column) => 
-        <StyledTableCell>
+        <StyledTableCell key={column}>
             {(labels && labels[column]) || ''}
         </StyledTableCell>;
 
@@ -44,9 +44,10 @@ const ListTable = (
                   {items.map((item) => (
                     <StyledTableRow
                       sx={{ '&:last-child td, &:last-child th': { border: 0 }}}
+                      key={item.name}
                     >
                       <TableCell component="th" scope="row" >{item[columns[0]]}</TableCell>
-                        {columns.slice(1).map(column => <TableCell >{mapValue(column, item[column])}</TableCell>)}
+                        {columns.slice(1).map(column => <TableCell key={`${column}-${item.name}`}>{mapValue(column, item[column])}</TableCell>)}
                         {details 
                           ? <TableCell>
                               <ListButton onClick={onDetailsButtonClick} item={item} label='Szczegóły'/>
