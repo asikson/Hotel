@@ -11,6 +11,12 @@ class StayRoomReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = StayRoomReservation
         fields = ['id_stay', 'id_room']
+        many = True
+
+class StayRoomReservationSerializerList(serializers.ListSerializer):
+    child = StayRoomReservationSerializer()
+    allow_empty = False
+    many = True
 
 class ConferenceReservationSerializer(serializers.ModelSerializer):
     class Meta:

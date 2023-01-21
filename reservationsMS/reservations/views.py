@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import StayReservation, StayRoomReservation, ConferenceReservation, ConferenceRoomReservation
 from rest_framework import generics
-from .serializers import StayRoomReservationSerializer, StayReservationSerializer, ConferenceReservationSerializer, ConferenceRoomReservationSerializer
+from .serializers import StayRoomReservationSerializer, StayReservationSerializer, ConferenceReservationSerializer, ConferenceRoomReservationSerializer, StayRoomReservationSerializerList
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
@@ -110,8 +110,29 @@ class StayReservationDelete(generics.RetrieveDestroyAPIView):
 #VIEWS for ConferenceStayReservation tab
 class StayRoomReservationCreate(generics.CreateAPIView):
     # API endpoint that allows creation of a new StayRoomReservation
-    queryset = StayRoomReservation.objects.all(),
+    queryset = StayRoomReservation.objects.all()
     serializer_class = StayRoomReservationSerializer
+
+@api_view(['POST'])
+def StayRoomReservationCreateList(request):
+    url = 'http://reservations:8001/reservations/stayroomreservation/create/list'
+    id_stay = int(request.data['id_stay'])
+    list_of_rooms = request.data['list_of_rooms']
+    list_of_rooms = [int(x) for x in list_of_rooms]
+    list_to_write = []
+    for room in list_of_rooms:
+        empty_dict = {}
+        empty_dict['id_stay'] = id_stay
+        empty_dict['id_room'] = room
+        list_to_write.append(empty_dict)
+
+    response = requests.post(url, json=list_to_write)
+    return Response(response)
+
+class StayRoomReservationCreateFromList(generics.ListCreateAPIView):
+    # API endpoint that allows creation of a new StayRoomReservation
+    queryset = StayRoomReservation.objects.all()
+    serializer_class = StayRoomReservationSerializerList
 
 class StayRoomReservationList(generics.ListAPIView):
     # API endpoint that allows StayRoomReservation to be viewed.

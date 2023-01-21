@@ -1,8 +1,8 @@
 from django.urls import include, path, register_converter
 from .views import ConferenceReservationCreate, ConferenceReservationList, ConferenceReservationUpdate, ConferenceReservationDelete, ConferenceReservationListFiltr, ConferenceReservationListFull
-from .views import ConferenceRoomReservationCreate, ConferenceRoomReservationList, ConferenceRoomReservationUpdate, ConferenceRoomReservationDelete
+from .views import ConferenceRoomReservationCreate, ConferenceRoomReservationList, ConferenceRoomReservationUpdate, ConferenceRoomReservationDelete 
 from .views import StayReservationCreate, StayReservationList, StayReservationUpdate, StayReservationDelete, StayReservationListFiltr, StayReservationListFull, StayReservationListFullDate
-from .views import StayRoomReservationCreate, StayRoomReservationList, StayRoomReservationUpdate, StayRoomReservationDelete
+from .views import StayRoomReservationCreate, StayRoomReservationList, StayRoomReservationUpdate, StayRoomReservationDelete, StayRoomReservationCreateFromList, StayRoomReservationCreateList
 from .converters import DateConverter
 
 register_converter(DateConverter, 'date')
@@ -32,6 +32,8 @@ urlpatterns = [
     #StayRoomReservation table urls
     path('stayroomreservation/', StayRoomReservationList.as_view()),
     path('stayroomreservation/create/', StayRoomReservationCreate.as_view(), name='create-stayroomreservation'),
+    path('stayroomreservation/create/list', StayRoomReservationCreateFromList.as_view(), name='create-stayroomreservation-from-list'),
+    path('stayroomreservation/createlist/', StayRoomReservationCreateList, name='create-stayroomreservation-from-list'),
     path('stayroomreservation/update/<int:pk>/', StayRoomReservationUpdate.as_view(), name='update-stayroomreservation'),
     path('stayroomreservation/delete/<int:pk>/', StayRoomReservationDelete.as_view(), name='delete-stayroomreservation'),
 ]
