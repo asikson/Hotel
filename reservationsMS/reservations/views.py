@@ -8,6 +8,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .apis import *
 import requests
+from datetime import datetime, timedelta
+from itertools import groupby
 
 def get_reservations(url):
     results = requests.get(url, headers={}).json()
@@ -33,6 +35,24 @@ class StayReservationList(generics.ListAPIView):
     serializer_class = StayReservationSerializer
     filterset_fields = ['id_stay']
 
+
+def get_list_of_data_from_range(from_d, to_d, id_stay):
+    list_of_data = {}
+    range_from = datetime.strptime(from_d, '%Y-%m-%d')
+    range_to = datetime.strptime(to_d, '%Y-%m-%d')
+    delta = range_to - range_from
+    for i in range(delta.days + 1):
+        day = range_from + timedelta(days=i)
+        day = day.date()
+        list_of_data[str(day)] = id_stay
+    return list_of_data
+
+def groub_by_room_id(rooms):
+    grouped_rooms = []
+    for room in rooms:
+        grouped_rooms.append(room)
+    return grouped_rooms
+
 @api_view(['GET'])
 def StayReservationListFull(request):
     reservations = get_reservations("http://reservations:{}/reservations/stayreservation/".format(reservationsPort))
@@ -44,6 +64,22 @@ def StayReservationListFull(request):
             rooms_info.extend(room_info)
         reservation['rooms'] = rooms_info
     return Response(reservations)
+
+@api_view(['GET'])
+def StayReservationListFullDate(request, from_d, to_d):
+    reservations = get_reservations("http://reservations:{}/reservations/stayreservation/{}/{}/".format(reservationsPort, from_d, to_d))
+    rooms = []
+    for reservation in reservations:
+        data = []
+        data.extend(get_rooms("http://reservations:{}/reservations/stayroomreservation/?id_stay={}".format(reservationsPort, reservation['id_stay'])))
+        data = dict(*data)
+        new_data = {"id_room": data.pop("id_room")}
+        data = new_data
+        list_of_dates = get_list_of_data_from_range(reservation["from_date"], reservation["to_date"], reservation['id_stay'])
+        data["info"] = list_of_dates
+        rooms.append(data)
+
+    return Response(groub_by_room_id(rooms))
 
 class StayReservationListFiltr(generics.ListAPIView):
     # API endpoint that allows StayReservation to be viewed.
