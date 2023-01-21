@@ -46,4 +46,4 @@ export const getIdValue = (type, item) => {
     return item[getIdName(type)];
 };
 
-export const isEmpty = (field) => field === null || field === '';
+export const isEmpty = (field) => field === null || field.trim() === '';

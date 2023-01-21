@@ -12,7 +12,7 @@ const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey})
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
 
-    const createTableCell = (column) => <StyledTableCell>{column}</StyledTableCell>;
+    const createTableCell = (column) => <StyledTableCell key={column}>{column}</StyledTableCell>;
     
     const cellContent = (room, column) => {
         const dataForRoom = reservationData[room[idRoom]];
@@ -40,9 +40,9 @@ const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey})
             <TableContainer component={Paper} sx={{maxWidth: '95%'}}>
               <Table sx={{ minWidth: 650 }} aria-label="customized table">
                 <TableHead sx={{position: 'sticky'}}>
-                  <TableRow/>
-                  <TableRow>
-                    <TableCell></TableCell>
+                  <TableRow key='left-corner'/>
+                  <TableRow key='top'>
+                    <TableCell key='left-corner-cell'></TableCell>
                     {addWeekDays(columns).map(createTableCell)}
                   </TableRow>
                 </TableHead>
@@ -50,14 +50,21 @@ const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey})
                 <TableBody>
                   {rooms.map((room) => (
                     <StyledTableRow
+                      key={room.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 }, height: '120px'}}
                     >
-                        <TableCell component="th" scope="row" sx={{backgroundColor: black, color: white}}>{room.name}</TableCell>
+                        <TableCell component="th" scope="row" sx={{backgroundColor: black, color: white}} key={room.name}>{room.name}</TableCell>
                         {columns.map(column => {
                           const item = cellContent(room, column);
                           const color = item ? orange : white;
-                          return <TableCell sx={{backgroundColor: color}}>
-                            {item && <button style={{width: '100%', height: '70px', opacity: 0}} onClick={() => onButtonClick(item)}></button>}
+                          return <TableCell sx={{backgroundColor: color}} key={`${room.name}-${column}`}>
+                            {item && 
+                              <button 
+                                style={{width: '100%', height: '70px', opacity: 0}} 
+                                onClick={() => onButtonClick(item)} 
+                                data-testid={`${room.name}-${column}`}
+                              />
+                            }
                           </TableCell>
                         })}
                     </StyledTableRow>
