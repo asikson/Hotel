@@ -4,9 +4,8 @@ import styles from '../../generic/styles/listStyles';
 import CalendarListTable from './CalendarListTable';
 import LoadingOverlay from '../../generic/components/LoadingOverlay';
 import ReservationsTopBar from '../../reservations/components/ReservationsTopBar';
-import { transformData } from '../utils/calendarUtils';
 import DateTopBar from './DateTopBar';
-import { getDatesFromCurrentWeek } from '../utils/calendarUtils';
+import { getDatesFromCurrentWeek, transformData } from '../utils/calendarUtils';
 
 const Calendar = () => {
 
@@ -17,17 +16,45 @@ const Calendar = () => {
     const [columns, setColumns] = useState(getDatesFromCurrentWeek());
 
     useEffect(() => {
-        const type = toggleKey === 'stay' ? '' : 'conference'
+        localStorage.clear();
+    }, []);
+
+    useEffect(() => {
+        const type = toggleKey === 'stay' ? '' : 'conference';
+        setLoading(true);
         getItems(`rooms/${type}rooms`).then(response => {
             setItems(response);
-            getCalendarData(toggleKey).then(response => {
-                const transformedData = transformData(response.data, toggleKey);
-                setReservationData(transformedData);
+            const storedData = localStorage.getItem(columns[0])
+            if (!storedData) {
+                getCalendarData(toggleKey, columns[0], columns[6]).then(response => {
+                    const transformedData = transformData(response.data, toggleKey);
+                    setReservationData(transformedData);
+                    setLoading(false);
+                    localStorage.setItem(columns[0], JSON.stringify(transformedData));
+                });
+            } else {
+                setReservationData(JSON.parse(storedData));
                 setLoading(false);
-            });
+            }
         });
         
     }, [toggleKey]);
+
+    useEffect(() => {
+        const storedData = localStorage.getItem(columns[0])
+            if (!storedData) {
+                setLoading(true);
+                getCalendarData(toggleKey, columns[0], columns[6]).then(response => {
+                    const transformedData = transformData(response.data, toggleKey);
+                    setReservationData(transformedData);
+                    setLoading(false);
+                    localStorage.setItem(columns[0], JSON.stringify(transformedData));
+                });
+            } else {
+                setReservationData(JSON.parse(storedData));
+                setLoading(false);
+            }
+    }, [columns]);
 
     const stay = toggleKey === 'stay';
     const idRoom = stay ? 'id_room' : 'id_conference_room';

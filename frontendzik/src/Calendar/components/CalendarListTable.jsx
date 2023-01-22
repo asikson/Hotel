@@ -1,11 +1,11 @@
 import styles from '../../generic/styles/listStyles';
 import { Paper, TableBody, TableContainer, Table, TableHead, TableCell, TableRow } from '@mui/material';
 import { StyledTableCell, StyledTableRow } from '../../generic/styles/styled';
-import { checkReservation } from '../utils/calendarUtils';
 import { black, white, orange } from '../../styles/constants';
 import { useState } from 'react';
 import ReservationDetailsDialog from '../../dialogs/components/ReservationsDetailsDialog';
 import { addWeekDays } from '../utils/calendarUtils';
+import { getReservationById } from '../../utils/api';
 
 const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey}) => {
 
@@ -17,13 +17,8 @@ const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey})
     const cellContent = (room, column) => {
         const dataForRoom = reservationData[room[idRoom]];
 
-        if (dataForRoom) {  
-            const checked = dataForRoom
-              .filter(reservation => checkReservation(reservation, column));
-
-            if (checked.length > 0) {
-              return checked[0];
-            }
+        if (dataForRoom && dataForRoom[column]) {  
+          return dataForRoom[column];
         }
 
         return null;
@@ -31,7 +26,10 @@ const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey})
 
     const onButtonClick = (item) => {
       setCurrentItem(item);
-      setDetailsDialogOpen(true);
+      getReservationById(item, toggleKey).then(response => {
+        setCurrentItem(response.data);
+        setDetailsDialogOpen(true);
+      })
     }
 
     return (
