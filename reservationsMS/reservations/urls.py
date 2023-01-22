@@ -1,5 +1,5 @@
 from django.urls import include, path, register_converter
-from .views import ConferenceReservationCreate, ConferenceReservationList, ConferenceReservationUpdate, ConferenceReservationDelete, ConferenceReservationListFiltr, ConferenceReservationListFull
+from .views import ConferenceReservationCreate, ConferenceReservationList, ConferenceReservationUpdate, ConferenceReservationDelete, ConferenceReservationListFiltr, ConferenceReservationListFull, ConferenceReservationListFullDate
 from .views import ConferenceRoomReservationCreate, ConferenceRoomReservationList, ConferenceRoomReservationUpdate, ConferenceRoomReservationDelete 
 from .views import StayReservationCreate, StayReservationList, StayReservationUpdate, StayReservationDelete, StayReservationListFiltr, StayReservationListFull, StayReservationListFullDate
 from .views import StayRoomReservationCreate, StayRoomReservationList, StayRoomReservationUpdate, StayRoomReservationDelete, StayRoomReservationCreateFromList, StayRoomReservationCreateList
@@ -12,6 +12,7 @@ urlpatterns = [
     #ConferenceReservation table urls
     path('conferencereservation/', ConferenceReservationList.as_view()),
     path('conferencereservation/full/', ConferenceReservationListFull),
+    path('conferencereservation/calendar/<date:from_d>/<date:to_d>/', ConferenceReservationListFullDate),
     path('conferencereservation/<date:from_d>/<date:to_d>/', ConferenceReservationListFiltr.as_view()),
     path('conferencereservation/create/', ConferenceReservationCreate.as_view(), name='create-conferencereservation'),
     path('conferencereservation/update/<int:pk>/', ConferenceReservationUpdate.as_view(), name='update-conferencereservation'),
