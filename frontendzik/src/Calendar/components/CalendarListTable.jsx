@@ -25,9 +25,8 @@ const CalendarListTable = ({columns, rooms, reservationData, idRoom, toggleKey})
     };
 
     const onButtonClick = (item) => {
-      setCurrentItem(item);
       getReservationById(item, toggleKey).then(response => {
-        setCurrentItem(response.data);
+        setCurrentItem(response.data[0]);
         setDetailsDialogOpen(true);
       })
     }

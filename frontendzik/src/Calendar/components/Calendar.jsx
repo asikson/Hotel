@@ -24,13 +24,13 @@ const Calendar = () => {
         setLoading(true);
         getItems(`rooms/${type}rooms`).then(response => {
             setItems(response);
-            const storedData = localStorage.getItem(columns[0])
+            const storedData = localStorage.getItem(`${columns[0]}${toggleKey}`);
             if (!storedData) {
                 getCalendarData(toggleKey, columns[0], columns[6]).then(response => {
                     const transformedData = transformData(response.data, toggleKey);
                     setReservationData(transformedData);
                     setLoading(false);
-                    localStorage.setItem(columns[0], JSON.stringify(transformedData));
+                    localStorage.setItem(`${columns[0]}${toggleKey}`, JSON.stringify(transformedData));
                 });
             } else {
                 setReservationData(JSON.parse(storedData));
