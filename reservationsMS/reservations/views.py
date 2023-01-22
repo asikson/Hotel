@@ -175,6 +175,22 @@ def ConferenceReservationListFull(request):
         reservation['rooms'] = rooms_info
     return Response(reservations)
 
+@api_view(['GET'])
+def ConferenceReservationListFullDate(request, from_d, to_d):
+    reservations = get_reservations("http://reservations:{}/reservations/conferencereservation/{}/{}/".format(reservationsPort, from_d, to_d))
+    rooms = []
+    for reservation in reservations:
+        data = []
+        data.extend(get_rooms("http://reservations:{}/reservations/conferenceroomreservation/?id_conference={}".format(reservationsPort, reservation['id_conference'])))
+        data = dict(*data)
+        new_data = {"id_conference_room": data.pop("id_conference_room")}
+        data = new_data
+        list_of_dates = get_list_of_data_from_range(reservation["from_date"], reservation["to_date"], reservation['id_conference'])
+        data["info"] = list_of_dates
+        rooms.append(data)
+
+    return Response(groub_by_room_id(rooms))
+
 class ConferenceReservationListFiltr(generics.ListAPIView):
     # API endpoint that allows StayReservation to be viewed.
     serializer_class = ConferenceReservationSerializer
