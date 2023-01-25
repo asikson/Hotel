@@ -13,12 +13,12 @@ const styles = {
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    width: "40%",
+    width: "55%",
     height: "95%",
 }
 
 const MerryChristmas = () => {
-    return <div style={styles}>Wesołych Świąt!</div>
+    return <div style={styles}></div>
 }
 
 export default MerryChristmas;

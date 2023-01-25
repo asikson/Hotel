@@ -87,6 +87,10 @@ export const getWorkerById = async (id) => {
     return axios.get(reachEndpoint(`users/workers/?id_worker=${id}`));
 };
 
+export const getReservationById = async (id, type) => {
+    return axios.get(reachEndpoint(`reservations/${type}reservation/?id_${type}=${id}`));
+};
+
 export const getFreeRooms = async (type, dateFrom, dateTo, numOfPeople, standard=null) => {
     const from = convertToShortFormat(dateFrom);
     const to = convertToShortFormat(dateTo);
@@ -128,8 +132,8 @@ export const getAlgorithmData = async (dateFrom, dateTo, numOfPeople, standard=0
     return axios.get(reachEndpoint(`algorythm/${from}/${to}/${numOfPeople}/${standard}`));
 };
 
-export const getCalendarData = (toggleKey) => {
-    return axios.get(reachEndpoint(`reservations/${toggleKey}reservation/full`));
+export const getCalendarData = (toggleKey, dateFrom, dateTo) => {
+    return axios.get(reachEndpoint(`reservations/${toggleKey}reservation/calendar/${dateFrom}/${dateTo}`));
 };
 
 export const logIn = (login, password) => {
